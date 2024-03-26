@@ -1,0 +1,51 @@
+# Use postgres/example user/password credentials
+version: '3.9'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile_django
+    container_name: backend
+    restart: unless-stopped
+    tty: true
+    working_dir: /usr/src/app
+    volumes:
+      - ./backend:/usr/src/app
+      - .pgpass:/root/.pgpass
+      - .pg_service.conf:/root/.pg_service.conf
+    command: python manage.py runserver 0.0.0.0:8000
+    ports:
+      - "8000:8000"
+
+  db:
+    image: postgres:16.2
+    container_name: db
+    restart: always
+    # set shared memory limit when using docker-compose
+    shm_size: 128mb
+    # or set shared memory limit when deploy via swarm stack
+    #volumes:
+    #  - type: tmpfs
+    #    target: /dev/shm
+    #    tmpfs:
+    #      size: 134217728 # 128*2^20 bytes = 128Mb
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - ${DB_PORT}:5432
+    # If on a non-Linux OS, make sure you share the drive used here. Go to Docker's settings -> Shared Drives
+     volumes:
+       # Persist the data between container invocations
+       - postgresVolume:/var/lib/postgresql/data
+       - ./logs:/logs
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+volumes:
+  postgresVolume:
