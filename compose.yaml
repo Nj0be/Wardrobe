@@ -5,6 +5,7 @@ services:
       dockerfile: Dockerfile
     container_name: backend
     restart: always
+    #stdin_open: True
     #tty: true
     volumes:
       - ./backend:/app
@@ -45,6 +46,7 @@ services:
 
   adminer:
     image: adminer
+    container_name: adminer
     restart: always
     ports:
       - 8080:8080
