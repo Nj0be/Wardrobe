@@ -1,8 +1,7 @@
 # Requirements:
 #   - docker
-#   - dotenv
-#   - PYyaml
-#   - tarfile
+#   - python-dotenv
+#   - pyyaml
 
 import os
 import sys
