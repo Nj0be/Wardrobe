@@ -129,7 +129,7 @@ def manage(args=''):
 def compose_build():
     subprocess.run('docker compose build', shell=True)
 
-def compose_run():
+def compose_up():
     subprocess.run('docker compose up -d', shell=True)
 
 def shell(container_name):
@@ -143,8 +143,8 @@ def print_usage():
     print()
     print('Actions:')
     print('-h   --help                      Print help')
-    print('build                            Build containers')
-    print('up                               Build and run containers')
+    print('build [?up]                      Build and eventually run containers')
+    print('up                               Run containers')
     print('down                             Stop containers')
     print("shell [container_name]           Enter container's shell")
     print('dump [?filename="db.dump"]       Dump database')
@@ -161,9 +161,10 @@ def main():
         print_usage()
     elif sys.argv[1] == 'build':
         compose_build()
+        if len(sys.argv) > 2 and sys.argv[2] == 'up':
+            compose_up()
     elif sys.argv[1] == 'up':
-        compose_build()
-        compose_run()
+        compose_up()
     elif not containers_running:
         print(f'Run "python handle_containers.py up" before running {sys.argv[1]}!')
     elif sys.argv[1] == 'shell':
