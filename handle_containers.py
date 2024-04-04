@@ -1,7 +1,12 @@
 # Requirements:
 #   - docker
+<<<<<<< HEAD
 #   - dotenv
 #   - PYyaml
+=======
+#   - python-dotenv
+#   - pyyaml
+>>>>>>> 62052213a5ecb2748be8714d5b60ddddcad3bda0
 
 import os
 import sys
