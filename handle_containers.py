@@ -117,55 +117,53 @@ def is_running(container_name):
     else:
         return False
     
+def are_containers_running():
+    for container in docker_compose['services']:
+        if not is_running(container):
+            return False
+    return True
+    
 def manage(args=''):
-
     subprocess.run(f'docker exec -it backend /app/manage.py {args}', shell=True)
-    
-    # django_container = get_container(django_container_name)
-    
-    # _, socket = django_container.exec_run(f'/app/manage.py {args}', stdin=True, tty=True, socket=True)
 
-    # while not socket.closed:
-    #     buf = socket._sock.recv(4096).decode('utf-8')
-    #     print(buf, end='', flush=True)
-    #     if len(buf) == 0 or len(buf) == 4096 or buf[-1] == '\n':
-    #         continue 
+def compose_build():
+    subprocess.run('docker compose build', shell=True)
 
-    #     data = sys.stdin.readline()
+def compose_run():
+    subprocess.run('docker compose up -d', shell=True)
 
-    #     socket._sock.sendall(data.encode())
-    #     # time.sleep(0.01)
-    #     buf = socket._sock.recv(len(data)+1).decode('utf-8')
-
-    #     data = data[:-1] + '\r\n'
-    #     if buf != data:
-    #         if buf[:2] == '\r\n':
-    #             buf = buf[2:]
-    #         print(buf, end='', flush=True)
-
-    return
+def compose_down():
+    subprocess.run('docker compose down', shell=True)
     
 def print_usage():
     print('Usage: python handle_containers.py [action]')
     print()
     print('Actions:')
     print('-h   --help                      Print help')
+    print('build                            Build containers')
+    print('run                              Build and run containers')
+    print('down                             Stop containers')
     print('dump [?filename="db.dump"]       Dump database')
-    print('restore [filename]               Dump database')
+    print('restore [filename]               Restore database from dump')
     print('manage [options]                 Run django manage.py')
 
 
 def main():
-    for container in docker_compose['services']:
-        if not is_running(container):
-            print(f'Container "{container}" is not running')
-            print('Run "docker compose up -d" before running this script!')
-            exit()
+    containers_running = are_containers_running()
 
     if len(sys.argv) == 1:
         print_usage()
     elif sys.argv[1] == '-h' or sys.argv[1] == '--help' or sys.argv[1] == 'help':
         print_usage()
+    elif sys.argv[1] == 'build':
+        compose_build()
+    elif sys.argv[1] == 'run':
+        compose_build()
+        compose_run()
+    elif sys.argv[1] == 'down':
+        compose_down()
+    elif not containers_running:
+        print(f'Run "docker compose up -d" before running {sys.argv[1]}!')
     elif sys.argv[1] == 'dump':
         if len(sys.argv) > 2:
             dump(sys.argv[2])
@@ -180,6 +178,7 @@ def main():
             restore(sys.argv[2])
     elif sys.argv[1] == 'manage':
         manage(' '.join(sys.argv[2:]))
+    
     else:
         print(f'Command {sys.argv[1]} not found. Refer to the usage manual:')
         print_usage()

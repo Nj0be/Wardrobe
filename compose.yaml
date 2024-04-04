@@ -1,7 +1,7 @@
 services:
   backend:
     build:
-      context: .
+      context: backend
       dockerfile: Dockerfile
     container_name: backend
     restart: always
@@ -50,6 +50,18 @@ services:
     restart: always
     ports:
       - 8080:8080
+
+  frontend:
+    build:
+      context: frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    restart: always
+    volumes:
+      - ./frontend/src:/app/src
+      - ./frontend/public:/app/public
+    ports:
+      - "3000:3000"
 
 volumes:
   pgdata:
