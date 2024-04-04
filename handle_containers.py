@@ -2,7 +2,6 @@
 #   - docker
 #   - dotenv
 #   - PYyaml
-#   - tarfile
 
 import os
 import sys
