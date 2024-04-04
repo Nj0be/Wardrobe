@@ -132,6 +132,9 @@ def compose_build():
 def compose_run():
     subprocess.run('docker compose up -d', shell=True)
 
+def shell(container_name):
+    subprocess.run(f'docker exec -it {container_name} sh', shell=True)
+
 def compose_down():
     subprocess.run('docker compose down', shell=True)
     
@@ -141,8 +144,9 @@ def print_usage():
     print('Actions:')
     print('-h   --help                      Print help')
     print('build                            Build containers')
-    print('run                              Build and run containers')
+    print('up                               Build and run containers')
     print('down                             Stop containers')
+    print("shell [container_name]           Enter container's shell")
     print('dump [?filename="db.dump"]       Dump database')
     print('restore [filename]               Restore database from dump')
     print('manage [options]                 Run django manage.py')
@@ -157,13 +161,19 @@ def main():
         print_usage()
     elif sys.argv[1] == 'build':
         compose_build()
-    elif sys.argv[1] == 'run':
+    elif sys.argv[1] == 'up':
         compose_build()
         compose_run()
+    elif not containers_running:
+        print(f'Run "python handle_containers.py up" before running {sys.argv[1]}!')
+    elif sys.argv[1] == 'shell':
+        if len(sys.argv) < 3:
+            print('Missing container name!')
+        if len(sys.argv) > 3:
+            print('Too many arguments!')
+        shell(sys.argv[2])
     elif sys.argv[1] == 'down':
         compose_down()
-    elif not containers_running:
-        print(f'Run "docker compose up -d" before running {sys.argv[1]}!')
     elif sys.argv[1] == 'dump':
         if len(sys.argv) > 2:
             dump(sys.argv[2])
