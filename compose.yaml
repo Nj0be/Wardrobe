@@ -12,7 +12,7 @@ services:
       #- ./.pgpass:/app/.pgpass
       - ./.pg_service.conf:/root/.pg_service.conf
     ports:
-      - "8000:8000"
+      - 8000:8000
     environment:
       DB_NAME: $DB_NAME
       DB_USER: $DB_USER
@@ -50,18 +50,6 @@ services:
     restart: always
     ports:
       - 8080:8080
-
-  frontend:
-    build:
-      context: frontend
-      dockerfile: Dockerfile
-    container_name: frontend
-    restart: always
-    volumes:
-      - ./frontend/src:/app/src
-      - ./frontend/public:/app/public
-    ports:
-      - "3000:3000"
 
 volumes:
   pgdata:
