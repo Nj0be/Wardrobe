@@ -235,7 +235,7 @@ def main():
     elif sys.argv[1] == 'up':
         compose_up()
     elif not containers_running:
-        print(f'Run "python handle_containers.py up" before running {sys.argv[1]}!')
+        print(f'Run "python containers.py up" before running {sys.argv[1]}!')
     elif sys.argv[1] == 'shell':
         if len(sys.argv) < 3:
             print('Missing container name!')
