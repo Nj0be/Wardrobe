@@ -1,16 +1,13 @@
 services:
-  backend:
+  django:
     build:
-      context: backend
       dockerfile: Dockerfile
-    container_name: backend
-    restart: always
-    #stdin_open: True
-    #tty: true
+    container_name: django
+    # disable restart to avoid autostart containers on boot
+    restart: no
+    # volume used to hot reload changes
     volumes:
-      - ./backend:/app
-      #- ./.pgpass:/app/.pgpass
-      # - ./.pg_service.conf:/root/.pg_service.conf
+       - .:/app
     ports:
       - "8000:8000"
     environment:
@@ -26,7 +23,8 @@ services:
   db:
     image: postgres:16.2
     container_name: db
-    restart: always
+    # disable restart to avoid autostart containers on boot
+    restart: no
     # set shared memory limit when using docker-compose
     shm_size: 128mb
     environment:
@@ -47,7 +45,8 @@ services:
   adminer:
     image: adminer
     container_name: adminer
-    restart: always
+    # disable restart to avoid autostart containers on boot
+    restart: no
     ports:
       - "8080:8080"
 
