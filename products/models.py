@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Product(models.Model):
     name = models.CharField(max_length=1000)
     description = models.CharField(max_length=10000)
@@ -10,22 +11,27 @@ class Product(models.Model):
     discount_end_date = models.DateTimeField()
     discount_percentage = models.FloatField()
 
+
 class Category(models.Model):
     parent_category = models.ForeignKey('self', on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     class Meta:
         unique_together = [['parent_category', 'name']]
 
+
 class ProductCategory(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
+
 
 class Color(models.Model):
     name = models.CharField(max_length=30, unique=True)
     hex = models.CharField(max_length=6, unique=True)
 
+
 class Size(models.Model):
     name = models.CharField(max_length=10, unique=True)
+
 
 class ProductColorImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)

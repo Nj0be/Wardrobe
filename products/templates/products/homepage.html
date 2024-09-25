@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>E-commerce Homepage</title>
+</head>
+<body>
+    {% if products_list %}
+        <h1>Products:</h1>
+        <ul>
+        {% for product in products_list %}
+            <li><a href="{{ product.id }}/">{{ product.name }}</a></li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>Nessun prodotto disponibile</p>
+    {% endif %}
+</body>
+</html>
