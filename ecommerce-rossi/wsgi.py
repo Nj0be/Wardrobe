@@ -1,5 +1,5 @@
 """
-WSGI config for backend project.
+WSGI ecommerce-rossi for backend project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
