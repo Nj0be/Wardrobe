@@ -14,7 +14,7 @@ class Category(models.Model):
     parent_category = models.ForeignKey('self', on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     class Meta:
-        unique_together = [['parentCategory', 'name']]
+        unique_together = [['parent_category', 'name']]
 
 class ProductCategory(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -29,8 +29,11 @@ class Size(models.Model):
 
 class ProductColorImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    color = models.ForeignKey(Color, on_delete=models.CASCADE, unique=True)
+    color = models.ForeignKey(Color, on_delete=models.CASCADE)
     image = models.CharField(max_length=200)
+    class Meta:
+        unique_together = [['product', 'color']]
+
 
 class ProductVariant(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
