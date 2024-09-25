@@ -5,15 +5,14 @@
     <title>E-commerce Homepage</title>
 </head>
 <body>
-    {% if products_list %}
-        <h1>Products:</h1>
-        <ul>
-        {% for product in products_list %}
-            <li><a href="{{ product.id }}/">{{ product.name }}</a></li>
-        {% endfor %}
-        </ul>
-    {% else %}
-        <p>Nessun prodotto disponibile</p>
-    {% endif %}
+    <!-- Start Master Categories Choice -->
+
+            <ul>
+                {% for category in main_categories_list %}
+                    <li><a href="{% url 'products:search' category.id %}">category.name</a></li>
+                {% endfor %}
+            </ul>
+
+    <!-- End Master Categories Choice -->
 </body>
 </html>

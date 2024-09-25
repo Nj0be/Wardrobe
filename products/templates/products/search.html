@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <!-- Start Menu # Da modificare-->
+
+    <ul>
+        {% for category in master_categories_list %}
+            <li><a href="{% url 'products:search' category.id %}">category.name</a></li>
+        {% endfor %}
+    </ul>
+
+    <!-- End Menu -->
+
+    <!-- Start Nav Bar # Da fare, contiene i filtri -->
+    <!-- End Nav Bar -->
+
+    <!-- Start Content # mostra i prodotti -->
+
+    {% if products_list %}
+        <h1>Products:</h1>
+        <ul>
+        {% for product in products_list %}
+            <li><a href="{{ product.id }}/">{{ product.name }}</a></li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>Nessun prodotto disponibile</p>
+    {% endif %}
+
+    <!-- End Content -->
+</body>
+</html>
