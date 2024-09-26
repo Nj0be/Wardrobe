@@ -14,6 +14,7 @@ class HomepageView(generic.ListView):
         return Category.objects.filter(parent_category=0)  # oppure null BOH
 
 
+# nell'url non prende nessun argomento attualmente... too bad (missing 5 required positional arguments)
 def search(request, category, colors, sizes, price_range, search_term):
     # quando la pagina di ricerca viene chiamata dall'homepage, solamente category è non nulla
     # verrà settata come una tra quelle con parent_id = 0 in quanto nella homepage verranno mostrate solo le copertine
