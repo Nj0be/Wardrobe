@@ -1,8 +1,8 @@
 from django.views import generic
 from django.shortcuts import render
+from django.http import Http404
 
-from .models import Product
-from .models import Category
+from .models import Product, ProductCategory, Category
 
 
 class HomepageView(generic.ListView):
@@ -11,33 +11,42 @@ class HomepageView(generic.ListView):
 
     def get_queryset(self):
         """Return all the products"""
-        return Category.objects.filter(parent_category=0)  # oppure null BOH
+        return Category.objects.filter(parent_category=None)  # oppure null BOH
 
 
-# nell'url non prende nessun argomento attualmente... too bad (missing 5 required positional arguments)
-def search(request, category, colors, sizes, price_range, search_term):
-    # quando la pagina di ricerca viene chiamata dall'homepage, solamente category è non nulla
-    # verrà settata come una tra quelle con parent_id = 0 in quanto nella homepage verranno mostrate solo le copertine
-    # delle master category (product_id=0)
+def search(request):  # da implementare anche la logica per i filtri
 
-    # LEGGERE IL README PER CAPIRE COME AFFRONTARE LA RICORSIONE DELLE CATEGORIE
+    selected_category_id = int(request.GET.get('category')) if request.GET.get('category') else None
 
-    # Manca la logica di filtraggio dei prodotti
-    # i filtri dovrebbero andare a lavorare sulle tabelle: productVariant, productColor etc per ridare i prodotti che \
-    # rispecchiano quelle info
+    if selected_category_id:
+        # viene passato un id di una categoria tra i parametri
+        try:
+            # nel caso il valore dell'id è presente nel db
+            selected_category = Category.objects.get(pk=selected_category_id)
+        except Category.DoesNotExist:
+            selected_category = None
+    else:
+        selected_category = None
 
-    products_list = Product.objects.all()
+    categories = Category.objects.filter(parent_category__isnull=True)
 
-    return render(  # da cambiare
+    if selected_category is not None:
+        ancestors = selected_category.get_ancestors()
+        ancestors.append(selected_category)
+
+        products = Product.objects.filter(productcategory__category=selected_category.id)
+    else:
+        ancestors = []
+        products = Product.objects.all
+
+    return render(
         request,
         "products/search.html",
         {
-            "products_list": products_list,
-            "category": category,
-            "colors": colors,
-            "sizes": sizes,
-            "price_range": price_range,
-            "search_query": search_term
+            "selected_category": selected_category,
+            "root_categories": categories,
+            "ancestors": ancestors,
+            "products": products,
         })
 
 

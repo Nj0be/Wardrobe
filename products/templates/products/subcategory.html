@@ -1,0 +1,26 @@
+
+{% if category == selected_category %}
+    <b>{{ category.name }}</b>
+{% else %}
+    <a href="{% url 'search' %}?category={{ category.id }}">{{ category.name }}</a>
+{% endif %}
+<ul>
+    <!--
+    {% if category == selected_category and category.get_children %}
+        <li>
+            <a href="{% url 'search' %}?category={{ category.id }}">Visualizza tutto</a>
+        </li>
+    {% endif %}
+    -->
+    {% for child in category.get_children %}
+        {% if child in ancestors %}
+            <li>
+                {% include 'products/subcategory.html' with category=child ancestors=ancestors selected_category=selected_category%}
+            </li>
+        {% else %}
+            <li>
+                <a href="{% url 'search' %}?category={{ child.id }}">{{ child.name }}</a>
+            </li>
+        {% endif %}
+    {% endfor %}
+</ul>

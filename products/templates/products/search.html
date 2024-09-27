@@ -5,26 +5,31 @@
     <title>Title</title>
 </head>
 <body>
-    <!-- Start Menu # Da modificare-->
+    <!-- Start Categories Menu -->
 
     <ul>
-        {% for category in master_categories_list %}
-            <li><a href="{% url 'products:search' category.id %}">category.name</a></li>
-        {% endfor %}
+    {% for category in root_categories %}
+        {% if category in ancestors %}
+            <li>
+                {% include 'products/subcategory.html' with category=category ancestors=ancestors selected_category=selected_category%}
+            </li>
+        {% else %}
+            <li>
+                <a href="{% url 'search' %}?category={{ category.id }}">{{ category.name }}</a>
+            </li>
+        {% endif %}
+    {% endfor %}
     </ul>
 
-    <!-- End Menu -->
-
-    <!-- Start Nav Bar # Da fare, contiene i filtri -->
-    <!-- End Nav Bar -->
+    <!-- End Categories Menu -->
 
     <!-- Start Content # mostra i prodotti -->
 
-    {% if products_list %}
+    {% if products %}
         <h1>Products:</h1>
         <ul>
-        {% for product in products_list %}
-            <li><a href="{{ product.id }}/">{{ product.name }}</a></li>
+        {% for product in products %}
+            <li><a href="{% url 'product' product.id %}">{{ product.name }}</a></li>
         {% endfor %}
         </ul>
     {% else %}

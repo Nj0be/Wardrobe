@@ -13,11 +13,31 @@ class Product(models.Model):
 
 
 class Category(models.Model):
-    parent_category = models.ForeignKey('self', on_delete=models.CASCADE)
+    parent_category = models.ForeignKey(
+        'self',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
     name = models.CharField(max_length=100)
 
     class Meta:
         unique_together = [['parent_category', 'name']]
+
+    def get_children(self):
+        return Category.objects.filter(parent_category=self)
+
+    def get_ancestors(self):
+        """
+        Metodo ricorsivo per ottenere gli antenati di una categoria
+        """
+
+        if self.parent_category is not None:
+            ancestors = self.parent_category.get_ancestors()
+            ancestors.append(self.parent_category)
+            return ancestors
+        else:
+            return []
 
 
 class ProductCategory(models.Model):
