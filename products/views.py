@@ -2,7 +2,7 @@ from django.views import generic
 from django.shortcuts import render
 from django.http import Http404
 
-from .models import Product, ProductCategory, Category
+from .models import Product, Category, Color, Size
 
 
 class HomepageView(generic.ListView):
@@ -15,6 +15,8 @@ class HomepageView(generic.ListView):
 
 
 def search(request):  # da implementare anche la logica per i filtri
+
+    """ Filtraggio per categoria """
 
     selected_category_id = int(request.GET.get('category')) if request.GET.get('category') else None
 
@@ -33,12 +35,42 @@ def search(request):  # da implementare anche la logica per i filtri
     if selected_category is not None:
         ancestors = selected_category.get_ancestors()
         ancestors.append(selected_category)
-
-        products = Product.objects.filter(productcategory__category=selected_category.id)
     else:
         ancestors = []
-        products = Product.objects.all
 
+    """ Filtraggio per colori """
+
+    selected_colors_ids = request.GET.getlist('color')
+    selected_colors = []
+    for selected_color_id in selected_colors_ids:
+        try:
+            selected_colors.append(Color.objects.get(pk=selected_color_id))
+        except Color.DoesNotExist:
+            pass
+    colors = Color.objects.all()
+
+    """ Filtraggio per taglie """
+
+    selected_sizes_ids = request.GET.getlist('size')
+    selected_sizes = []
+    for selected_size_id in selected_sizes_ids:
+        try:
+            selected_sizes.append(Size.objects.get(pk=selected_size_id))
+        except Size.DoesNotExist:
+            pass
+    sizes = Size.objects.all()
+
+    """ Selezione prodotti """
+    products = Product.objects.all()
+
+    if selected_category:
+        products = products.filter(productcategory__category__in=[descendant.id for descendant in selected_category.get_descendants() + [selected_category]])
+    if selected_colors:
+        products = products.filter(productvariant__color__in=[selected_color.id for selected_color in selected_colors])
+    if selected_sizes:
+        products = products.filter(productvariant__size__in=[selected_size.id for selected_size in selected_sizes])
+
+    """ Invia la risposta """
     return render(
         request,
         "products/search.html",
@@ -47,6 +79,10 @@ def search(request):  # da implementare anche la logica per i filtri
             "root_categories": categories,
             "ancestors": ancestors,
             "products": products,
+            "colors": colors,
+            "selected_colors": selected_colors,
+            "sizes": sizes,
+            "selected_sizes": selected_sizes,
         })
 
 

@@ -39,6 +39,17 @@ class Category(models.Model):
         else:
             return []
 
+    def get_descendants(self):
+        """
+        Metodo ricorsivo per ottenere tutte le sottocategorie (discendenti)
+        """
+        descendants = []
+        children = self.get_children()
+        for child in children:
+            descendants.append(child)
+            descendants.extend(child.get_descendants())  # Ricorsione per ottenere i figli dei figli
+        return descendants
+
 
 class ProductCategory(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)

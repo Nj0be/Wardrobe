@@ -3,28 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        .filters{
+            display: inline-table;
+        }
+    </style>
 </head>
 <body>
-    <!-- Start Categories Menu -->
-
+    <!-- Categories Menu -->
     <ul>
     {% for category in root_categories %}
         {% if category in ancestors %}
             <li>
-                {% include 'products/subcategory.html' with category=category ancestors=ancestors selected_category=selected_category%}
+                {% include 'products/subcategory.html' with category=category ancestors=ancestors selected_category=selected_category selected_colors=selected_colors %}
             </li>
         {% else %}
             <li>
-                <a href="{% url 'search' %}?category={{ category.id }}">{{ category.name }}</a>
+                <a href="{% url 'search' %}?category={{ category.id }}{% if selected_colors %}{% for color in selected_colors %}&color={{ color.id }}{% endfor %}{% endif %}{% if selected_sizes %}{% for size in selected_sizes %}&size={{ size.id }}{% endfor %}{% endif %}">{{ category.name }}</a>
             </li>
         {% endif %}
     {% endfor %}
     </ul>
 
-    <!-- End Categories Menu -->
+    <!-- Text Filter Section -->
+    <form style="border: 1px solid black" action="{% url 'search' %}" method="get">
+        {% csrf_token %}
+        {% if selected_category %}
+            <input type="hidden" name="category" value="{{ selected_category.id }}">
+        {% endif %}
+        {% if selected_colors %}
+            {% for color in selected_colors %}
+                <input type="hidden" name="color" value="{{ color.id }}">
+            {% endfor %}
+        {% endif %}
+        {% if selected_sizes %}
+            {% for size in selected_sizes %}
+                <input type="hidden" name="size" value="{{ size.id }}">
+            {% endfor %}
+        {% endif %}
+
+        <input type="text" name="search_term" id="search_term" placeholder="Cerca il tuo prodotto">
+        <input type="submit" value="Search">
+    </form>
+
+    <!-- Colors and Sizes Filter Section -->
+    <form style="border: 1px solid black" action="{% url 'search' %}" id="filtersForm" method="get">
+        {% csrf_token %}
+        {% if selected_category %}
+            <input type="hidden" name="category" value="{{ selected_category.id }}">
+        {% endif %}
+
+        <div class="filters">
+            <p>Colors</p>
+            {% for color in colors %}
+                <input type="checkbox" name="color" id="color_{{ forloop.counter }}" value="{{ color.id }}"
+                    {% if color in selected_colors %} checked {% endif %}
+                    onchange="document.getElementById('filtersForm').submit();">
+                <label for="color_{{ forloop.counter }}">{{ color.name }}</label><br>
+            {% endfor %}
+        </div>
+
+        <div class="filters">
+            <p>Sizes</p>
+            {% for size in sizes %}
+                <input type="checkbox" name="size" id="size_{{ forloop.counter }}" value="{{ size.id }}"
+                    {% if size in selected_sizes %} checked {% endif %}
+                    onchange="document.getElementById('filtersForm').submit();">
+                <label for="size_{{ forloop.counter }}">{{ size.name }}</label><br>
+            {% endfor %}
+        </div>
+    </form>
 
     <!-- Start Content # mostra i prodotti -->
-
     {% if products %}
         <h1>Products:</h1>
         <ul>
@@ -36,6 +86,5 @@
         <p>Nessun prodotto disponibile</p>
     {% endif %}
 
-    <!-- End Content -->
 </body>
 </html>
