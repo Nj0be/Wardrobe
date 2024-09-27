@@ -1,6 +1,6 @@
+from django.db.models import Q
 from django.views import generic
 from django.shortcuts import render
-from django.http import Http404
 
 from .models import Product, Category, Color, Size
 
@@ -38,6 +38,10 @@ def search(request):  # da implementare anche la logica per i filtri
     else:
         ancestors = []
 
+    """ Filtraggio per ricerca testuale """
+
+    search_terms = request.GET.get('search_terms') if request.GET.get('search_terms') else None
+
     """ Filtraggio per colori """
 
     selected_colors_ids = request.GET.getlist('color')
@@ -69,6 +73,13 @@ def search(request):  # da implementare anche la logica per i filtri
         products = products.filter(productvariant__color__in=[selected_color.id for selected_color in selected_colors])
     if selected_sizes:
         products = products.filter(productvariant__size__in=[selected_size.id for selected_size in selected_sizes])
+    if search_terms:
+        # check if title contains any of the strings in the search_terms list
+        query = Q()
+        keywords = search_terms.split(" ")
+        for keyword in keywords:
+            query |= Q(name__icontains=keyword)
+        products = products.filter(query)
 
     """ Invia la risposta """
     return render(
@@ -83,6 +94,7 @@ def search(request):  # da implementare anche la logica per i filtri
             "selected_colors": selected_colors,
             "sizes": sizes,
             "selected_sizes": selected_sizes,
+            "search_terms": search_terms,
         })
 
 

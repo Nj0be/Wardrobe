@@ -19,7 +19,7 @@
             </li>
         {% else %}
             <li>
-                <a href="{% url 'search' %}?category={{ category.id }}{% if selected_colors %}{% for color in selected_colors %}&color={{ color.id }}{% endfor %}{% endif %}{% if selected_sizes %}{% for size in selected_sizes %}&size={{ size.id }}{% endfor %}{% endif %}">{{ category.name }}</a>
+                <a href="{% url 'search' %}?category={{ category.id }}{% if search_terms %}&search_terms={{ search_terms }}{% endif %}{% if selected_colors %}{% for color in selected_colors %}&color={{ color.id }}{% endfor %}{% endif %}{% if selected_sizes %}{% for size in selected_sizes %}&size={{ size.id }}{% endfor %}{% endif %}">{{ category.name }}</a>
             </li>
         {% endif %}
     {% endfor %}
@@ -42,7 +42,7 @@
             {% endfor %}
         {% endif %}
 
-        <input type="text" name="search_term" id="search_term" placeholder="Cerca il tuo prodotto">
+        <input type="text" name="search_terms" id="search_terms" placeholder="Cerca il tuo prodotto" {% if search_terms %}value="{{ search_terms }}"{% endif %}>
         <input type="submit" value="Search">
     </form>
 
@@ -51,6 +51,9 @@
         {% csrf_token %}
         {% if selected_category %}
             <input type="hidden" name="category" value="{{ selected_category.id }}">
+        {% endif %}
+        {% if search_terms %}
+            <input type="hidden" name="search_terms" value="{{ search_terms }}">
         {% endif %}
 
         <div class="filters">

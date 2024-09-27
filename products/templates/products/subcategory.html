@@ -2,7 +2,7 @@
 {% if category == selected_category %}
     <b>{{ category.name }}</b>
 {% else %}
-    <a href="{% url 'search' %}?category={{ category.id }}{% if selected_colors %}{% for color in selected_colors %}&color={{ color.id }}{% endfor %}{% endif %}{% if selected_sizes %}{% for size in selected_sizes %}&size={{ size.id }}{% endfor %}{% endif %}">{{ category.name }}</a>
+    <a href="{% url 'search' %}?category={{ category.id }}{% if search_terms %}&search_terms={{ search_terms }}{% endif %}{% if selected_colors %}{% for color in selected_colors %}&color={{ color.id }}{% endfor %}{% endif %}{% if selected_sizes %}{% for size in selected_sizes %}&size={{ size.id }}{% endfor %}{% endif %}">{{ category.name }}</a>
 {% endif %}
 <ul>
     {% for child in category.get_children %}
@@ -12,7 +12,7 @@
             </li>
         {% else %}
             <li>
-                <a href="{% url 'search' %}?category={{ child.id }}{% if selected_colors %}{% for color in selected_colors %}&color={{ color.id }}{% endfor %}{% endif %}{% if selected_sizes %}{% for size in selected_sizes %}&size={{ size.id }}{% endfor %}{% endif %}">{{ child.name }}</a>
+                <a href="{% url 'search' %}?category={{ child.id }}{% if search_terms %}&search_terms={{ search_terms }}{% endif %}{% if selected_colors %}{% for color in selected_colors %}&color={{ color.id }}{% endfor %}{% endif %}{% if selected_sizes %}{% for size in selected_sizes %}&size={{ size.id }}{% endfor %}{% endif %}">{{ child.name }}</a>
             </li>
         {% endif %}
     {% endfor %}
