@@ -68,11 +68,11 @@ def search(request):  # da implementare anche la logica per i filtri
     products = Product.objects.all()
 
     if selected_category:
-        products = products.filter(productcategory__category__in=[descendant.id for descendant in selected_category.get_descendants() + [selected_category]])
+        products = products.filter(productcategory__category__in=[descendant.id for descendant in selected_category.get_descendants() + [selected_category]]).distinct()
     if selected_colors:
-        products = products.filter(productvariant__color__in=[selected_color.id for selected_color in selected_colors])
+        products = products.filter(productvariant__color__in=[selected_color.id for selected_color in selected_colors]).distinct()
     if selected_sizes:
-        products = products.filter(productvariant__size__in=[selected_size.id for selected_size in selected_sizes])
+        products = products.filter(productvariant__size__in=[selected_size.id for selected_size in selected_sizes]).distinct()
     if search_terms:
         # check if title contains any of the strings in the search_terms list
         query = Q()

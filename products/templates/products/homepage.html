@@ -6,13 +6,11 @@
 </head>
 <body>
     <!-- Start Master Categories Choice -->
-
-            <ul>
-                {% for category in main_categories_list %}
-                    <li><a href="{% url 'search' %}?category={{ category.id }}">{{ category.name }}</a></li>
-                {% endfor %}
-            </ul>
-
+    <ul>
+        {% for category in main_categories_list %}
+            <li><a href="{% url 'search' %}?category={{ category.id }}">{{ category.name }}</a></li>
+        {% endfor %}
+    </ul>
     <!-- End Master Categories Choice -->
 </body>
 </html>

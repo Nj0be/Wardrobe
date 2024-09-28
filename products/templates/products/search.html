@@ -27,7 +27,6 @@
 
     <!-- Text Filter Section -->
     <form style="border: 1px solid black" action="{% url 'search' %}" method="get">
-        {% csrf_token %}
         {% if selected_category %}
             <input type="hidden" name="category" value="{{ selected_category.id }}">
         {% endif %}
@@ -48,7 +47,6 @@
 
     <!-- Colors and Sizes Filter Section -->
     <form style="border: 1px solid black" action="{% url 'search' %}" id="filtersForm" method="get">
-        {% csrf_token %}
         {% if selected_category %}
             <input type="hidden" name="category" value="{{ selected_category.id }}">
         {% endif %}
