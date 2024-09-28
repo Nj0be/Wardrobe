@@ -1,24 +1,8 @@
 from django.db import models
 
 
-class Product(models.Model):
-    name = models.CharField(max_length=1000)
-    description = models.CharField(max_length=10000)
-    visible = models.BooleanField(default=True)
-    date_created = models.DateTimeField(auto_now_add=True)
-    last_modification = models.DateTimeField(auto_now=True)
-    discount_start_date = models.DateTimeField()
-    discount_end_date = models.DateTimeField()
-    discount_percentage = models.FloatField()
-
-
 class Category(models.Model):
-    parent_category = models.ForeignKey(
-        'self',
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True,
-    )
+    parent_category = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=100)
 
     class Meta:
@@ -50,28 +34,58 @@ class Category(models.Model):
             descendants.extend(child.get_descendants())  # Ricorsione per ottenere i figli dei figli
         return descendants
 
+    def __str__(self):
+        if self.parent_category:
+            return f'{self.parent_category.name}-{self.name}'
+        else:
+            return f'{self.name}'
 
-class ProductCategory(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+
+# class Discount(models.Model):
+    # name = models.CharField(max_length=100)
+    # discount_start_date = models.DateTimeField()
+    # discount_end_date = models.DateTimeField()
+    # discount_percentage = models.FloatField()
+
+
+class Product(models.Model):
+    name = models.CharField(max_length=1000)
+    description = models.CharField(max_length=10000)
+    is_active = models.BooleanField(default=True)
+    date_created = models.DateTimeField(auto_now_add=True)
+    last_modification = models.DateTimeField(auto_now=True)
+    categories = models.ManyToManyField(Category)
+    # discount = models.ForeignKey(Discount, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.id}-{self.name}'
 
 
 class Color(models.Model):
     name = models.CharField(max_length=30, unique=True)
     hex = models.CharField(max_length=6, unique=True)
 
+    def __str__(self):
+        return f'{self.name}'
+
 
 class Size(models.Model):
     name = models.CharField(max_length=10, unique=True)
+
+    def __str__(self):
+        return f'{self.name}'
 
 
 class ProductColorImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     color = models.ForeignKey(Color, on_delete=models.CASCADE)
-    image = models.CharField(max_length=200)
+    image = models.CharField(max_length=200, blank=True)
 
     class Meta:
         unique_together = [['product', 'color']]
+
+    def __str__(self):
+        return f'{self.product}-{self.color}'
 
 
 class ProductVariant(models.Model):
@@ -79,7 +93,11 @@ class ProductVariant(models.Model):
     color = models.ForeignKey(ProductColorImage, on_delete=models.CASCADE)
     size = models.ForeignKey(Size, on_delete=models.CASCADE)
     price = models.FloatField()
-    quantity = models.PositiveIntegerField()
+    stock = models.PositiveIntegerField()
+    is_active = models.BooleanField(default=True)
 
     class Meta:
         unique_together = [['product', 'color', 'size']]
+
+    def __str__(self):
+        return f'{self.product}-{self.color}-{self.size}'
