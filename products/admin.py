@@ -24,3 +24,4 @@ class ProductAdmin(admin.ModelAdmin):
 admin.site.register(Size)
 admin.site.register(Color)
 admin.site.register(Category)
+admin.site.register(Discount)

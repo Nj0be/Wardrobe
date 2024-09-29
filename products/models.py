@@ -41,11 +41,14 @@ class Category(models.Model):
             return f'{self.name}'
 
 
-# class Discount(models.Model):
-    # name = models.CharField(max_length=100)
-    # discount_start_date = models.DateTimeField()
-    # discount_end_date = models.DateTimeField()
-    # discount_percentage = models.FloatField()
+class Discount(models.Model):
+    name = models.CharField(max_length=100)
+    discount_start_date = models.DateTimeField()
+    discount_end_date = models.DateTimeField()
+    discount_percentage = models.FloatField()
+
+    def __str__(self):
+        return f'{self.name}-{self.discount_percentage}%'
 
 
 class Product(models.Model):
@@ -55,7 +58,7 @@ class Product(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     last_modification = models.DateTimeField(auto_now=True)
     categories = models.ManyToManyField(Category)
-    # discount = models.ForeignKey(Discount, on_delete=models.CASCADE)
+    discount = models.ForeignKey(Discount, on_delete=models.CASCADE)
 
     def __str__(self):
         return f'{self.id}-{self.name}'
