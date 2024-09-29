@@ -7,5 +7,5 @@ class CartProductInline(admin.TabularInline):
 
 
 @admin.register(User)
-class AuthorAdmin(admin.ModelAdmin):
+class UserAdmin(admin.ModelAdmin):
     inlines = [CartProductInline]
