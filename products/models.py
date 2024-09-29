@@ -1,4 +1,6 @@
 from django.db import models
+from django.utils.translation import gettext_lazy as _
+from django.core.validators import MaxValueValidator
 
 
 class Category(models.Model):
@@ -52,13 +54,25 @@ class Discount(models.Model):
 
 
 class Product(models.Model):
-    name = models.CharField(max_length=1000)
-    description = models.CharField(max_length=10000)
+    name = models.CharField(max_length=200)
+    description = models.CharField(max_length=2000)
     is_active = models.BooleanField(default=True)
     date_created = models.DateTimeField(auto_now_add=True)
     last_modification = models.DateTimeField(auto_now=True)
     categories = models.ManyToManyField(Category)
     discount = models.ForeignKey(Discount, on_delete=models.CASCADE)
+
+    class VariantType(models.TextChoices):
+        NOVARIANT = "NV", _("NoVariant")
+        ONLYCOLOR = "OC", _("OnlyColor")
+        ONLYSIZE = "OS", _("OnlySize")
+        COLORSIZE = "CS", _("ColorSize")
+
+    variant_type = models.CharField(
+        max_length=2,
+        choices=VariantType,
+        default=VariantType.NOVARIANT,
+    )
 
     def __str__(self):
         return f'{self.id}-{self.name}'
@@ -104,3 +118,14 @@ class ProductVariant(models.Model):
 
     def __str__(self):
         return f'{self.product}-{self.color}-{self.size}'
+
+
+class Review(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    customer = models.ForeignKey('accounts.User', on_delete=models.CASCADE)
+    title = models.CharField(max_length=1000),
+    description = models.CharField(max_length=10000)
+    vote = models.PositiveSmallIntegerField(validators=[MaxValueValidator(10)])
+
+    class Meta:
+        unique_together = [['product', 'customer']]

@@ -1,8 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from django.db.models import ManyToManyField
-
-from products.models import ProductVariant
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.base_user import BaseUserManager
 
@@ -58,6 +55,6 @@ class User(AbstractUser):
 
 
 class CartProduct(models.Model):
-    product = models.ForeignKey(ProductVariant, on_delete=models.CASCADE)
+    product = models.ForeignKey('products.ProductVariant', on_delete=models.CASCADE)
     customer = models.ForeignKey(User, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
