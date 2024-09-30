@@ -1,6 +1,7 @@
 from django.db.models import Q
 from django.views import generic
 from django.shortcuts import render
+#from django.contrib.auth.decorators import login_required
 
 from .models import Product, Category, Color, Size
 
@@ -15,8 +16,12 @@ class HomepageView(generic.ListView):
 
 
 def search(request):  # da implementare anche la logica per i filtri
-
     """ Filtraggio per categoria """
+
+    if request.user.is_authenticated: ## da toglie in production
+        auth = True ## da toglie in production
+    else: ## da toglie in production
+        auth = False ## da toglie in production
 
     selected_category_id = int(request.GET.get('category')) if request.GET.get('category') else None
 
@@ -95,6 +100,7 @@ def search(request):  # da implementare anche la logica per i filtri
             "sizes": sizes,
             "selected_sizes": selected_sizes,
             "search_terms": search_terms,
+            "auth": auth, ## da toglie in production
         })
 
 

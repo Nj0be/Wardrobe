@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+from django.urls import reverse_lazy
 from pathlib import Path
 import os
 
@@ -141,3 +142,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # User auth custom model
 AUTH_USER_MODEL = "accounts.User"
+
+# Allows to put in the views '@login_required()' decorator before each functions
+LOGIN_URL = reverse_lazy('login')
+# The URL to redirect to after login.
+LOGIN_REDIRECT_URL = "homepage"

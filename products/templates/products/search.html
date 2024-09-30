@@ -10,6 +10,8 @@
     </style>
 </head>
 <body>
+
+    <p>User authenticated? {{ auth }}</p>
     <!-- Categories Menu -->
     <ul>
     {% for category in root_categories %}
@@ -60,7 +62,7 @@
                 <input type="checkbox" name="color" id="color_{{ forloop.counter }}" value="{{ color.id }}"
                     {% if color in selected_colors %} checked {% endif %}
                     onchange="document.getElementById('filtersForm').submit();">
-                <label for="color_{{ forloop.counter }}">{{ color.name }}</label><br>
+                <label style="color: #{{ color.hex }}" for="color_{{ forloop.counter }}">{{ color.name }}</label><br>
             {% endfor %}
         </div>
 
