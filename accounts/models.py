@@ -1,7 +1,10 @@
+from django.contrib.auth.hashers import make_password
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.base_user import BaseUserManager
+from django.core.validators import MinValueValidator
 
 
 class UserManager(BaseUserManager):
@@ -15,7 +18,7 @@ class UserManager(BaseUserManager):
             raise ValueError('The given email must be set')
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
-        user.set_password(password)
+        user.password = make_password(password)
         user.save(using=self._db)
         return user
 
@@ -57,4 +60,14 @@ class User(AbstractUser):
 class CartProduct(models.Model):
     product = models.ForeignKey('products.ProductVariant', on_delete=models.CASCADE)
     customer = models.ForeignKey(User, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField()
+    quantity = models.PositiveIntegerField(validators=[MinValueValidator(1)])
+
+    def clean(self):
+        # Don't add product to cart if stock == 0
+        self.quantity = min(self.quantity, self.product.stock)
+        if self.quantity == 0:
+            raise ValidationError(_("Can't add Product to cart with quantity = 0"))
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super(CartProduct, self).save(*args, **kwargs)
