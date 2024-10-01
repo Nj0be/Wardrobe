@@ -7,15 +7,18 @@ services:
     restart: no
     # volume used to hot reload changes
     volumes:
-       - .:/app
+      - .:/app
     ports:
       - "8000:8000"
     environment:
-      DB_NAME: $DB_NAME
-      DB_USER: $DB_USER
-      DB_PASSWORD: $DB_PASSWORD
-      DB_HOST: $DB_HOST
-      DB_PORT: $DB_PORT
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      SECRET_KEY: ${DJANGO_SECRET_KEY}
+      STRIPE_PUBLISHABLE_KEY: ${STRIPE_PUBLISHABLE_KEY}
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
     depends_on:
       db:
         condition: service_healthy

@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-+%*o+k-*^2xt9o+=cx8f-yuvwm5m#p7d+tg0y3kjuuy&2$*6@t"
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -147,3 +147,7 @@ AUTH_USER_MODEL = "accounts.User"
 LOGIN_URL = reverse_lazy('login')
 # The URL to redirect to after login.
 LOGIN_REDIRECT_URL = "homepage"
+
+# Stripe
+STRIPE_PUBLISHABLE_KEY = os.getenv('STRIPE_PUBLISHABLE_KEY')
+STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')
