@@ -11,6 +11,7 @@ class Category(models.Model):
 
     class Meta:
         unique_together = [['parent_category', 'name']]
+        verbose_name_plural = "Categories"
 
     def get_children(self):
         return Category.objects.filter(parent_category=self)

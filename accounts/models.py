@@ -50,17 +50,15 @@ class User(AbstractUser):
 
     objects = UserManager()
 
-    # Custom fields here
-
-
     def __str__(self):
         return self.email
 
 
-class CartProduct(models.Model):
+class CartItem(models.Model):
     product = models.ForeignKey('products.ProductVariant', on_delete=models.CASCADE)
     customer = models.ForeignKey(User, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(validators=[MinValueValidator(1)])
+    is_active = models.BooleanField(default=True)
 
     def clean(self):
         # Don't add product to cart if stock == 0
@@ -70,4 +68,4 @@ class CartProduct(models.Model):
 
     def save(self, *args, **kwargs):
         self.full_clean()
-        super(CartProduct, self).save(*args, **kwargs)
+        super(CartItem, self).save(*args, **kwargs)
