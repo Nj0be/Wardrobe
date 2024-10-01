@@ -1,3 +1,15 @@
 from django.contrib import admin
+from orders.models import Order, OrderProduct
 
-# Register your models here.
+
+class OrderProductInline(admin.TabularInline):
+    model = OrderProduct
+    readonly_fields = ('name', 'price')
+
+
+@admin.register(Order)
+class ProductAdmin(admin.ModelAdmin):
+    inlines = [OrderProductInline]
+
+    def has_delete_permission(self, request, obj=None):
+        return False
