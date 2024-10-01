@@ -1,9 +1,9 @@
 from django.db.models import Q
 from django.views import generic
-from django.shortcuts import render
-#from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, get_object_or_404, redirect
+# from django.contrib.auth.decorators import login_required
 
-from .models import Product, Category, Color, Size
+from .models import Product, Category, Color, Size, Review
 
 
 class HomepageView(generic.ListView):
@@ -100,10 +100,45 @@ def search(request):  # da implementare anche la logica per i filtri
             "sizes": sizes,
             "selected_sizes": selected_sizes,
             "search_terms": search_terms,
-            "auth": auth, ## da toglie in production
+            "auth": auth,  # da toglie in production
         })
 
 
-class ProductView(generic.DetailView):
-    model = Product
-    template_name = "products/product.html"
+def product_page(request, product_id):
+    product = get_object_or_404(Product, pk=product_id)
+
+    error_message = None
+    if request.method == 'POST':
+        # review_title = request.POST.get("review_title")
+        review_description = request.POST.get("review_description")
+        review_vote = request.POST.get("review_vote")
+
+        if request.user.is_authenticated:  # da aggiungere la verifica di acquisto del prodotto da parte dell'utente
+            if not Review.objects.filter(product=product, customer=request.user).exists():
+                if review_description and review_vote and review_vote.isdigit() and 1 <= int(review_vote) <= 10:  # and review_title
+                    review = Review(
+                        customer=request.user,
+                        product=product,
+                        # title=reviewTitle,
+                        description=review_description,
+                        vote=int(review_vote)
+                    )
+                    review.save()
+                    return redirect('product', product_id=product.id)
+                else:
+                    error_message = "Dati non validi. Assicurati di compilare correttamente tutti i campi."
+            else:
+                error_message = "Hai già recensito questo prodotto."
+        else:
+            error_message = "Devi essere loggato per lasciare una recensione."
+
+    reviews = Review.objects.filter(product=product_id)
+
+    return render(
+        request,
+        "products/product.html",
+        {
+            "product": product,
+            "reviews": reviews,
+            "error_message": error_message,
+        })

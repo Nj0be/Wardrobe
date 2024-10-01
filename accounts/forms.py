@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, SetPasswordMixin
+from django.contrib.auth.forms import UserCreationForm, SetPasswordMixin, AuthenticationForm
 from django.utils.translation import gettext as _
 from django.contrib.auth import password_validation
 from .models import User
@@ -26,9 +26,20 @@ class CustomSetPasswordMixin(SetPasswordMixin):
 
 
 class UserRegisterForm(UserCreationForm):
+    first_name = forms.CharField(required=True)
+    last_name = forms.CharField(required=True)
     email = forms.EmailField(required=True)
     password1, password2 = CustomSetPasswordMixin.create_password_fields()
 
     class Meta:
         model = User
-        fields = ('email', 'password1', 'password2')
+        fields = ('first_name', 'last_name', 'email', 'password1', 'password2')
+
+
+class UserAuthenticatorForm(AuthenticationForm):
+    username = forms.EmailField(widget=forms.TextInput(attrs={"autofocus": True}))
+    error_messages = {
+        "invalid_login": _("Your %(username)s and password didn't match. Please try again."),
+        "inactive": _("This account is inactive."),
+    }
+

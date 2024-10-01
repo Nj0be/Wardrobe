@@ -6,10 +6,46 @@
 </head>
 <body>
     <p>Product name: {{ product.name }}</p>
-    <p>Product discount: {{ product.discount_percentage }}</p>
+    <p>Descrizione: {{ product.description }}</p>
+    {% if discount %}
+        <p>Product discount: {{ product.discount_percentage }}</p>
+    {% endif %}
 
-    <p>Reviews</p>
-    {% for review in reviews %}
-    {% endfor %}
+    {% if reviews %}
+        <h3>Recensioni</h3>
+        {% for review in reviews %}
+            <div style="border:1px solid black">
+                <h5>{{ review.title }}</h5>
+                <p>{{ review.description }}</p>
+                <span>{{ review.vote }}/5 from {{ review.customer.first_name }}</span>
+            </div>
+        {% endfor %}
+    {% else %}
+        <h3>Non ci sono recensioni per questo prodotto</h3>
+    {% endif %}
+
+    {% if user.is_authenticated %}
+        <form style="border: 1px solid black" action="{% url 'product' product.id %}" method="post">
+    {% csrf_token %}
+
+        <!-- <label name="review_title">Titolo:</label><input type="text" name="review_title" id="review_title"> -->
+        <label name="review_description">Descrizione:</label><input type="text" name="review_description" id="review_description">
+
+        <label for="vote_1">1</label><input type="radio" name="review_vote" id="vote_1" value="1">
+        <label for="vote_2">2</label><input type="radio" name="review_vote" id="vote_2" value="2">
+        <label for="vote_3">3</label><input type="radio" name="review_vote" id="vote_3" value="3">
+        <label for="vote_4">4</label><input type="radio" name="review_vote" id="vote_4" value="4">
+        <label for="vote_5">5</label><input type="radio" name="review_vote" id="vote_5" value="5">
+
+        <input type="submit" value="Invia Recensione">
+    </form>
+    {% else %}
+        <p>Devi aver effettuato l'accesso per pubblicare una recensione</p>
+    {% endif %}
+    {% if error_message %}
+        <p>{{ error_message }}</p>
+    {% endif %}
+    <!-- Add Review Section -->
+
 </body>
 </html>
