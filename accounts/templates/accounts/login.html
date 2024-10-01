@@ -5,19 +5,8 @@
     <title>Title</title>
 </head>
 <body>
-    {% if form.errors %}
-        <p>Your username and password didn't match. Please try again.</p>
-    {% endif %}
 
-    {% if next %}
-        {% if user.is_authenticated %}
-        <p>Your account doesn't have access to this page. To proceed,
-        please login with an account that has access.</p>
-        {% else %}
-        <p>Please login to see this page.</p>
-        {% endif %}
-    {% endif %}
-
+    <!-- Login form -->
     <form method="post" action="{% url 'login' %}">
     {% csrf_token %}
     <table>
@@ -34,9 +23,30 @@
     <input type="submit" value="login">
     <input type="hidden" name="next" value="{{ next }}">
     </form>
+
+    <!-- Login form errors -->
+    {% if form.errors %}
+        <ul>
+            {% for field in form %}
+                {% if field.errors %}
+                    <li>{{ field.label }}: {{ field.errors|striptags }}</li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+        {% if form.non_field_errors %}
+            <ul>
+                {% for error in form.non_field_errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endif %}
+
+    <!-- Signup link -->
     <div>
         <p>Non hai un account?</p>
         <a href="{% url 'signup' %}">Registrati</a>
     </div>
+
 </body>
 </html>

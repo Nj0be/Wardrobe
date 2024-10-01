@@ -87,7 +87,6 @@ class Product(models.Model):
         # support cases where 'variant_type' is deferred).
         if not self._state.adding and (self.variant_type != self._loaded_values["variant_type"]):
             raise ValueError("Updating the value of variant_type isn't allowed")
-        return super(Product, self).save(*args, **kwargs)
 
     def __str__(self):
         return f'{self.id}-{self.name}'
@@ -156,7 +155,7 @@ class ProductVariant(models.Model):
 class Review(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     customer = models.ForeignKey('accounts.User', on_delete=models.CASCADE)
-    title = models.CharField(max_length=100),
+    # title = models.CharField(max_length=100),  # manca il campo in django
     description = models.CharField(max_length=1000)
     vote = models.PositiveSmallIntegerField(validators=[MaxValueValidator(10)])
 
