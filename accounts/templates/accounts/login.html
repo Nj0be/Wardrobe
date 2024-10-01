@@ -6,7 +6,7 @@
 </head>
 <body>
     {% if form.errors %}
-    <p>Your username and password didn't match. Please try again.</p>
+        <p>Your username and password didn't match. Please try again.</p>
     {% endif %}
 
     {% if next %}
@@ -34,5 +34,9 @@
     <input type="submit" value="login">
     <input type="hidden" name="next" value="{{ next }}">
     </form>
+    <div>
+        <p>Non hai un account?</p>
+        <a href="{% url 'signup' %}">Registrati</a>
+    </div>
 </body>
 </html>

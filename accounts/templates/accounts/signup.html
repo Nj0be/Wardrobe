@@ -2,9 +2,48 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
+    <title>Title</title>
 </head>
 <body>
 
+    <form method="post" action="{% url 'signup' %}">
+    {% csrf_token %}
+    <table>
+    <tr>
+        <td>{{ form.email.label_tag }}</td>
+        <td>{{ form.email }}</td>
+    </tr>
+    {% if form.errors.email %}
+        <tr>
+            <td colspan="2">{{ form.errors.email }}</td>
+        </tr>
+    {% endif %}
+    <tr>
+        <td>{{ form.password1.label_tag }}</td>
+        <td>{{ form.password1 }}</td>
+    </tr>
+    {% if form.errors.password1 %}
+        <tr>
+            <td colspan="2">{{ form.errors.password1 }}</td>
+        </tr>
+    {% endif %}
+    <tr>
+        <td>{{ form.password2.label_tag }}</td>
+        <td>{{ form.password2 }}</td>
+    </tr>
+    {% if form.errors.password2 %}
+        <tr>
+            <td colspan="2">{{ form.errors.password2 }}</td>
+        </tr>
+    {% endif %}
+    </table>
+
+    <input type="submit" value="signup">
+    <input type="hidden" name="next" value="{{ next }}">
+    </form>
+    <div>
+        <p>Hai già un account?</p>
+        <a href="{% url 'login' %}">Accedi</a>
+    </div>
 </body>
 </html>

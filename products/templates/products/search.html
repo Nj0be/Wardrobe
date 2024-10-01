@@ -11,7 +11,16 @@
 </head>
 <body>
 
-    <p>User authenticated? {{ auth }}</p>
+    <p>User authenticated? {{ auth }}{% if auth %}... I always see you {{ user.email }}{% endif %}</p>
+    {% if auth %}
+        <form action="{% url 'logout' %}" method="post">
+          {% csrf_token %}
+          <button type="submit">Log Out</button>
+        </form>
+    {% else %}
+        <a href="{% url 'login' %}">Accedi</a>
+    {% endif %}
+
     <!-- Categories Menu -->
     <ul>
     {% for category in root_categories %}

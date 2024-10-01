@@ -41,7 +41,7 @@ class UserManager(BaseUserManager):
 
 class User(AbstractUser):
     username = None
-    email = models.EmailField(_('email address'), unique=True)
+    email = models.EmailField(_('email'), unique=True)
 
     # REQUIRED_FIELDS must contain all required fields on your user model, but should not contain the USERNAME_FIELD
     # or password as these fields will always be prompted for.

@@ -148,6 +148,8 @@ AUTH_USER_MODEL = "accounts.User"
 LOGIN_URL = reverse_lazy('login')
 # The URL to redirect to after login.
 LOGIN_REDIRECT_URL = "homepage"
+# The URL to redirect to after logout.
+LOGOUT_REDIRECT_URL = "homepage"
 
 # Stripe
 STRIPE_PUBLISHABLE_KEY = os.getenv('STRIPE_PUBLISHABLE_KEY')
