@@ -1,3 +1,6 @@
+# File with environment variables (secrets and credentials)
+.env
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
