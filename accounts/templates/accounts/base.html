@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}My Ecommerce{% endblock %}</title>
+</head>
+<body>
+    <header>
+        <div>
+            <h1><a href="{% url 'homepage' %}">My Ecommerce</a></h1>
+        </div>
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2024 My Ecommerce</p>
+    </footer>
+</body>
+</html>

@@ -1,16 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>E-commerce Homepage</title>
-</head>
-<body>
+{% extends "products/base.html" %}
+
+{% block title %}Registrazione Cliente{% endblock %}
+
+{% block content %}
+
+    <h2>Esplora le nostre categorie</h2>
+
     <!-- Start Master Categories Choice -->
-    <ul>
+
+    <div class="categories">
         {% for category in main_categories_list %}
-            <li><a href="{% url 'search' %}?category={{ category.id }}">{{ category.name }}</a></li>
+            <div class="category">
+                <a href="{% url 'search' %}?category={{ category.id }}">
+                    <img src="#" alt="{{ category.name }}">
+                    <h3>{{ category.name }}</h3>
+                </a>
+            </div>
         {% endfor %}
-    </ul>
-    <!-- End Master Categories Choice -->
-</body>
-</html>
+    </div>
+
+{% endblock %}

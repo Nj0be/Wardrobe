@@ -1,9 +1,11 @@
+import json
+
 from django.db.models import Q
 from django.views import generic
 from django.shortcuts import render, get_object_or_404, redirect
 # from django.contrib.auth.decorators import login_required
 
-from .models import Product, Category, Color, Size, Review
+from .models import Product, ProductVariant, ProductColorImage, Category, Color, Size, Review
 
 
 class HomepageView(generic.ListView):
@@ -107,15 +109,38 @@ def search(request):  # da implementare anche la logica per i filtri
 def product_page(request, product_id):
     product = get_object_or_404(Product, pk=product_id)
 
+    # Ogni colore associato alla lista di immagini
+    color_images = ProductColorImage.objects.filter(product=product)
+    colors_with_images_and_sizes = {}
+    for item in color_images:
+        color_id = item.color.id
+        if color_id not in colors_with_images_and_sizes:
+            colors_with_images_and_sizes[color_id] = {
+                'color': item.color,
+                'images': [],  # Lista di immagini per quel colore
+                'sizes': {}  # Dizionario per le taglie e lo stock
+            }
+        colors_with_images_and_sizes[color_id]['images'].append(item.image)
+
+    # Ogni colore associato alla lista di taglie con il rispettivo stock
+    variants = ProductVariant.objects.filter(product=product, is_active=True)
+    for variant in variants:
+        color_id = variant.color.id
+        if color_id in colors_with_images_and_sizes:
+            colors_with_images_and_sizes[color_id]['sizes'][variant.size.id] = {
+                "size": variant.size.name,
+                "stock": variant.stock
+            }
+
     error_message = None
     if request.method == 'POST':
         # review_title = request.POST.get("review_title")
         review_description = request.POST.get("review_description")
         review_vote = request.POST.get("review_vote")
 
-        if request.user.is_authenticated:  # da aggiungere la verifica di acquisto del prodotto da parte dell'utente
-            if not Review.objects.filter(product=product, customer=request.user).exists():
-                if review_description and review_vote and review_vote.isdigit() and 1 <= int(review_vote) <= 10:  # and review_title
+        if review_description and review_vote and review_vote.isdigit() and 1 <= int(review_vote) <= 10:  # and review_title
+            if request.user.is_authenticated:  # da aggiungere la verifica di acquisto del prodotto da parte dell'utente
+                if not Review.objects.filter(product=product, customer=request.user).exists():
                     review = Review(
                         customer=request.user,
                         product=product,
@@ -126,11 +151,9 @@ def product_page(request, product_id):
                     review.save()
                     return redirect('product', product_id=product.id)
                 else:
-                    error_message = "Dati non validi. Assicurati di compilare correttamente tutti i campi."
+                    error_message = "Hai già recensito questo prodotto."
             else:
-                error_message = "Hai già recensito questo prodotto."
-        else:
-            error_message = "Devi essere loggato per lasciare una recensione."
+                error_message = "Devi essere loggato per lasciare una recensione."
 
     reviews = Review.objects.filter(product=product_id)
 
@@ -139,6 +162,14 @@ def product_page(request, product_id):
         "products/product.html",
         {
             "product": product,
+            "colors": {
+                color_id: {
+                    'color': colors_with_images_and_sizes[color_id]['color'],
+                    'images': colors_with_images_and_sizes[color_id]['images'],
+                    'sizes': json.dumps(colors_with_images_and_sizes[color_id]['sizes'])  # Serializza le taglie in JSON
+                }
+                for color_id in colors_with_images_and_sizes.keys()
+            },
             "reviews": reviews,
             "error_message": error_message,
         })

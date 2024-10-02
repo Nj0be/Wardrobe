@@ -1,51 +1,184 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Product Details page</title>
-</head>
-<body>
-    <p>Product name: {{ product.name }}</p>
-    <p>Descrizione: {{ product.description }}</p>
-    {% if discount %}
-        <p>Product discount: {{ product.discount_percentage }}</p>
-    {% endif %}
+{% extends "products/base.html" %}
 
-    {% if reviews %}
+{% block title %}Pagina del Prodotto{% endblock %}
+
+{% block content %}
+
+    <div class="product-details">
+        <h2>{{ product.name }}</h2>
+        <p><strong>Descrizione:</strong> {{ product.description }}</p>
+
+        {% if discount %}
+            <p><strong>Sconto:</strong> {{ product.discount_percentage }}%</p>
+        {% endif %}
+
+        <div id="product-image-gallery">
+            <!-- Qui vengono inserite le immagini -->
+        </div>
+
+        <!-- Selezione colori, se disponibili -->
+        {% if colors %}
+        <div class="product-colors">
+            <label for="color-select"><strong>Seleziona Colore:</strong></label>
+            <select id="color-select" name="color" onchange="updateProductOptions()">
+                <option value="">Seleziona un colore</option>
+                {% for color_id, color_data in colors.items %}
+                <option value="{{ color_id }}" data-images="{{ color_data.images|join:',' }}" data-sizes="{{ color_data.sizes }}">{{ color_data.color.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        {% endif %}
+
+        <!-- Selezione taglie, se disponibili -->
+        <div class="product-sizes">
+            <label for="size-select"><strong>Seleziona Taglia:</strong></label>
+            <select id="size-select" name="size">
+                <option value="">Seleziona prima un colore</option>
+                <!-- Le taglie verranno popolate tramite JavaScript -->
+            </select>
+        </div>
+
+    </div>
+
+    <!-- Pulsante "Aggiungi al carrello" -->
+    <div class="add-to-cart-section">
+        <form action="#{# url 'cart' product.id #}" method="post">
+        {% csrf_token %}
+
+        <!-- Campo nascosto per inviare la taglia selezionata -->
+        {% if sizes %}
+        <input type="hidden" name="selected_size" id="hidden-size">
+        {% endif %}
+
+        <!-- Campo nascosto per inviare il colore selezionato -->
+        {% if colors %}
+        <input type="hidden" name="selected_color" id="hidden-color">
+        {% endif %}
+
+        <input type="submit" value="Aggiungi al carrello" class="btn-add-to-cart">
+        </form>
+    </div>
+
+    <!-- Sezione delle recensioni -->
+    <div class="reviews-section">
         <h3>Recensioni</h3>
-        {% for review in reviews %}
-            <div style="border:1px solid black">
-                <h5>{{ review.title }}</h5>
+
+        {% if reviews %}
+            {% for review in reviews %}
+            <div class="review">
+                <h4>{{ review.title }}</h4>
                 <p>{{ review.description }}</p>
-                <span>{{ review.vote }}/5 from {{ review.customer.first_name }}</span>
+                <span><strong>Voto:</strong> {{ review.vote }}/5 - <strong>da:</strong> {{ review.customer.first_name }} {{ review.customer.last_name }}.</span>
+                <!-- <p class="review-date">Pubblicata il: {# review.date|date:"d M Y" #}</p>-->
             </div>
-        {% endfor %}
-    {% else %}
-        <h3>Non ci sono recensioni per questo prodotto</h3>
-    {% endif %}
+            {% endfor %}
+        {% else %}
+            <p>Non ci sono recensioni per questo prodotto.</p>
+        {% endif %}
+    </div>
 
-    {% if user.is_authenticated %}
-        <form style="border: 1px solid black" action="{% url 'product' product.id %}" method="post">
-    {% csrf_token %}
+    <!-- Sezione aggiungi recensione -->
+    <div class="add-review-section">
+        <h3>Lascia una recensione</h3>
 
-        <!-- <label name="review_title">Titolo:</label><input type="text" name="review_title" id="review_title"> -->
-        <label name="review_description">Descrizione:</label><input type="text" name="review_description" id="review_description">
+        {% if user.is_authenticated %}
+            <form action="{% url 'product' product.id %}" method="post">
+            {% csrf_token %}
 
-        <label for="vote_1">1</label><input type="radio" name="review_vote" id="vote_1" value="1">
-        <label for="vote_2">2</label><input type="radio" name="review_vote" id="vote_2" value="2">
-        <label for="vote_3">3</label><input type="radio" name="review_vote" id="vote_3" value="3">
-        <label for="vote_4">4</label><input type="radio" name="review_vote" id="vote_4" value="4">
-        <label for="vote_5">5</label><input type="radio" name="review_vote" id="vote_5" value="5">
+            <div class="form-group">
+                <label for="review_description">Descrizione:</label>
+                <textarea name="review_description" id="review_description" rows="4" placeholder="Scrivi qui la tua recensione"></textarea>
+            </div>
 
-        <input type="submit" value="Invia Recensione">
-    </form>
-    {% else %}
-        <p>Devi aver effettuato l'accesso per pubblicare una recensione</p>
-    {% endif %}
-    {% if error_message %}
-        <p>{{ error_message }}</p>
-    {% endif %}
-    <!-- Add Review Section -->
+            <div class="form-group">
+                <label for="review_vote">Voto:</label>
+                <div class="rating-options">
+                    <input type="radio" name="review_vote" id="vote_1" value="1"><label for="vote_1">1</label>
+                    <input type="radio" name="review_vote" id="vote_2" value="2"><label for="vote_2">2</label>
+                    <input type="radio" name="review_vote" id="vote_3" value="3"><label for="vote_3">3</label>
+                    <input type="radio" name="review_vote" id="vote_4" value="4"><label for="vote_4">4</label>
+                    <input type="radio" name="review_vote" id="vote_5" value="5"><label for="vote_5">5</label>
+                </div>
+            </div>
 
-</body>
-</html>
+            <input type="submit" value="Invia Recensione" class="btn-submit">
+            </form>
+
+        {% else %}
+            <p><a href="{% url 'login' %}">Accedi</a> per pubblicare una recensione.</p>
+        {% endif %}
+
+        {% if error_message %}
+            <div class="error-message">
+                <p>{{ error_message }}</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <script>
+        // Funzione principale che aggiorna le opzioni di prodotto (immagini e taglie) in base al colore selezionato
+        function updateProductOptions() {
+            const selectElement = document.getElementById('color-select');
+            const selectedOption = selectElement.selectedOptions[0];
+
+            if (!selectedOption) {
+                return;  // Esce se non è selezionato alcun colore
+            }
+
+            const imagesData = selectedOption.getAttribute('data-images');  // Ottiene la lista delle immagini
+            const sizesData = selectedOption.getAttribute('data-sizes');  // Ottiene la lista delle taglie
+            console.log("sizesData:", sizesData);
+            if (imagesData) {
+                updateImageGallery(imagesData);  // Aggiorna la galleria di immagini
+            }
+
+            if (sizesData) {
+                updateSizes(JSON.parse(sizesData));  // Aggiorna la lista delle taglie
+            }
+        }
+
+        // Funzione che aggiorna la galleria di immagini in base al colore selezionato
+        function updateImageGallery(imagesData) {
+            const galleryElement = document.getElementById('product-image-gallery');
+            galleryElement.innerHTML = '';  // Pulisce la galleria
+
+            const imagesArray = imagesData.split(',');  // Divide le immagini in un array
+            imagesArray.forEach(imageUrl => {
+                const imgElement = document.createElement('img');
+                imgElement.src = imageUrl.trim();  // Aggiunge l'URL dell'immagine
+                imgElement.alt = 'Immagine prodotto';
+                imgElement.classList.add('product-image');  // Aggiunge la classe per lo stile CSS
+                galleryElement.appendChild(imgElement);
+            });
+        }
+
+        // Funzione che aggiorna la lista delle taglie in base al colore selezionato
+        function updateSizes(sizesData) {
+            const sizeSelect = document.getElementById('size-select');
+            sizeSelect.innerHTML = '';  // Pulisce le opzioni delle taglie
+
+            // Aggiunge un'opzione di default
+            const defaultOption = document.createElement('option');
+            defaultOption.value = '';
+            defaultOption.text = 'Seleziona una taglia';
+            sizeSelect.appendChild(defaultOption);
+
+            // Aggiunge le taglie disponibili
+            for (const sizeId in sizesData) {
+                const size = sizesData[sizeId].size;
+                const stock = sizesData[sizeId].stock;
+
+                const option = document.createElement('option');
+                option.value = sizeId;
+                option.text = `${size} (Disponibili: ${stock})`;
+
+                if (stock === 0) {
+                    option.disabled = true;  // Disabilita la taglia se esaurita
+                }
+
+                sizeSelect.appendChild(option);
+            }
+        }
+
+    </script>
+{% endblock %}
