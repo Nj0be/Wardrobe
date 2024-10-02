@@ -1,9 +1,6 @@
 from django.contrib import admin
-from .models import CartItem, User
-
-
-class CartItemInline(admin.TabularInline):
-    model = CartItem
+from .models import User
+from products.admin import CartItemInline
 
 
 @admin.register(User)

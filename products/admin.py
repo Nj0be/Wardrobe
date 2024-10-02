@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import ProductColorImage, ProductVariant, Product, Size, Color, Category, Discount, Review
+from .models import ProductColorImage, ProductVariant, Product, Size, Color, Category, Discount, Review, CartItem
 
 
 class ProductColorImageInline(admin.TabularInline):
@@ -10,8 +10,8 @@ class ProductVariantInline(admin.TabularInline):
     model = ProductVariant
 
 
-# class DiscountInline(admin.TabularInline):
-    # model = Discount
+class CartItemInline(admin.TabularInline):
+    model = CartItem
 
 
 @admin.register(Product)
