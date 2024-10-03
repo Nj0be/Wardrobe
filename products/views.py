@@ -3,7 +3,6 @@ import json
 from django.db.models import Q
 from django.views import generic
 from django.shortcuts import render, get_object_or_404, redirect
-# from django.contrib.auth.decorators import login_required
 
 from .models import Product, ProductVariant, ProductColorImage, Category, Color, Size, Review
 
@@ -77,7 +76,7 @@ def search(request):  # da implementare anche la logica per i filtri
     if selected_category:
         products = products.filter(categories__in=selected_category.get_descendants() + [selected_category]).distinct()
     if selected_colors:
-        products = products.filter(productvariant__color__in=[selected_color.id for selected_color in selected_colors]).distinct()
+        products = products.filter(productcolorimage__color__in=[selected_color.id for selected_color in selected_colors]).distinct()
     if selected_sizes:
         products = products.filter(productvariant__size__in=[selected_size.id for selected_size in selected_sizes]).distinct()
     if search_terms:
@@ -109,36 +108,52 @@ def search(request):  # da implementare anche la logica per i filtri
 def product_page(request, product_id):
     product = get_object_or_404(Product, pk=product_id)
 
-    # Ogni colore associato alla lista di immagini
-    color_images = ProductColorImage.objects.filter(product=product)
-    colors_with_images_and_sizes = {}
-    for item in color_images:
-        color_id = item.color.id
-        if color_id not in colors_with_images_and_sizes:
-            colors_with_images_and_sizes[color_id] = {
-                'color': item.color,
-                'images': [],  # Lista di immagini per quel colore
-                'sizes': {}  # Dizionario per le taglie e lo stock
-            }
-        colors_with_images_and_sizes[color_id]['images'].append(item.image)
+    # Ottenimento valori dalla richiesta POST
+    color_id = request.POST.get('color')
+    try:
+        size = Size.objects.get(pk=request.POST.get('size'))
+    except Size.DoesNotExist:
+        size = None
 
-    # Ogni colore associato alla lista di taglie con il rispettivo stock
-    variants = ProductVariant.objects.filter(product=product, is_active=True)
-    for variant in variants:
-        color_id = variant.color.id
-        if color_id in colors_with_images_and_sizes:
-            colors_with_images_and_sizes[color_id]['sizes'][variant.size.id] = {
-                "size": variant.size.name,
-                "stock": variant.stock
-            }
+    # Ottengo tutti gli oggetti color che il prodotto specificato ha
+    product_color_images = ProductColorImage.objects.filter(product_id=product_id)
+    colors = Color.objects.filter(
+        id__in=product_color_images.values_list('color_id', flat=True)
+    ).distinct()
 
+    if len(colors) == 1 or not color_id:
+        # Il prodotto ha un unico colore oppure viene mostrato il primo di default in quanto il cliente non ne ha scelto uno
+        color_id = colors[0].id
+
+    # Oggetto Colore selezionato
+    color = Color.objects.get(pk=color_id)
+
+    # Immagini del Colore selezionato
+    color_images = ProductColorImage.objects.filter(  # Nel caso ci fossero più immagini: product_color_images
+        product_id=product_id,
+        color=color_id
+    )
+    images = [color_image.image for color_image in color_images]
+
+    # Lista di taglie con relativi stock
+    product_variants = ProductVariant.objects.filter(
+        color__in=color_images,
+        is_active=True
+    )
+    sizes = {}
+    for product_variant in product_variants:
+        if product_variant.size not in sizes:
+            sizes[product_variant.size] = product_variant.stock
+
+    # Review logic
     error_message = None
     if request.method == 'POST':
         # review_title = request.POST.get("review_title")
         review_description = request.POST.get("review_description")
         review_vote = request.POST.get("review_vote")
 
-        if review_description and review_vote and review_vote.isdigit() and 1 <= int(review_vote) <= 10:  # and review_title
+        if review_description and review_vote and review_vote.isdigit() and 1 <= int(
+                review_vote) <= 10:  # and review_title
             if request.user.is_authenticated:  # da aggiungere la verifica di acquisto del prodotto da parte dell'utente
                 if not Review.objects.filter(product=product, customer=request.user).exists():
                     review = Review(
@@ -162,14 +177,12 @@ def product_page(request, product_id):
         "products/product.html",
         {
             "product": product,
-            "colors": {
-                color_id: {
-                    'color': colors_with_images_and_sizes[color_id]['color'],
-                    'images': colors_with_images_and_sizes[color_id]['images'],
-                    'sizes': json.dumps(colors_with_images_and_sizes[color_id]['sizes'])  # Serializza le taglie in JSON
-                }
-                for color_id in colors_with_images_and_sizes.keys()
-            },
+            "colors": colors,
+            "selected_color": color,
+            "images": images,
+            "sizes": sizes,
+            "selected_size": size,
             "reviews": reviews,
             "error_message": error_message,
-        })
+        }
+    )
