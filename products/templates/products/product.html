@@ -35,13 +35,13 @@
         {% endif %}
 
         <!-- Sezione taglie -->
-        {% if sizes %}
+        {% if sizes and None not in sizes %}
             {% for size, stock in sizes.items %}
                 <input type="radio" name="size" id="{{ size.id }}" value="{{ size.id }}"
                     {% if size == selected_size %} checked {% endif %}
                     {% if stock == 0 %} disabled {% endif %}
                     onchange="document.getElementById('ProductForm').submit();">
-                <label for="{{ size.id }}">{{ size.name }}</label><br>
+                <label for="{{ size.id }}">{{ size.name }}{% if stock == 0 %} (Sold out) {% endif %}</label><br>
             {% endfor %}
         {% endif %}
     </form>
