@@ -1,10 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "accounts/base.html" %}
+
+{% block title %}Registrazione Cliente{% endblock %}
+
+{% block content %}
+
+    <h2>Accedi</h2>
 
     <!-- Login form -->
     <form method="post" action="{% url 'login' %}">
@@ -48,5 +48,4 @@
         <a href="{% url 'signup' %}">Registrati</a>
     </div>
 
-</body>
-</html>
+{% endblock %}

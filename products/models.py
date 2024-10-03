@@ -87,6 +87,7 @@ class Product(models.Model):
         # support cases where 'variant_type' is deferred).
         if not self._state.adding and (self.variant_type != self._loaded_values["variant_type"]):
             raise ValueError("Updating the value of variant_type isn't allowed")
+        return super(Product, self).save(*args, **kwargs)
 
     def __str__(self):
         return f'{self.id}-{self.name}'
@@ -129,8 +130,8 @@ class ProductVariant(models.Model):
 
     def clean(self):
         if self.product.variant_type == self.product.VariantType.NOVARIANT:
-            if self.color is not None or self.size is not None:
-                raise ValidationError("Both Color and Size should be None (Product has no Variant)")
+            if self.size is not None:
+                raise ValidationError("Size should be None (Product has only one Variant)")
         elif self.product.variant_type == self.product.VariantType.ONLYCOLOR:
             if self.color is None or self.size is not None:
                 raise ValidationError("Color shouldn't be None and Size should be None")

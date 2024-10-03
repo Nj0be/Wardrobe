@@ -1,51 +1,121 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Product Details page</title>
-</head>
-<body>
-    <p>Product name: {{ product.name }}</p>
-    <p>Descrizione: {{ product.description }}</p>
-    {% if discount %}
-        <p>Product discount: {{ product.discount_percentage }}</p>
-    {% endif %}
+{% extends "products/base.html" %}
 
-    {% if reviews %}
-        <h3>Recensioni</h3>
-        {% for review in reviews %}
-            <div style="border:1px solid black">
-                <h5>{{ review.title }}</h5>
-                <p>{{ review.description }}</p>
-                <span>{{ review.vote }}/5 from {{ review.customer.first_name }}</span>
-            </div>
+{% block title %}Pagina del Prodotto{% endblock %}
+
+{% block content %}
+
+    <div class="product-details">
+        <h2>{{ product.name }}</h2>
+        <p><strong>Descrizione:</strong> {{ product.description }}</p>
+
+        {% if discount %}
+            <p><strong>Sconto:</strong> {{ product.discount_percentage }}%</p>
+        {% endif %}
+    </div>
+
+    <!-- Image Gallery -->
+    <div id="product-image-gallery">
+        {% for image in images %}
+            <img class="product-image" src="{{ image }}" alt="{{ product.name }}">
         {% endfor %}
-    {% else %}
-        <h3>Non ci sono recensioni per questo prodotto</h3>
-    {% endif %}
+    </div>
 
-    {% if user.is_authenticated %}
-        <form style="border: 1px solid black" action="{% url 'product' product.id %}" method="post">
+    <!-- Product Variations -->
+    <form action="{% url 'product' product.id %}" id="ProductForm" method="post">
     {% csrf_token %}
 
-        <!-- <label name="review_title">Titolo:</label><input type="text" name="review_title" id="review_title"> -->
-        <label name="review_description">Descrizione:</label><input type="text" name="review_description" id="review_description">
+        <!-- Sezione colori -->
+        {% if colors|length %}
+            {% for color in colors %}
+                <input type="radio" name="color" id="{{ color.id }}" value="{{ color.id }}"
+                    {% if color == selected_color %} checked {% endif %}
+                    onchange="document.getElementById('ProductForm').submit();">
+                <label for="{{ color.id }}">{{ color.name }}</label><br>
+            {% endfor %}
+        {% endif %}
 
-        <label for="vote_1">1</label><input type="radio" name="review_vote" id="vote_1" value="1">
-        <label for="vote_2">2</label><input type="radio" name="review_vote" id="vote_2" value="2">
-        <label for="vote_3">3</label><input type="radio" name="review_vote" id="vote_3" value="3">
-        <label for="vote_4">4</label><input type="radio" name="review_vote" id="vote_4" value="4">
-        <label for="vote_5">5</label><input type="radio" name="review_vote" id="vote_5" value="5">
-
-        <input type="submit" value="Invia Recensione">
+        <!-- Sezione taglie -->
+        {% if sizes and None not in sizes %}
+            {% for size, stock in sizes.items %}
+                <input type="radio" name="size" id="{{ size.id }}" value="{{ size.id }}"
+                    {% if size == selected_size %} checked {% endif %}
+                    {% if stock == 0 %} disabled {% endif %}
+                    onchange="document.getElementById('ProductForm').submit();">
+                <label for="{{ size.id }}">{{ size.name }}{% if stock == 0 %} (Sold out) {% endif %}</label><br>
+            {% endfor %}
+        {% endif %}
     </form>
-    {% else %}
-        <p>Devi aver effettuato l'accesso per pubblicare una recensione</p>
-    {% endif %}
-    {% if error_message %}
-        <p>{{ error_message }}</p>
-    {% endif %}
-    <!-- Add Review Section -->
 
-</body>
-</html>
+    <!-- Pulsante "Aggiungi al carrello" -->
+    <div class="add-to-cart-section">
+        <form action="#" method="post">
+        {% csrf_token %}
+
+        {% if sizes %}
+        <input type="hidden" name="selected_size" id="hidden-size">
+        {% endif %}
+
+        {% if colors %}
+        <input type="hidden" name="selected_color" id="hidden-color">
+        {% endif %}
+
+        <input type="submit" value="Aggiungi al carrello" class="btn-add-to-cart">
+        </form>
+    </div>
+
+    <!-- Sezione delle recensioni -->
+    <div class="reviews-section">
+        <h3>Recensioni</h3>
+
+        {% if reviews %}
+            {% for review in reviews %}
+            <div class="review">
+                <h4>{{ review.title }}</h4>
+                <p>{{ review.description }}</p>
+                <span><strong>Voto:</strong> {{ review.vote }}/5 - <strong>da:</strong> {{ review.customer.first_name }} {{ review.customer.last_name }}.</span>
+                <!-- <p class="review-date">Pubblicata il: {# review.date|date:"d M Y" #}</p>-->
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>Non ci sono recensioni per questo prodotto.</p>
+        {% endif %}
+    </div>
+
+    <!-- Sezione aggiungi recensione -->
+    <div class="add-review-section">
+        <h3>Lascia una recensione</h3>
+
+        {% if user.is_authenticated %}
+            <form action="{% url 'product' product.id %}" method="post">
+            {% csrf_token %}
+                <div class="form-group">
+                    <label for="review_description">Descrizione:</label>
+                    <textarea name="review_description" id="review_description" rows="4" placeholder="Scrivi qui la tua recensione"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="review_vote">Voto:</label>
+                    <div class="rating-options">
+                        <input type="radio" name="review_vote" id="vote_1" value="1"><label for="vote_1">1</label>
+                        <input type="radio" name="review_vote" id="vote_2" value="2"><label for="vote_2">2</label>
+                        <input type="radio" name="review_vote" id="vote_3" value="3"><label for="vote_3">3</label>
+                        <input type="radio" name="review_vote" id="vote_4" value="4"><label for="vote_4">4</label>
+                        <input type="radio" name="review_vote" id="vote_5" value="5"><label for="vote_5">5</label>
+                    </div>
+                </div>
+
+                <input type="submit" value="Invia Recensione" class="btn-submit">
+            </form>
+
+        {% else %}
+            <p><a href="{% url 'login' %}">Accedi</a> per pubblicare una recensione.</p>
+        {% endif %}
+
+        {% if error_message %}
+            <div class="error-message">
+                <p>{{ error_message }}</p>
+            </div>
+        {% endif %}
+    </div>
+
+{% endblock %}
