@@ -73,9 +73,9 @@ def search(request):  # da implementare anche la logica per i filtri
     if selected_category:
         products = products.filter(categories__in=selected_category.get_descendants() + [selected_category]).distinct()
     if selected_colors:
-        products = products.filter(productcolor__color__in=[selected_color.id for selected_color in selected_colors]).distinct()
+        products = products.filter(productcolor__color__in=selected_colors).distinct()
     if selected_sizes:
-        products = products.filter(productvariant__size__in=[selected_size.id for selected_size in selected_sizes]).distinct()
+        products = products.filter(productcolor__productvariant__size__in=selected_sizes).distinct()
     if search_terms:
         # check if title contains any of the strings in the search_terms list
         query = Q()
