@@ -3,7 +3,9 @@
 {% block title %}Pagina del Prodotto{% endblock %}
 
 {% block content %}
-
+    {% for key, value in sizes.items %}
+        <li>{{ key }}: {{ value }}</li>
+    {% endfor %}
     <div class="product-details">
         <h2>{{ product.name }}</h2>
         <p><strong>Descrizione:</strong> {{ product.description }}</p>
@@ -28,21 +30,28 @@
             {% for color in colors %}
                 <input type="radio" name="color" id="{{ color.id }}" value="{{ color.id }}"
                     {% if color == selected_color %} checked {% endif %}
+                     {% if forloop.first %} required {% endif %}
                     onchange="document.getElementById('ProductForm').submit();">
                 <label for="{{ color.id }}">{{ color.name }}</label><br>
             {% endfor %}
         {% endif %}
 
         <!-- Sezione taglie -->
-        {% if sizes and None not in sizes %}
-            {% for size, stock in sizes.items %}
+        <script> console.log("ciao") </script>
+        {% for size, stock in all_variants_sizes.items %}
+            <script> console.log("ciao") </script>
+            {% if size in variant_sizes.keys %}
                 <input type="radio" name="size" id="{{ size.id }}" value="{{ size.id }}"
-                    {% if size == selected_size %} checked {% endif %}
+                    {% if forloop.first and stock > 0 %} required {% endif %}
+                    {% if size == selected_size and stock > 0 %} checked {% endif %}
                     {% if stock == 0 %} disabled {% endif %}
                     onchange="document.getElementById('ProductForm').submit();">
-                <label for="{{ size.id }}">{{ size.name }}{% if stock == 0 %} (Sold out) {% endif %}</label><br>
-            {% endfor %}
-        {% endif %}
+                <label for="{{ size.id }}">{{ size.name }}{% if stock == 0 %} (Non disponibile) {% endif %}</label><br>
+            {% else %}
+                <input type="radio" name="size" id="{{ size.id }}" value="{{ size.id }}" disabled>
+                <label for="{{ size.id }}">{{ size.name }} (Non disponibile) </label><br>
+            {% endif %}
+        {% endfor %}
     </form>
 
     <!-- Pulsante "Aggiungi al carrello" -->
@@ -57,7 +66,7 @@
         <input type="hidden" name="selected_color" id="hidden-color">
         {% endif %}
 
-        <input type="submit" value="Aggiungi al carrello" class="btn-add-to-cart">
+        <input type="submit" value="Aggiungi al carrello" class="btn-add-to-cart" disabled id="add-to-cart-btn">
         </form>
     </div>
 
@@ -114,5 +123,35 @@
             </div>
         {% endif %}
     </div>
+
+    <script>
+    function updateSelection() {
+        // Ottieni gli elementi selezionati
+        var selectedColor = document.querySelector('input[name="color"]:checked');
+        var selectedSize = document.querySelector('input[name="size"]:checked');
+
+        // Aggiorna i campi nascosti
+        if (selectedColor) {
+            document.getElementById('hidden-color').value = selectedColor.value;
+        }
+
+        if (selectedSize) {
+            document.getElementById('hidden-size').value = selectedSize.value;
+        }
+
+        // Abilita il pulsante "Aggiungi al carrello" solo se entrambi sono selezionati
+        var addToCartBtn = document.getElementById('add-to-cart-btn');
+        if (selectedColor && selectedSize) {
+            addToCartBtn.disabled = false;
+        } else {
+            addToCartBtn.disabled = true;
+        }
+    }
+
+    // Esegui il controllo iniziale per il caso in cui una selezione sia già fatta
+    window.onload = function() {
+        updateSelection();
+    };
+</script>
 
 {% endblock %}
