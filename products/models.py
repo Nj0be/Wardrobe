@@ -8,6 +8,7 @@ from django_extensions.validators import HexValidator
 class Category(models.Model):
     parent_category = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=100)
+    image = models.ImageField(upload_to='categories/')
 
     class Meta:
         unique_together = [['parent_category', 'name']]
@@ -97,7 +98,7 @@ class ProductColor(models.Model):
 
 class ProductImage(models.Model):
     product_color = models.ForeignKey(ProductColor, on_delete=models.CASCADE)
-    image = models.CharField(max_length=200, blank=True)
+    image = models.ImageField(upload_to='products/')
 
     class Meta:
         unique_together = [['product_color', 'image']]

@@ -16,7 +16,7 @@
     <!-- Image Gallery -->
     <div id="product-image-gallery">
         {% for image in images %}
-            <img class="product-image" src="{{ image }}" alt="{{ product.name }}">
+            <img class="product-image" src="{{ image.image.url }}" alt="{{ product.name }}">
         {% endfor %}
     </div>
 

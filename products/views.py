@@ -126,8 +126,8 @@ def product_page(request, product_id):
     selected_color = Color.objects.get(pk=color_id)
 
     images = ProductImage.objects.filter(  # Nel caso ci fossero più immagini: product_color_images
-        product_color=ProductColor.objects.get(color=selected_color)
-    ).values_list('image', flat=True)
+        product_color=ProductColor.objects.get(product=product_id, color=selected_color)
+    )
 
     # Lista di taglie con relativi stock
     product_variants = ProductVariant.objects.filter(

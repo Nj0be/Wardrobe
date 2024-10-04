@@ -15,6 +15,9 @@ __pycache__/
 # compiled tailwind css
 static/css/base.min.css
 
+# ignore media folder for now
+media/
+
 # Ignore Django Migrations in Development if you are working on team
 # Only for Development only
 **/migrations/**

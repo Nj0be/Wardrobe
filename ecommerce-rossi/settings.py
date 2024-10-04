@@ -157,3 +157,7 @@ LOGOUT_REDIRECT_URL = "homepage"
 # Stripe
 STRIPE_PUBLISHABLE_KEY = os.getenv('STRIPE_PUBLISHABLE_KEY')
 STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')
+
+# media paths
+MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_URL = 'media/'
