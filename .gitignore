@@ -16,13 +16,13 @@ __pycache__/
 static/css/base.min.css
 
 # ignore media folder for now
-media/
+# media/
 
 # Ignore Django Migrations in Development if you are working on team
-# Only for Development only
-**/migrations/**
-**/migrations
-**/migrations/__init__.py
+# Only for Development
+# **/migrations/**
+# **/migrations
+# **/migrations/__init__.py
 
 
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio, WebStorm and Rider

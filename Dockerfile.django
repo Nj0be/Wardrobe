@@ -9,5 +9,4 @@ RUN pip install -r requirements.txt
 # enabled hot reload with volume on compose.yaml
 # COPY . .
 
-ENTRYPOINT ["python3"]
-CMD ["manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["bash", "-c", "./manage.py migrate && ./manage.py loaddata db.json && ./manage.py runserver 0.0.0.0:8000"]
