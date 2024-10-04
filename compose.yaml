@@ -34,6 +34,7 @@ services:
     # volume used to hot reload changes
     volumes:
       - .:/app
+    stop_grace_period: 0.1s
 
   db:
     image: postgres:16.2
@@ -49,8 +50,9 @@ services:
       #PGDATA: /var/lib/postgresql/data/pgdata
     ports:
       - "${DB_PORT}:5432"
-    volumes:
-      - pgdata:/var/lib/postgresql/data
+    # ENABLE IN PRODUCTION
+    # volumes:
+      # - pgdata:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
       interval: 1s
@@ -65,5 +67,6 @@ services:
     ports:
       - "8080:8080"
 
-volumes:
-  pgdata:
+# ENABLE IN PRODUCTION
+# volumes:
+  # pgdata:
