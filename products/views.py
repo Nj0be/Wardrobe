@@ -130,8 +130,18 @@ def product_page(request, product_id):
     )
 
     # Lista di taglie con relativi stock
-    product_variants = ProductVariant.objects.filter(
+    all_product_variants = ProductVariant.objects.filter(
         color__in=product_colors,
+        is_active=True
+    )
+    all_sizes = {}
+    for product_variant in all_product_variants:
+        if product_variant.size not in all_sizes:
+            all_sizes[product_variant.size] = product_variant.stock
+
+    product_variants = ProductVariant.objects.filter(
+        color__color=selected_color,
+        color__product=product_id,
         is_active=True
     )
     sizes = {}
@@ -174,8 +184,9 @@ def product_page(request, product_id):
             "colors": colors,
             "selected_color": selected_color,
             "images": images,
-            "sizes": sizes,
+            "variant_sizes": sizes,
             "selected_size": size,
+            "all_variants_sizes": all_sizes,
             "reviews": reviews,
             "error_message": error_message,
         }
