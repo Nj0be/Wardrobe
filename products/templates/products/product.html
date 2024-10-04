@@ -21,8 +21,7 @@
     </div>
 
     <!-- Product Variations -->
-    <form action="{% url 'product' product.id %}" id="ProductForm" method="post">
-    {% csrf_token %}
+    <form action="{% url 'product' product.id %}" id="ProductForm" method="get">
 
         <!-- Sezione colori -->
         {% if colors|length %}
@@ -49,7 +48,6 @@
     <!-- Pulsante "Aggiungi al carrello" -->
     <div class="add-to-cart-section">
         <form action="#" method="post">
-        {% csrf_token %}
 
         {% if sizes %}
         <input type="hidden" name="selected_size" id="hidden-size">
@@ -87,7 +85,6 @@
 
         {% if user.is_authenticated %}
             <form action="{% url 'product' product.id %}" method="post">
-            {% csrf_token %}
                 <div class="form-group">
                     <label for="review_description">Descrizione:</label>
                     <textarea name="review_description" id="review_description" rows="4" placeholder="Scrivi qui la tua recensione"></textarea>

@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 
     # Extensions
     'django_extensions',
+    'nested_admin',
 
     # Local
     'accounts',

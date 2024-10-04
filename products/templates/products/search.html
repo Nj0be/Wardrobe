@@ -14,7 +14,6 @@
     <p>User authenticated? {{ auth }}{% if auth %}... I always see you {{ user.email }}{% endif %}</p>
     {% if auth %}
         <form action="{% url 'logout' %}" method="post">
-          {% csrf_token %}
           <button type="submit">Log Out</button>
         </form>
     {% else %}

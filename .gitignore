@@ -12,6 +12,9 @@ __pycache__/
 # Enterprise architect temp files
 *.ldb
 
+# compiled tailwind css
+static/css/base.min.css
+
 # Ignore Django Migrations in Development if you are working on team
 # Only for Development only
 **/migrations/**
