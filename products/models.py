@@ -127,7 +127,7 @@ class ProductVariant(models.Model):
 class Review(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     customer = models.ForeignKey('accounts.User', on_delete=models.CASCADE)
-    # title = models.CharField(max_length=100),  # manca il campo in django
+    title = models.CharField(max_length=100)
     description = models.CharField(max_length=1000)
     vote = models.PositiveSmallIntegerField(validators=[MaxValueValidator(10)])
 
