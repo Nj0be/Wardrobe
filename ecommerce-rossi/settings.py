@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     # Extensions
     'django_extensions',
     'nested_admin',
+    'django_cleanup',
 
     # Local
     'accounts',
