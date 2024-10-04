@@ -1,10 +1,7 @@
-import json
-
 from django.db.models import Q
 from django.views import generic
 from django.shortcuts import render, get_object_or_404, redirect
-
-from .models import Product, ProductVariant, ProductColorImage, Category, Color, Size, Review
+from .models import Product, ProductVariant, ProductColor, Category, Color, Size, Review, ProductImage
 
 
 class HomepageView(generic.ListView):
@@ -76,7 +73,7 @@ def search(request):  # da implementare anche la logica per i filtri
     if selected_category:
         products = products.filter(categories__in=selected_category.get_descendants() + [selected_category]).distinct()
     if selected_colors:
-        products = products.filter(productcolorimage__color__in=[selected_color.id for selected_color in selected_colors]).distinct()
+        products = products.filter(productcolor__color__in=[selected_color.id for selected_color in selected_colors]).distinct()
     if selected_sizes:
         products = products.filter(productvariant__size__in=[selected_size.id for selected_size in selected_sizes]).distinct()
     if search_terms:
@@ -108,17 +105,17 @@ def search(request):  # da implementare anche la logica per i filtri
 def product_page(request, product_id):
     product = get_object_or_404(Product, pk=product_id)
 
-    # Ottenimento valori dalla richiesta POST
-    color_id = request.POST.get('color')
+    # Ottenimento valori dalla richiesta GET
+    color_id = request.GET.get('color')
     try:
-        size = Size.objects.get(pk=request.POST.get('size'))
+        size = Size.objects.get(pk=request.GET.get('size'))
     except Size.DoesNotExist:
         size = None
 
     # Ottengo tutti gli oggetti color che il prodotto specificato ha
-    product_color_images = ProductColorImage.objects.filter(product_id=product_id)
+    product_colors = ProductColor.objects.filter(product_id=product_id)
     colors = Color.objects.filter(
-        id__in=product_color_images.values_list('color_id', flat=True)
+        id__in=product_colors.values_list('color_id', flat=True)
     ).distinct()
 
     if len(colors) == 1 or not color_id:
@@ -126,18 +123,15 @@ def product_page(request, product_id):
         color_id = colors[0].id
 
     # Oggetto Colore selezionato
-    color = Color.objects.get(pk=color_id)
+    selected_color = Color.objects.get(pk=color_id)
 
-    # Immagini del Colore selezionato
-    color_images = ProductColorImage.objects.filter(  # Nel caso ci fossero più immagini: product_color_images
-        product_id=product_id,
-        color=color_id
-    )
-    images = [color_image.image for color_image in color_images]
+    images = ProductImage.objects.filter(  # Nel caso ci fossero più immagini: product_color_images
+        product_color=ProductColor.objects.get(color=selected_color)
+    ).values_list('image', flat=True)
 
     # Lista di taglie con relativi stock
     product_variants = ProductVariant.objects.filter(
-        color__in=color_images,
+        color__in=product_colors,
         is_active=True
     )
     sizes = {}
@@ -147,10 +141,10 @@ def product_page(request, product_id):
 
     # Review logic
     error_message = None
-    if request.method == 'POST':
-        # review_title = request.POST.get("review_title")
-        review_description = request.POST.get("review_description")
-        review_vote = request.POST.get("review_vote")
+    if request.method == 'GET':
+        # review_title = request.GET.get("review_title")
+        review_description = request.GET.get("review_description")
+        review_vote = request.GET.get("review_vote")
 
         if review_description and review_vote and review_vote.isdigit() and 1 <= int(
                 review_vote) <= 10:  # and review_title
@@ -178,7 +172,7 @@ def product_page(request, product_id):
         {
             "product": product,
             "colors": colors,
-            "selected_color": color,
+            "selected_color": selected_color,
             "images": images,
             "sizes": sizes,
             "selected_size": size,
