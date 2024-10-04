@@ -55,16 +55,24 @@ class Discount(models.Model):
 
     def __str__(self):
         return f'{self.name}-{self.percentage}%'
+    
+    
+class Brand(models.Model):
+    name = models.CharField(max_length=50)
 
+    def __str__(self):
+        return f'{self.name}'
 
 class Product(models.Model):
     name = models.CharField(max_length=200)
     description = models.CharField(max_length=2000)
+    price = models.FloatField()
     is_active = models.BooleanField(default=True)
     date_created = models.DateTimeField(auto_now_add=True)
     last_modification = models.DateTimeField(auto_now=True)
     categories = models.ManyToManyField(Category)
     discount = models.ForeignKey(Discount, on_delete=models.SET_NULL, null=True, blank=True)
+    brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
 
     def __str__(self):
         return f'{self.id}-{self.name}'
@@ -110,7 +118,7 @@ class ProductImage(models.Model):
 class ProductVariant(models.Model):
     color = models.ForeignKey(ProductColor, on_delete=models.CASCADE)
     size = models.ForeignKey(Size, on_delete=models.CASCADE, null=True, blank=True)
-    price = models.FloatField()
+    price = models.FloatField(default=0)
     stock = models.PositiveIntegerField()
     is_active = models.BooleanField(default=True)
 
