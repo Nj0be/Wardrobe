@@ -117,7 +117,7 @@ class ProductImage(models.Model):
 
 class ProductVariant(models.Model):
     color = models.ForeignKey(ProductColor, on_delete=models.CASCADE)
-    size = models.ForeignKey(Size, on_delete=models.CASCADE, null=True, blank=True)
+    size = models.ForeignKey(Size, on_delete=models.CASCADE)
     price = models.FloatField(default=0)
     stock = models.PositiveIntegerField()
     is_active = models.BooleanField(default=True)
