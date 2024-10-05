@@ -9,6 +9,7 @@
     <div class="product-details">
         <h2>{{ product.name }}</h2>
         <p><strong>Descrizione:</strong> {{ product.description }}</p>
+        <p><strong>Prezzo:</strong> {{ price }}</p>
 
         {% if discount %}
             <p><strong>Sconto:</strong> {{ product.discount_percentage }}%</p>
@@ -37,10 +38,8 @@
         {% endif %}
 
         <!-- Sezione taglie -->
-        <script> console.log("ciao") </script>
-        {% for size, stock in all_variants_sizes.items %}
-            <script> console.log("ciao") </script>
-            {% if size in variant_sizes.keys %}
+        {% for size, stock in stocks.items %}
+            {% if stock %}
                 <input type="radio" name="size" id="{{ size.id }}" value="{{ size.id }}"
                     {% if forloop.first and stock > 0 %} required {% endif %}
                     {% if size == selected_size and stock > 0 %} checked {% endif %}

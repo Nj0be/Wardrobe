@@ -116,7 +116,7 @@ class ProductImage(models.Model):
 
 
 class ProductVariant(models.Model):
-    color = models.ForeignKey(ProductColor, on_delete=models.CASCADE)
+    product_color = models.ForeignKey(ProductColor, on_delete=models.CASCADE)
     size = models.ForeignKey(Size, on_delete=models.CASCADE)
     price = models.FloatField(default=0)
     stock = models.PositiveIntegerField()
@@ -124,10 +124,14 @@ class ProductVariant(models.Model):
 
     @property
     def product(self):
-        return self.color.product
+        return self.product_color.product
+
+    @property
+    def color(self):
+        return self.product_color.color
 
     class Meta:
-        unique_together = [['color', 'size']]
+        unique_together = [['product_color', 'size']]
 
     def __str__(self):
         return f'{self.product}-{self.color}-{self.size}'

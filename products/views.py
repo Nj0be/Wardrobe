@@ -1,3 +1,5 @@
+from collections import namedtuple
+
 from django.db.models import Q
 from django.views import generic
 from django.shortcuts import render, get_object_or_404, redirect
@@ -105,49 +107,27 @@ def search(request):  # da implementare anche la logica per i filtri
 def product_page(request, product_id):
     product = get_object_or_404(Product, pk=product_id)
 
-    # Ottenimento valori dalla richiesta GET
-    color_id = request.GET.get('color')
-    try:
-        size = Size.objects.get(pk=request.GET.get('size'))
-    except Size.DoesNotExist:
-        size = None
-
-    # Ottengo tutti gli oggetti color che il prodotto specificato ha
+    colors = Color.objects.filter(productcolor__product_id=product_id)
     product_colors = ProductColor.objects.filter(product_id=product_id)
-    colors = Color.objects.filter(
-        id__in=product_colors.values_list('color_id', flat=True)
-    ).distinct()
+    sizes = Size.objects.filter(productvariant__product_color_id__in=product_colors).distinct()
 
-    if len(colors) == 1 or not color_id:
-        # Il prodotto ha un unico colore oppure viene mostrato il primo di default in quanto il cliente non ne ha scelto uno
-        color_id = colors[0].id
+    # Ottenimento valori dalla richiesta GET
+    color_id = request.GET.get('color') or colors[0].id
+    size_id = request.GET.get('size') or sizes[0].id
+    size = Size.objects.get(pk=size_id)
 
-    # Oggetto Colore selezionato
     selected_color = Color.objects.get(pk=color_id)
 
     images = ProductImage.objects.filter(  # Nel caso ci fossero più immagini: product_color_images
-        product_color=ProductColor.objects.get(product=product_id, color=selected_color)
+        product_color=product_colors.get(color_id=color_id)
     )
 
-    # Lista di taglie con relativi stock
-    all_product_variants = ProductVariant.objects.filter(
-        color__in=product_colors,
-        is_active=True
-    )
-    all_sizes = {}
-    for product_variant in all_product_variants:
-        if product_variant.size not in all_sizes:
-            all_sizes[product_variant.size] = product_variant.stock
-
-    product_variants = ProductVariant.objects.filter(
-        color__color=selected_color,
-        color__product=product_id,
-        is_active=True
-    )
-    sizes = {}
-    for product_variant in product_variants:
-        if product_variant.size not in sizes:
-            sizes[product_variant.size] = product_variant.stock
+    variants = ProductVariant.objects.filter(product_color__product_id=product_id,
+                                             product_color__color_id=color_id,
+                                             is_active=True)
+    # second one take priority
+    stocks = {s: None for s in sizes} | {v.size: v.stock for v in variants}
+    price = variants.get(size_id=size_id).price or product.price
 
     # Review logic
     error_message = None
@@ -184,9 +164,9 @@ def product_page(request, product_id):
             "colors": colors,
             "selected_color": selected_color,
             "images": images,
-            "variant_sizes": sizes,
             "selected_size": size,
-            "all_variants_sizes": all_sizes,
+            "stocks": stocks,
+            "price": price,
             "reviews": reviews,
             "error_message": error_message,
         }
