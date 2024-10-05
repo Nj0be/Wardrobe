@@ -65,7 +65,7 @@ class Brand(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=200)
-    description = models.CharField(max_length=2000)
+    description = models.TextField(max_length=2000)
     price = models.FloatField()
     is_active = models.BooleanField(default=True)
     date_created = models.DateTimeField(auto_now_add=True)
@@ -140,8 +140,8 @@ class ProductVariant(models.Model):
 class Review(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     customer = models.ForeignKey('accounts.User', on_delete=models.CASCADE)
-    title = models.CharField(max_length=100)
-    description = models.CharField(max_length=1000)
+    title = models.CharField(max_length=200)
+    description = models.TextField(max_length=2000)
     vote = models.PositiveSmallIntegerField(validators=[MaxValueValidator(10)])
 
     class Meta:
