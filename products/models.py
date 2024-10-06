@@ -130,11 +130,6 @@ class ProductVariant(models.Model):
     def color(self):
         return self.product_color.color
 
-    @property
-    def first_image(self):
-        """Returns the first image associated with this product variant's color."""
-        return ProductImage.objects.filter(product_color=self.product_color).first().image.url
-
     class Meta:
         unique_together = [['product_color', 'size']]
 
