@@ -3,7 +3,7 @@ from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from products.models import Product, ProductVariant
+from products.models import Product, ProductVariant, ProductImage
 
 
 class Order(models.Model):
@@ -19,7 +19,17 @@ class OrderProduct(models.Model):
     product_variant = models.ForeignKey('products.ProductVariant', on_delete=models.SET_NULL, null=True)
     quantity = models.PositiveIntegerField(validators=[MinValueValidator(1)])
     name = type(Product._meta.get_field('name'))()
-    price = type(ProductVariant._meta.get_field('price'))()
+    price = type(ProductVariant._meta.get_field('price'))()  # deve esser modificato in modo tale che se il prezzo della variante è 0 allora si prende il prezzo del prodotto
+    # bisogna aggiungere anche la taglia come meta attribute
+
+    @property
+    def first_image(self):
+        """Returns the first image of the associated product variant."""
+        if self.product_variant and self.product_variant.product_color:
+            product_images = ProductImage.objects.filter(product_color=self.product_variant.product_color)
+            if product_images.exists():
+                return product_images.first().image.url  # Return the URL of the first image
+        return None  # Return None if no image is found
 
     @classmethod
     def from_db(cls, db, field_names, values):

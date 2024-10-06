@@ -43,3 +43,14 @@ class UserAuthenticatorForm(AuthenticationForm):
         "inactive": _("This account is inactive."),
     }
 
+
+class UserUpdateForm(UserCreationForm):
+    first_name = forms.CharField(required=True, widget=forms.TextInput(attrs={'placeholder': 'First Name'}))
+    last_name = forms.CharField(required=True, widget=forms.TextInput(attrs={'placeholder': 'Last Name'}))
+    email = forms.EmailField(required=True, widget=forms.TextInput(attrs={'placeholder': 'Email'}))
+    password1, password2 = CustomSetPasswordMixin.create_password_fields()
+
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name', 'email', 'password1', 'password2')
+

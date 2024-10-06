@@ -118,7 +118,7 @@ def product_page(request, product_id):
 
     selected_color = Color.objects.get(pk=color_id)
 
-    images = ProductImage.objects.filter(  # Nel caso ci fossero più immagini: product_color_images
+    images = ProductImage.objects.filter(
         product_color=product_colors.get(color_id=color_id)
     )
 
