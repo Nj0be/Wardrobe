@@ -48,7 +48,7 @@ class OrderProduct(models.Model):
     def save(self, *args, **kwargs):
         if self._state.adding:
             self.name = self.product_variant.product.name
-            self.price = self.product_variant.price
+            self.price = self.product_variant.price or self.product_variant.product.price
         elif self.name != self._loaded_values['name'] or self.price != self._loaded_values['price']:
             raise ValueError("Changing the name or the price of the OrderProduct is not allowed")
 
