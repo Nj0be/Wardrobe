@@ -18,9 +18,7 @@ class OrderProduct(models.Model):
     order = models.ForeignKey('orders.Order', on_delete=models.CASCADE)
     product_variant = models.ForeignKey('products.ProductVariant', on_delete=models.SET_NULL, null=True)
     quantity = models.PositiveIntegerField(validators=[MinValueValidator(1)])
-    name = type(Product._meta.get_field('name'))()
-    price = type(ProductVariant._meta.get_field('price'))()  # deve esser modificato in modo tale che se il prezzo della variante è 0 allora si prende il prezzo del prodotto
-    # bisogna aggiungere anche la taglia come meta attribute
+    price = type(ProductVariant._meta.get_field('price'))()
 
     @property
     def first_image(self):

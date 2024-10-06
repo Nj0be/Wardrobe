@@ -5,15 +5,16 @@
     <title>{% block title %}Ecommerce Rossi{% endblock %}</title>
     <link rel="stylesheet" href="{% static "css/base.min.css" %}">
     <script src="{% static "js/htmx.min.js" %}"></script>
+    <script src="{% static "js/preload.js" %}"></script>
 </head>
-<body>
+<body hx-ext="preload">
 <header>
     {% block header %}
         <h1><a href="{% url 'homepage' %}">My Ecommerce</a></h1>
     {% endblock %}
 </header>
 
-<main>
+<main id="content-div">
     {% block content %}{% endblock %}
 </main>
 

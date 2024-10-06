@@ -43,12 +43,13 @@ INSTALLED_APPS = [
     'django_extensions',
     'nested_admin',
     'django_cleanup',
+    'django_htmx',
 
     # Local
     'accounts',
     'products',
     'orders',
-    'payments'
+    'payments',
 ]
 
 MIDDLEWARE = [
@@ -59,6 +60,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django_htmx.middleware.HtmxMiddleware",
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True        # TO REVIEW

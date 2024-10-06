@@ -4,7 +4,7 @@ from orders.models import Order, OrderProduct
 
 class OrderProductInline(admin.TabularInline):
     model = OrderProduct
-    readonly_fields = ('name', 'price')
+    readonly_fields = ('price', )
 
 
 @admin.register(Order)

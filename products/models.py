@@ -8,7 +8,7 @@ from django_extensions.validators import HexValidator
 class Category(models.Model):
     parent_category = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=100)
-    image = models.ImageField(upload_to='categories/')
+    image = models.ImageField(upload_to='categories/', null=True, blank=True)
 
     class Meta:
         unique_together = [['parent_category', 'name']]
