@@ -12,7 +12,7 @@
                 <ul>
                     <li><a href="#">Carrello</a></li>
                     {% if user.is_authenticated %}
-                        <li><a href="#">Hi, {{ user.first_name }}</a></li>
+                        <li><a href="{% url 'profile' %}">Hi, {{ user.first_name }}</a></li>
                     {% else %}
                         <li><a href="{% url 'login' %}">Accedi</a></li>
                     {% endif %}

@@ -1,0 +1,64 @@
+{% extends "accounts/base.html" %}
+
+{% block title %}Registrazione Cliente{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <h1>Welcome, {{ user.first_name }}</h1>
+        <div class="profile-section">
+            <h2>Account Informations</h2>
+            <p><strong>First name:</strong> {{ user.first_name }}</p>
+            <p><strong>Last name:</strong> {{ user.last_name }}</p>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            <a href="{% url 'edit_profile' %}">Edit Profile</a>
+        </div>
+
+        <div class="orders-section">
+            <h2>Your Orders</h2>
+            {% if orders %}
+                {% for order in orders %}
+                    <div class="order">
+                        <p><strong>Order date:</strong> {{order.date_created|date:'Y-m-d H:i' }}</p>
+                        <p><strong>Status:</strong> {{ order.status }}</p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Name</th>
+                                    {# <th>Size</th> #}
+                                    <th>Quantity</th>
+                                    <th>Price</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for order_product in order.orderproduct_set.all %}
+                                <tr>
+                                    <td><img src="{{ order_product.first_image }}" alt="{{ order_product.name }}" height="150" width="auto" ></td>
+                                    <td>{{ order_product.name }}</td>
+                                    {# <td>{{ order_product.size }}</td> #}
+                                    <td>{{ order_product.quantity }}</td>
+                                    <td>{{ order_product.price }} €</td>
+                                    <td>{% widthratio order_product.quantity 1 order_product.price %} €</td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="4">No products in this order.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+                        <h3>Total Order Price:
+                            {{ order.total_price }} €
+                        </h3>
+                        <hr>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>You have no orders yet.</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
