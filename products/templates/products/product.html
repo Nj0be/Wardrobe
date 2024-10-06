@@ -3,13 +3,10 @@
 {% block title %}Pagina del Prodotto{% endblock %}
 
 {% block content %}
-    {% for key, value in sizes.items %}
-        <li>{{ key }}: {{ value }}</li>
-    {% endfor %}
     <div class="product-details">
         <h2>{{ product.name }}</h2>
         <p><strong>Descrizione:</strong> {{ product.description }}</p>
-        <p><strong>Prezzo:</strong> {{ price }}</p>
+        <p><strong>Prezzo:</strong> {{ base_price }}</p>
 
         {% if discount %}
             <p><strong>Sconto:</strong> {{ product.discount_percentage }}%</p>
@@ -30,22 +27,21 @@
         {% if colors|length %}
             {% for color in colors %}
                 <input type="radio" name="color" id="{{ color.id }}" value="{{ color.id }}"
-                    {% if color == selected_color %} checked {% endif %}
-                     {% if forloop.first %} required {% endif %}
-                    onchange="document.getElementById('ProductForm').submit();">
+                        {% if color == selected_color %} checked {% endif %}
+                        {% if forloop.first %} required {% endif %}
+                       onchange="document.getElementById('ProductForm').submit();">
                 <label for="{{ color.id }}">{{ color.name }}</label><br>
             {% endfor %}
         {% endif %}
 
         <!-- Sezione taglie -->
-        {% for size, stock in stocks.items %}
-            {% if stock %}
+        {% for size, variant in size_variants.items %}
+            {% if variant %}
                 <input type="radio" name="size" id="{{ size.id }}" value="{{ size.id }}"
-                    {% if forloop.first and stock > 0 %} required {% endif %}
-                    {% if size == selected_size and stock > 0 %} checked {% endif %}
-                    {% if stock == 0 %} disabled {% endif %}
-                    onchange="document.getElementById('ProductForm').submit();">
-                <label for="{{ size.id }}">{{ size.name }}{% if stock == 0 %} (Non disponibile) {% endif %}</label><br>
+                        {% if variant.stock == 0 %} disabled {% endif %}
+                       onchange="document.getElementById('ProductForm').submit();">
+                <label for="{{ size.id }}">
+                    {{ size.name }}{% if variant.stock == 0 %} (Non disponibile) {% endif %}</label><br>
             {% else %}
                 <input type="radio" name="size" id="{{ size.id }}" value="{{ size.id }}" disabled>
                 <label for="{{ size.id }}">{{ size.name }} (Non disponibile) </label><br>
@@ -57,15 +53,15 @@
     <div class="add-to-cart-section">
         <form action="#" method="post">
 
-        {% if sizes %}
-        <input type="hidden" name="selected_size" id="hidden-size">
-        {% endif %}
+            {% if size_variants %}
+                <input type="hidden" name="selected_size" id="hidden-size">
+            {% endif %}
 
-        {% if colors %}
-        <input type="hidden" name="selected_color" id="hidden-color">
-        {% endif %}
+            {% if colors %}
+                <input type="hidden" name="selected_color" id="hidden-color">
+            {% endif %}
 
-        <input type="submit" value="Aggiungi al carrello" class="btn-add-to-cart" disabled id="add-to-cart-btn">
+            <input type="submit" value="Aggiungi al carrello" class="btn-add-to-cart" disabled id="add-to-cart-btn">
         </form>
     </div>
 
@@ -75,12 +71,12 @@
 
         {% if reviews %}
             {% for review in reviews %}
-            <div class="review">
-                <h4>{{ review.title }}</h4>
-                <p>{{ review.description }}</p>
-                <span><strong>Voto:</strong> {{ review.vote }}/5 - <strong>da:</strong> {{ review.customer.first_name }} {{ review.customer.last_name }}.</span>
-                <!-- <p class="review-date">Pubblicata il: {# review.date|date:"d M Y" #}</p>-->
-            </div>
+                <div class="review">
+                    <h4>{{ review.title }}</h4>
+                    <p>{{ review.description }}</p>
+                    <span><strong>Voto:</strong> {{ review.vote }}/5 - <strong>da:</strong> {{ review.customer.first_name }} {{ review.customer.last_name }}.</span>
+                    <!-- <p class="review-date">Pubblicata il: {# review.date|date:"d M Y" #}</p>-->
+                </div>
             {% endfor %}
         {% else %}
             <p>Non ci sono recensioni per questo prodotto.</p>
@@ -95,7 +91,8 @@
             <form action="{% url 'product' product.id %}" method="post">
                 <div class="form-group">
                     <label for="review_description">Descrizione:</label>
-                    <textarea name="review_description" id="review_description" rows="4" placeholder="Scrivi qui la tua recensione"></textarea>
+                    <textarea name="review_description" id="review_description" rows="4"
+                              placeholder="Scrivi qui la tua recensione"></textarea>
                 </div>
 
                 <div class="form-group">
@@ -124,33 +121,32 @@
     </div>
 
     <script>
-    function updateSelection() {
-        // Ottieni gli elementi selezionati
-        var selectedColor = document.querySelector('input[name="color"]:checked');
-        var selectedSize = document.querySelector('input[name="size"]:checked');
+        function updateSelection() {
+            // Ottieni gli elementi selezionati
+            var selectedColor = document.querySelector('input[name="color"]:checked');
+            var selectedSize = document.querySelector('input[name="size"]:checked');
 
-        // Aggiorna i campi nascosti
-        if (selectedColor) {
-            document.getElementById('hidden-color').value = selectedColor.value;
+            // Aggiorna i campi nascosti
+            if (selectedColor) {
+                document.getElementById('hidden-color').value = selectedColor.value;
+            }
+
+            if (selectedSize) {
+                document.getElementById('hidden-size').value = selectedSize.value;
+            }
+
+            // Abilita il pulsante "Aggiungi al carrello" solo se entrambi sono selezionati
+            var addToCartBtn = document.getElementById('add-to-cart-btn');
+            if (selectedColor && selectedSize) {
+                addToCartBtn.disabled = false;
+            } else {
+                addToCartBtn.disabled = true;
+            }
         }
 
-        if (selectedSize) {
-            document.getElementById('hidden-size').value = selectedSize.value;
-        }
-
-        // Abilita il pulsante "Aggiungi al carrello" solo se entrambi sono selezionati
-        var addToCartBtn = document.getElementById('add-to-cart-btn');
-        if (selectedColor && selectedSize) {
-            addToCartBtn.disabled = false;
-        } else {
-            addToCartBtn.disabled = true;
-        }
-    }
-
-    // Esegui il controllo iniziale per il caso in cui una selezione sia già fatta
-    window.onload = function() {
-        updateSelection();
-    };
-</script>
-
+        // Esegui il controllo iniziale per il caso in cui una selezione sia già fatta
+        window.onload = function () {
+            updateSelection();
+        };
+    </script>
 {% endblock %}

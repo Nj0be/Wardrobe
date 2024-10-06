@@ -1,32 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{% block title %}My Ecommerce{% endblock %}</title>
-</head>
-<body>
-    <header>
-        <div>
-            <h1><a href="{% url 'homepage' %}">My Ecommerce</a></h1>
-            <nav>
-                <ul>
-                    <li><a href="#">Carrello</a></li>
-                    {% if user.is_authenticated %}
-                        <li><a href="{% url 'profile' %}">Hi, {{ user.first_name }}</a></li>
-                    {% else %}
-                        <li><a href="{% url 'login' %}">Accedi</a></li>
-                    {% endif %}
-                </ul>
-            </nav>
-        </div>
-    </header>
+{% extends "base.html" %}
 
-    <main>
-        {% block content %}{% endblock %}
-    </main>
-
-    <footer>
-        <p>&copy; 2024 My Ecommerce</p>
-    </footer>
-</body>
-</html>
+{% block header %}
+    <a class="text-5xl text-blue-600 dark:text-blue-500 hover:underline"
+       href="{% url 'homepage' %}">My Ecommerce</a>
+    <nav>
+        <ul>
+            <li><a href="#">Carrello</a></li>
+            {% if user.is_authenticated %}
+                <li><a href="#">Hi, {{ user.first_name }}</a></li>
+            {% else %}
+                <li><a href="{% url 'login' %}">Accedi</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+{% endblock %}

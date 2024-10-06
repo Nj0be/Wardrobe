@@ -1,5 +1,3 @@
-from collections import namedtuple
-
 from django.db.models import Q
 from django.views import generic
 from django.shortcuts import render, get_object_or_404, redirect
@@ -106,6 +104,7 @@ def search(request):  # da implementare anche la logica per i filtri
 
 def product_page(request, product_id):
     product = get_object_or_404(Product, pk=product_id)
+    base_price = product.price
 
     colors = Color.objects.filter(productcolor__product_id=product_id)
     product_colors = ProductColor.objects.filter(product_id=product_id)
@@ -113,8 +112,6 @@ def product_page(request, product_id):
 
     # Ottenimento valori dalla richiesta GET
     color_id = request.GET.get('color') or colors[0].id
-    size_id = request.GET.get('size') or sizes[0].id
-    size = Size.objects.get(pk=size_id)
 
     selected_color = Color.objects.get(pk=color_id)
 
@@ -126,8 +123,7 @@ def product_page(request, product_id):
                                              product_color__color_id=color_id,
                                              is_active=True)
     # second one take priority
-    stocks = {s: None for s in sizes} | {v.size: v.stock for v in variants}
-    price = variants.get(size_id=size_id).price or product.price
+    size_variants = {size: None for size in sizes} | {variant.size: variant for variant in variants}
 
     # Review logic
     error_message = None
@@ -152,7 +148,7 @@ def product_page(request, product_id):
                 else:
                     error_message = "Hai già recensito questo prodotto."
             else:
-                error_message = "Devi essere loggato per lasciare una recensione."
+                error_message = "Devi aver eseguito il login per lasciare una recensione."
 
     reviews = Review.objects.filter(product=product_id)
 
@@ -164,9 +160,8 @@ def product_page(request, product_id):
             "colors": colors,
             "selected_color": selected_color,
             "images": images,
-            "selected_size": size,
-            "stocks": stocks,
-            "price": price,
+            "size_variants": size_variants,
+            "base_price": base_price,
             "reviews": reviews,
             "error_message": error_message,
         }

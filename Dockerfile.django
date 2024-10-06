@@ -4,9 +4,11 @@ EXPOSE 8000
 WORKDIR /app
 
 COPY requirements.txt . 
-RUN pip install -r requirements.txt 
+RUN pip install -r requirements.txt
 
 # enabled hot reload with volume on compose.yaml
 # COPY . .
 
-CMD ["bash", "-c", "./manage.py migrate && ./manage.py loaddata db.json && ./manage.py runserver 0.0.0.0:8000"]
+CMD ["bash", "-c", "./manage.py migrate && \
+                    ./manage.py loaddata db.json && \
+                    ./manage.py runserver 0.0.0.0:8000"]
