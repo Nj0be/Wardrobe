@@ -63,6 +63,7 @@ class Brand(models.Model):
     def __str__(self):
         return f'{self.name}'
 
+
 class Product(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField(max_length=2000)
@@ -152,7 +153,6 @@ class CartItem(models.Model):
     product_variant = models.ForeignKey(ProductVariant, on_delete=models.CASCADE)
     customer = models.ForeignKey('accounts.User', on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(validators=[MinValueValidator(1)])
-    is_active = models.BooleanField(default=True)
 
     def clean(self):
         # Don't add product to cart if stock == 0
