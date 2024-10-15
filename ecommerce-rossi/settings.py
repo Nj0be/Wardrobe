@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'products',
     'orders',
     'payments',
+    'cart',
 ]
 
 MIDDLEWARE = [
@@ -164,3 +165,6 @@ STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')
 # media paths
 MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = 'media/'
+
+# cart
+CART_SESSION_ID = 'cart'

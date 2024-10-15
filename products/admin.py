@@ -1,7 +1,7 @@
 from django.contrib import admin
 import nested_admin
 from .models import (ProductColor, ProductImage, ProductVariant, Product, Size, Color, Category, Discount,
-                     Review, CartItem, Brand)
+                     Review, Brand)
 
 
 class ProductVariantInline(nested_admin.NestedTabularInline):
@@ -15,10 +15,6 @@ class ProductImageInline(nested_admin.NestedTabularInline):
 class ProductColorInline(nested_admin.NestedTabularInline):
     model = ProductColor
     inlines = [ProductVariantInline, ProductImageInline]
-
-
-class CartItemInline(admin.TabularInline):
-    model = CartItem
 
 
 @admin.register(Product)

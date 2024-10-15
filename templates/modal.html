@@ -1,0 +1,8 @@
+{% block modal %}{% endblock %}
+
+<script>
+    document.body.style.overflow = 'hidden';
+    document.querySelectorAll('#modal button').forEach((button)=>{
+        button.onclick = ()=>setTimeout(()=>{document.getElementById('modal').innerHTML = '';document.body.style.overflow = '';},0)
+    })
+</script>

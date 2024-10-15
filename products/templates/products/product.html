@@ -1,152 +1,128 @@
-{% extends "products/base.html" %}
+<div class="product-details">
+  <h2>{{ product.name }}</h2>
+  <p><strong>Descrizione:</strong> {{ product.description }}</p>
+  <p><strong>Prezzo:</strong> {{ price }}</p>
 
-{% block title %}Pagina del Prodotto{% endblock %}
+  {% if discount %}
+    <p><strong>Sconto:</strong> {{ product.discount_percentage }}%</p>
+  {% endif %}
+</div>
 
-{% block content %}
-    <div class="product-details">
-        <h2>{{ product.name }}</h2>
-        <p><strong>Descrizione:</strong> {{ product.description }}</p>
-        <p><strong>Prezzo:</strong> {{ base_price }}</p>
+<!-- Image Gallery -->
+<div id="product-image-gallery">
+  {% for image in images %}
+    <img class="product-image" src="{{ image.image.url }}" alt="{{ product.name }}">
+  {% endfor %}
+</div>
 
-        {% if discount %}
-            <p><strong>Sconto:</strong> {{ product.discount_percentage }}%</p>
-        {% endif %}
-    </div>
+<div>
+  <!-- Sezione colori -->
+  {% if colors|length %}
+    {% for color in colors %}
+      <input type="radio" name="color" id="{{ color.id }}"
+          {% if color == selected_color %} checked {% endif %}
+          {% if forloop.first %} required {% endif %}
+             hx-get="{% url 'product_color' product.id color.id %}"
+             hx-target="#content"
+             hx-push-url="true"
+             hx-params="none"
+             preload="mouseover" preload-images="true"
+      >
+      <label for="{{ color.id }}">{{ color.name }}</label><br>
+    {% endfor %}
+  {% endif %}
+</div>
 
-    <!-- Image Gallery -->
-    <div id="product-image-gallery">
-        {% for image in images %}
-            <img class="product-image" src="{{ image.image.url }}" alt="{{ product.name }}">
-        {% endfor %}
-    </div>
+<!-- Product Variations -->
+<form id="cart-add-form" method="post">{% csrf_token %}
+  <!-- Sezione taglie -->
+  {% for size, variant in size_variants.items %}
+    <input type="radio" name="variant_id" id="{{ size.id }}" value="{{ variant.id }}" required
+           hx-get="{% url 'product_color_size' product.id selected_color.id size.id %}"
+           hx-target="#content"
+           hx-push-url="true"
+           hx-params="none"
+        {% if size == selected_size %} checked {% endif %}
+        {% if not variant %} disabled {% endif %}
+    >
+    <label for="{{ size.id }}">{{ size.name }} {% if not variant %}(Non
+      Disponibile){% endif %}</label><br>
+  {% endfor %}
+  {% if stock %}
+    <label for="quantity">Quantità:</label>
+    <input type="number" id="quantity" name="quantity" min="1" max="{{ stock }}" value="1"><br>
+  {% endif %}
+  <button type="submit"
+          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none
+            focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5
+            text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800
+            disabled:bg-gray-300"
+          id="add-to-cart-btn"
+          hx-post="{% url "cart_add" %}"
+          hx-target="#modal"
+  >Aggiungi al carrello
+  </button>
+</form>
 
-    <!-- Product Variations -->
-    <form action="{% url 'product' product.id %}" id="ProductForm" method="get">
+<!-- Sezione delle recensioni -->
+<div class="reviews-section">
+  <h3>Recensioni</h3>
 
-        <!-- Sezione colori -->
-        {% if colors|length %}
-            {% for color in colors %}
-                <input type="radio" name="color" id="{{ color.id }}" value="{{ color.id }}"
-                        {% if color == selected_color %} checked {% endif %}
-                        {% if forloop.first %} required {% endif %}
-                       onchange="document.getElementById('ProductForm').submit();">
-                <label for="{{ color.id }}">{{ color.name }}</label><br>
-            {% endfor %}
-        {% endif %}
+  {% if reviews %}
+    {% for review in reviews %}
+      <div class="review">
+        <h4>{{ review.title }}</h4>
+        <p>{{ review.description }}</p>
+        <span><strong>Voto:</strong> {{ review.vote }}/5 - <strong>da:</strong> {{ review.customer.first_name }} {{ review.customer.last_name }}.</span>
+        <!-- <p class="review-date">Pubblicata il: {# review.date|date:"d M Y" #}</p>-->
+      </div>
+    {% endfor %}
+  {% else %}
+    <p>Non ci sono recensioni per questo prodotto.</p>
+  {% endif %}
+</div>
 
-        <!-- Sezione taglie -->
-        {% for size, variant in size_variants.items %}
-            {% if variant %}
-                <input type="radio" name="size" id="{{ size.id }}" value="{{ size.id }}"
-                        {% if variant.stock == 0 %} disabled {% endif %}
-                       onchange="document.getElementById('ProductForm').submit();">
-                <label for="{{ size.id }}">
-                    {{ size.name }}{% if variant.stock == 0 %} (Non disponibile) {% endif %}</label><br>
-            {% else %}
-                <input type="radio" name="size" id="{{ size.id }}" value="{{ size.id }}" disabled>
-                <label for="{{ size.id }}">{{ size.name }} (Non disponibile) </label><br>
-            {% endif %}
-        {% endfor %}
+<!-- Sezione aggiungi recensione -->
+<div class="add-review-section">
+  <h3>Lascia una recensione</h3>
+
+  {% if user.is_authenticated %}
+    <form action="{% url 'product' product.id %}" method="post">
+      <div class="form-group">
+        <label for="review_description">Descrizione:</label>
+        <textarea name="review_description" id="review_description" rows="4"
+                  placeholder="Scrivi qui la tua recensione"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="review_vote">Voto:</label>
+        <div class="rating-options">
+          <input type="radio" name="review_vote" id="vote_1" value="1"><label for="vote_1">1</label>
+          <input type="radio" name="review_vote" id="vote_2" value="2"><label for="vote_2">2</label>
+          <input type="radio" name="review_vote" id="vote_3" value="3"><label for="vote_3">3</label>
+          <input type="radio" name="review_vote" id="vote_4" value="4"><label for="vote_4">4</label>
+          <input type="radio" name="review_vote" id="vote_5" value="5"><label for="vote_5">5</label>
+        </div>
+      </div>
+
+      <input type="submit" value="Invia Recensione" class="btn-submit">
     </form>
 
-    <!-- Pulsante "Aggiungi al carrello" -->
-    <div class="add-to-cart-section">
-        <form action="#" method="post">
+  {% else %}
+    <p><a href="{% url 'login' %}">Accedi</a> per pubblicare una recensione.</p>
+  {% endif %}
 
-            {% if size_variants %}
-                <input type="hidden" name="selected_size" id="hidden-size">
-            {% endif %}
-
-            {% if colors %}
-                <input type="hidden" name="selected_color" id="hidden-color">
-            {% endif %}
-
-            <input type="submit" value="Aggiungi al carrello" class="btn-add-to-cart" disabled id="add-to-cart-btn">
-        </form>
+  {% if error_message %}
+    <div class="error-message">
+      <p>{{ error_message }}</p>
     </div>
+  {% endif %}
+</div>
 
-    <!-- Sezione delle recensioni -->
-    <div class="reviews-section">
-        <h3>Recensioni</h3>
-
-        {% if reviews %}
-            {% for review in reviews %}
-                <div class="review">
-                    <h4>{{ review.title }}</h4>
-                    <p>{{ review.description }}</p>
-                    <span><strong>Voto:</strong> {{ review.vote }}/5 - <strong>da:</strong> {{ review.customer.first_name }} {{ review.customer.last_name }}.</span>
-                    <!-- <p class="review-date">Pubblicata il: {# review.date|date:"d M Y" #}</p>-->
-                </div>
-            {% endfor %}
-        {% else %}
-            <p>Non ci sono recensioni per questo prodotto.</p>
-        {% endif %}
-    </div>
-
-    <!-- Sezione aggiungi recensione -->
-    <div class="add-review-section">
-        <h3>Lascia una recensione</h3>
-
-        {% if user.is_authenticated %}
-            <form action="{% url 'product' product.id %}" method="post">
-                <div class="form-group">
-                    <label for="review_description">Descrizione:</label>
-                    <textarea name="review_description" id="review_description" rows="4"
-                              placeholder="Scrivi qui la tua recensione"></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="review_vote">Voto:</label>
-                    <div class="rating-options">
-                        <input type="radio" name="review_vote" id="vote_1" value="1"><label for="vote_1">1</label>
-                        <input type="radio" name="review_vote" id="vote_2" value="2"><label for="vote_2">2</label>
-                        <input type="radio" name="review_vote" id="vote_3" value="3"><label for="vote_3">3</label>
-                        <input type="radio" name="review_vote" id="vote_4" value="4"><label for="vote_4">4</label>
-                        <input type="radio" name="review_vote" id="vote_5" value="5"><label for="vote_5">5</label>
-                    </div>
-                </div>
-
-                <input type="submit" value="Invia Recensione" class="btn-submit">
-            </form>
-
-        {% else %}
-            <p><a href="{% url 'login' %}">Accedi</a> per pubblicare una recensione.</p>
-        {% endif %}
-
-        {% if error_message %}
-            <div class="error-message">
-                <p>{{ error_message }}</p>
-            </div>
-        {% endif %}
-    </div>
-
-    <script>
-        function updateSelection() {
-            // Ottieni gli elementi selezionati
-            var selectedColor = document.querySelector('input[name="color"]:checked');
-            var selectedSize = document.querySelector('input[name="size"]:checked');
-
-            // Aggiorna i campi nascosti
-            if (selectedColor) {
-                document.getElementById('hidden-color').value = selectedColor.value;
-            }
-
-            if (selectedSize) {
-                document.getElementById('hidden-size').value = selectedSize.value;
-            }
-
-            // Abilita il pulsante "Aggiungi al carrello" solo se entrambi sono selezionati
-            var addToCartBtn = document.getElementById('add-to-cart-btn');
-            if (selectedColor && selectedSize) {
-                addToCartBtn.disabled = false;
-            } else {
-                addToCartBtn.disabled = true;
-            }
-        }
-
-        // Esegui il controllo iniziale per il caso in cui una selezione sia già fatta
-        window.onload = function () {
-            updateSelection();
-        };
-    </script>
-{% endblock %}
+<script>
+    cart_add_form = document.getElementById('add-to-cart-form')
+    cart_add_form.onsubmit = function (event) {
+        // event.preventDefault();
+        // return false;
+    }
+</script>

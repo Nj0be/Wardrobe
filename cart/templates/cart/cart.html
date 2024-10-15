@@ -1,0 +1,34 @@
+{% for variant, attr in cart.items %}
+  <form id="form{{ variant.id }}">{% csrf_token %}
+    <input type="hidden" name="variant_id" value="{{ variant.id }}">
+    <input type="hidden" name="is_active">
+    <input type="checkbox" id="is_active{{ variant.id }}" name="is_active" autocomplete="off"
+        {% if attr.is_active %} checked {% endif %}
+           hx-post="{% url "cart_edit" %}"
+           hx-swap="none"
+    />
+    <label for="is_active{{ variant.id }}">Attivo</label>
+    <img class="product-image" src="{{ variant.get_images.0.url }}" alt="{{ variant.name }}">
+    <label for="quantity{{ variant.id }}">Quantità</label>
+    <select name="quantity" id="quantity{{ variant.id }}" autocomplete="off">
+      {% with ''|center:variant.stock as range %}
+        {% for _ in range %}
+          <option value="{{ forloop.counter }}"
+                  {% if attr.quantity == forloop.counter %}selected{% endif %}
+                  hx-post="{% url "cart_edit" %}"
+                  hx-swap="none"
+          >{{ forloop.counter }}</option>
+        {% endfor %}
+      {% endwith %}
+    </select>
+    <button type="submit" id="delete{{ variant.id }}"
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none
+            focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5
+            text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800
+            disabled:bg-gray-300"
+            hx-post="{% url "cart_delete" %}"
+            hx-target="#form{{ variant.id }}"
+    >Rimuovi dal carrello
+    </button>
+  </form>
+{% endfor %}
