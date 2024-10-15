@@ -1,4 +1,5 @@
 from django.db.models import Q
+from django.http import HttpResponseNotFound, Http404
 from django.views import generic
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Product, ProductVariant, ProductColor, Category, Color, Size, Review, ProductImage
@@ -15,6 +16,9 @@ class HomepageView(generic.ListView):
 
 def search(request):  # da implementare anche la logica per i filtri
     """ Filtraggio per categoria """
+
+    if request.method == "POST":
+        return HttpResponseNotFound('<h1>Page not found</h1>')
 
     if request.user.is_authenticated: ## da toglie in production
         auth = True ## da toglie in production
@@ -102,28 +106,46 @@ def search(request):  # da implementare anche la logica per i filtri
         })
 
 
-def product_page(request, product_id):
+def product_page(request, product_id, color_id=None, size_id=None):
     product = get_object_or_404(Product, pk=product_id)
-    base_price = product.price
+    price = product.price
+    stock = 0
+
+    # if product doesn't have variants, it can't be displayed
+    if not product.has_variants():
+        raise Http404()
 
     colors = Color.objects.filter(productcolor__product_id=product_id)
-    product_colors = ProductColor.objects.filter(product_id=product_id)
-    sizes = Size.objects.filter(productvariant__product_color_id__in=product_colors).distinct()
+    color_id = color_id or colors[0].id
 
-    # Ottenimento valori dalla richiesta GET
-    color_id = request.GET.get('color') or colors[0].id
 
-    selected_color = Color.objects.get(pk=color_id)
+    selected_color = Color.objects.filter(id=color_id, productcolor__product_id=product_id).first()
+    if color_id and not selected_color:
+        return redirect('product', product_id=product_id)
 
-    images = ProductImage.objects.filter(
-        product_color=product_colors.get(color_id=color_id)
-    )
-
-    variants = ProductVariant.objects.filter(product_color__product_id=product_id,
+    product_color = ProductColor.objects.get(product=product_id, color=selected_color)
+    variants = ProductVariant.objects.filter(product_color__product=product,
                                              product_color__color_id=color_id,
                                              is_active=True)
+
+
+    # we consider only available sizes
+    selected_size = Size.objects.filter(productvariant__product_color=product_color, id=size_id, productvariant__stock__gt=0).first()
+    if size_id and not selected_size:
+        return redirect('product_color', product_id=product_id, color_id=color_id)
+
+    if selected_size:
+        price = variants.filter(size=selected_size).first().price or price
+        stock = variants.get(size_id=selected_size).stock
+
+    sizes = Size.objects.filter(productvariant__product_color__product=product_id).distinct()
+
+    images = ProductImage.objects.filter(
+        product_color=product_color
+    )
+
     # second one take priority
-    size_variants = {size: None for size in sizes} | {variant.size: variant for variant in variants}
+    size_variants = {size: None for size in sizes} | {variant.size: variant for variant in variants if variant.stock}
 
     # Review logic
     error_message = None
@@ -152,17 +174,24 @@ def product_page(request, product_id):
 
     reviews = Review.objects.filter(product=product_id)
 
+    if request.htmx:
+        template_name = "products/product.html",
+    else:
+        template_name = "products/product_full.html",
+
     return render(
         request,
-        "products/product.html",
+        template_name,
         {
             "product": product,
             "colors": colors,
             "selected_color": selected_color,
+            "selected_size": selected_size,
             "images": images,
             "size_variants": size_variants,
-            "base_price": base_price,
+            "price": price,
             "reviews": reviews,
             "error_message": error_message,
+            "stock": stock,
         }
     )

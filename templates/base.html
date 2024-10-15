@@ -2,26 +2,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>{% block title %}Ecommerce Rossi{% endblock %}</title>
-    <link rel="stylesheet" href="{% static "css/base.min.css" %}">
-    <script src="{% static "js/htmx.min.js" %}"></script>
-    <script src="{% static "js/preload.js" %}"></script>
+  <title>{% block title %}Ecommerce Rossi{% endblock %}</title>
+  <link rel="stylesheet" href="{% static "css/base.min.css" %}">
+  <script src="{% static "js/htmx.min.js" %}"></script>
+  <script src="{% static "js/preload.js" %}"></script>
 </head>
 <body hx-ext="preload">
 <header>
-    {% block header %}
-        <h1><a href="{% url 'homepage' %}">My Ecommerce</a></h1>
-    {% endblock %}
+  {% block header %}
+    <h1><a href="{% url 'homepage' %}">My Ecommerce</a></h1>
+  {% endblock %}
 </header>
 
-<main id="content-div">
-    {% block content %}{% endblock %}
+<main id="content">
+  {% block content %}{% endblock %}
 </main>
 
+<div id="modal"></div>
+
 <footer>
-    {% block footer %}
-        <p>&copy; 2024 My Ecommerce</p>
-    {% endblock %}
+  {% block footer %}
+    <p>&copy; 2024 My Ecommerce</p>
+  {% endblock %}
 </footer>
 </body>
 </html>

@@ -1,7 +1,5 @@
 from django.db import models
-from django.utils.translation import gettext_lazy as _
-from django.core.validators import MaxValueValidator, MinValueValidator
-from django.core.exceptions import ValidationError
+from django.core.validators import MaxValueValidator
 from django_extensions.validators import HexValidator
 
 
@@ -75,6 +73,9 @@ class Product(models.Model):
     discount = models.ForeignKey(Discount, on_delete=models.SET_NULL, null=True, blank=True)
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
 
+    def has_variants(self):
+        return len(ProductVariant.objects.filter(product_color__product=self)) > 0
+
     def __str__(self):
         return f'{self.id}-{self.name}'
 
@@ -97,6 +98,9 @@ class Size(models.Model):
 class ProductColor(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     color = models.ForeignKey(Color, on_delete=models.CASCADE)
+
+    def get_images(self):
+        return [prod_image.image for prod_image in ProductImage.objects.filter(product_color=self)]
 
     class Meta:
         unique_together = [['product', 'color']]
@@ -123,6 +127,9 @@ class ProductVariant(models.Model):
     stock = models.PositiveIntegerField()
     is_active = models.BooleanField(default=True)
 
+    def get_images(self):
+        return self.product_color.get_images()
+
     @property
     def product(self):
         return self.product_color.product
@@ -148,18 +155,3 @@ class Review(models.Model):
     class Meta:
         unique_together = [['product', 'customer']]
 
-
-class CartItem(models.Model):
-    product_variant = models.ForeignKey(ProductVariant, on_delete=models.CASCADE)
-    customer = models.ForeignKey('accounts.User', on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField(validators=[MinValueValidator(1)])
-
-    def clean(self):
-        # Don't add product to cart if stock == 0
-        self.quantity = min(self.quantity, self.product_variant.stock)
-        if self.quantity == 0:
-            raise ValidationError(_("Can't add Product to cart with quantity = 0"))
-
-    def save(self, *args, **kwargs):
-        self.full_clean()
-        super(CartItem, self).save(*args, **kwargs)
