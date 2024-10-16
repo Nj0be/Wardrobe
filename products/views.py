@@ -72,7 +72,7 @@ def search(request):  # da implementare anche la logica per i filtri
     sizes = Size.objects.all()
 
     """ Selezione prodotti """
-    products = Product.objects.all()
+    products = Product.objects.filter(productcolor__product__isnull=False)
 
     if selected_category:
         products = products.filter(categories__in=selected_category.get_descendants() + [selected_category]).distinct()
