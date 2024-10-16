@@ -128,6 +128,9 @@ def product_page(request, product_id, color_id=None, size_id=None):
                                              product_color__color_id=color_id,
                                              is_active=True)
 
+    if not size_id and len(variants) == 1 and variants[0].stock > 0:
+        return redirect('product_color_size', product_id=product_id, color_id=color_id, size_id=variants[0].size.id)
+
 
     # we consider only available sizes
     selected_size = Size.objects.filter(productvariant__product_color=product_color, id=size_id, productvariant__stock__gt=0).first()
