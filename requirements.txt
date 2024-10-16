@@ -5,3 +5,4 @@ django-nested-admin~=4.1.0
 pillow~=10.4.0
 django-cleanup~=9.0.0
 django-htmx~=1.19.0
+django-unused-media~=0.2.2

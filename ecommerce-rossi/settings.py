@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'nested_admin',
     'django_cleanup',
     'django_htmx',
+    'django_unused_media',
 
     # Local
     'accounts',
