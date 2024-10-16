@@ -12,32 +12,6 @@ class Category(TreeNode):
         unique_together = [['parent', 'name']]
         verbose_name_plural = "Categories"
 
-    def get_children(self):
-        return Category.objects.filter(parent_category=self)
-
-    def get_ancestors(self):
-        """
-        Metodo ricorsivo per ottenere gli antenati di una categoria
-        """
-
-        if self.parent is not None:
-            ancestors = self.parent.get_ancestors()
-            ancestors.append(self.parent)
-            return ancestors
-        else:
-            return []
-
-    def get_descendants(self):
-        """
-        Metodo ricorsivo per ottenere tutte le sottocategorie (discendenti)
-        """
-        descendants = []
-        children = self.get_children()
-        for child in children:
-            descendants.append(child)
-            descendants.extend(child.get_descendants())  # Ricorsione per ottenere i figli dei figli
-        return descendants
-
     def __str__(self):
         parent_category = self.parent
         parent_str = ''
