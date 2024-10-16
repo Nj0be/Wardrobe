@@ -1,6 +1,10 @@
 {% for variant, attr in cart.items %}
   <form id="form{{ variant.id }}">{% csrf_token %}
     <input type="hidden" name="variant_id" value="{{ variant.id }}">
+    <!--
+      When the checkbox is not checked the input will not be sent.
+      We use a hidden input to always send the false value
+    -->
     <input type="hidden" name="is_active">
     <input type="checkbox" id="is_active{{ variant.id }}" name="is_active" autocomplete="off"
         {% if attr.is_active %} checked {% endif %}

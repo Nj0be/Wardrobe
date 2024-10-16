@@ -1,15 +1,15 @@
+from tree_queries.models import TreeNode
 from django.db import models
 from django.core.validators import MaxValueValidator
 from django_extensions.validators import HexValidator
 
 
-class Category(models.Model):
-    parent_category = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
+class Category(TreeNode):
     name = models.CharField(max_length=100)
     image = models.ImageField(upload_to='categories/', null=True, blank=True)
 
     class Meta:
-        unique_together = [['parent_category', 'name']]
+        unique_together = [['parent', 'name']]
         verbose_name_plural = "Categories"
 
     def get_children(self):
@@ -20,9 +20,9 @@ class Category(models.Model):
         Metodo ricorsivo per ottenere gli antenati di una categoria
         """
 
-        if self.parent_category is not None:
-            ancestors = self.parent_category.get_ancestors()
-            ancestors.append(self.parent_category)
+        if self.parent is not None:
+            ancestors = self.parent.get_ancestors()
+            ancestors.append(self.parent)
             return ancestors
         else:
             return []
@@ -39,10 +39,12 @@ class Category(models.Model):
         return descendants
 
     def __str__(self):
-        if self.parent_category:
-            return f'{self.parent_category.name}-{self.name}'
-        else:
-            return f'{self.name}'
+        parent_category = self.parent
+        parent_str = ''
+        while parent_category:
+            parent_str += f'{parent_category.name}-'
+            parent_category = parent_category.parent
+        return parent_str + f'{self.name}'
 
 
 class Discount(models.Model):

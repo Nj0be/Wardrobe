@@ -1,8 +1,13 @@
+from idlelib.autocomplete import ATTRS
+
+from django.contrib.postgres.aggregates import ArrayAgg
+from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 from django.db.models import Q
 from django.http import HttpResponseNotFound, Http404
 from django.views import generic
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Product, ProductVariant, ProductColor, Category, Color, Size, Review, ProductImage
+from .models import Product, ProductVariant, ProductColor, Category, Color, Size, Review, \
+    ProductImage
 
 
 class HomepageView(generic.ListView):
@@ -11,98 +16,74 @@ class HomepageView(generic.ListView):
 
     def get_queryset(self):
         """Return all the products"""
-        return Category.objects.filter(parent_category=None)  # oppure null BOH
+        return Category.objects.filter(parent=None)  # oppure null BOH
 
 
-def search(request):  # da implementare anche la logica per i filtri
+def search(request, category_id=None):  # da implementare anche la logica per i filtri
     """ Filtraggio per categoria """
-
-    if request.method == "POST":
+    if request.method != "GET":
         return HttpResponseNotFound('<h1>Page not found</h1>')
 
-    if request.user.is_authenticated: ## da toglie in production
-        auth = True ## da toglie in production
-    else: ## da toglie in production
-        auth = False ## da toglie in production
-
-    selected_category_id = int(request.GET.get('category')) if request.GET.get('category') else None
-
-    if selected_category_id:
-        # viene passato un id di una categoria tra i parametri
-        try:
-            # nel caso il valore dell'id è presente nel db
-            selected_category = Category.objects.get(pk=selected_category_id)
-        except Category.DoesNotExist:
-            selected_category = None
-    else:
-        selected_category = None
-
-    categories = Category.objects.filter(parent_category__isnull=True)
-
-    if selected_category is not None:
-        ancestors = selected_category.get_ancestors()
-        ancestors.append(selected_category)
-    else:
-        ancestors = []
-
     """ Filtraggio per ricerca testuale """
-
-    search_terms = request.GET.get('search_terms') if request.GET.get('search_terms') else None
-
-    """ Filtraggio per colori """
-
-    selected_colors_ids = request.GET.getlist('color')
-    selected_colors = []
-    for selected_color_id in selected_colors_ids:
-        try:
-            selected_colors.append(Color.objects.get(pk=selected_color_id))
-        except Color.DoesNotExist:
-            pass
-    colors = Color.objects.all()
-
-    """ Filtraggio per taglie """
-
-    selected_sizes_ids = request.GET.getlist('size')
-    selected_sizes = []
-    for selected_size_id in selected_sizes_ids:
-        try:
-            selected_sizes.append(Size.objects.get(pk=selected_size_id))
-        except Size.DoesNotExist:
-            pass
-    sizes = Size.objects.all()
+    search_terms = request.GET.get('search_terms', None)
 
     """ Selezione prodotti """
-    products = Product.objects.filter(productcolor__product__isnull=False)
+    # selezioniamo solo i prodotto che hanno almeno una product variant
+    selected_category = Category.objects.filter(id=category_id).first()
+    import sys
+    try:
+        categories = [selected_category.parent] + list(selected_category.children.all())
+        products = Product.objects.filter(productcolor__productvariant__isnull=False,
+                                          categories__in=selected_category.descendants(include_self=True)).distinct()
+    except AttributeError:
+        categories = Category.objects.with_tree_fields().extra(where=["__tree.tree_depth <= %s"], params=[0])
+        products = Product.objects.filter(productcolor__productvariant__isnull=False).distinct()
 
-    if selected_category:
-        products = products.filter(categories__in=selected_category.get_descendants() + [selected_category]).distinct()
+    """ Filtraggio per colori """
+    colors = Color.objects.filter(productcolor__product__in=list(products)).distinct()
+    selected_colors = colors.filter(pk__in=request.GET.getlist('color', None))
+
+    """ Filtraggio per taglie """
+    sizes = Size.objects.filter(productvariant__product_color__product__in=list(products)).distinct()
+    selected_sizes = sizes.filter(pk__in=request.GET.getlist('size', None))
+
     if selected_colors:
         products = products.filter(productcolor__color__in=selected_colors).distinct()
-    if selected_sizes:
-        products = products.filter(productcolor__productvariant__size__in=selected_sizes).distinct()
-    if search_terms:
-        # check if title contains any of the strings in the search_terms list
-        query = Q()
-        keywords = search_terms.split(" ")
-        for keyword in keywords:
-            query |= Q(name__icontains=keyword)
-        products = products.filter(query)
+    if 'size' in request.GET:
+        products = products.filter(productcolor__productvariant__size__id__in=request.GET['size']).distinct()
+    if search_terms and len(search_terms) > 2:
+        # get words with len > 2 and create query for postgres search ( word1:* & word2:* & etc...)
+        query_str = ' & '.join([w+':*' for w in search_terms.split() if len(w) > 2])
+        vector = (SearchVector('name', weight='A', config='italian') +
+                  SearchVector('description', weight='B', config='italian') +
+                  SearchVector('brand__name', weight='B', config='italian') +
+                  SearchVector('categories_names', weight='C', config='italian') +
+                  SearchVector('productcolor__color_names', weight='C', config='italian'))
+        query = SearchQuery(query_str, search_type="raw", config='italian')
+        # query = SearchQuery(search_terms, config='italian')
+        products = products.annotate(
+            categories_names=ArrayAgg('categories__name', distinct=True),
+            productcolor__color_names=ArrayAgg("productcolor__color__name", distinct=True),
+            rank=SearchRank(vector, query), search=vector).filter(rank__gte=0.1).order_by('-rank')
+            # rank = SearchRank(vector, query), search = vector).filter(search=search_terms).order_by('-rank')
+        import sys
+        for product in products:
+            print(product.rank, file=sys.stderr)
+
 
     """ Invia la risposta """
     return render(
         request,
         "products/search.html",
         {
+            "categories": categories,
             "selected_category": selected_category,
-            "root_categories": categories,
-            "ancestors": ancestors,
             "products": products,
             "colors": colors,
             "selected_colors": selected_colors,
             "sizes": sizes,
             "selected_sizes": selected_sizes,
             "search_terms": search_terms,
-            "auth": auth,  # da toglie in production
         })
 
 
@@ -118,7 +99,6 @@ def product_page(request, product_id, color_id=None, size_id=None):
     colors = Color.objects.filter(productcolor__product_id=product_id)
     color_id = color_id or colors[0].id
 
-
     selected_color = Color.objects.filter(id=color_id, productcolor__product_id=product_id).first()
     if color_id and not selected_color:
         return redirect('product', product_id=product_id)
@@ -129,11 +109,12 @@ def product_page(request, product_id, color_id=None, size_id=None):
                                              is_active=True)
 
     if not size_id and len(variants) == 1 and variants[0].stock > 0:
-        return redirect('product_color_size', product_id=product_id, color_id=color_id, size_id=variants[0].size.id)
-
+        return redirect('product_color_size', product_id=product_id, color_id=color_id,
+                        size_id=variants[0].size.id)
 
     # we consider only available sizes
-    selected_size = Size.objects.filter(productvariant__product_color=product_color, id=size_id, productvariant__stock__gt=0).first()
+    selected_size = Size.objects.filter(productvariant__product_color=product_color, id=size_id,
+                                        productvariant__stock__gt=0).first()
     if size_id and not selected_size:
         return redirect('product_color', product_id=product_id, color_id=color_id)
 
@@ -148,7 +129,8 @@ def product_page(request, product_id, color_id=None, size_id=None):
     )
 
     # second one take priority
-    size_variants = {size: None for size in sizes} | {variant.size: variant for variant in variants if variant.stock}
+    size_variants = {size: None for size in sizes} | {variant.size: variant for variant in variants
+                                                      if variant.stock}
 
     # Review logic
     error_message = None

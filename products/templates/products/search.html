@@ -1,73 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-  <style>
-    .filters {
-      display: inline-table;
-    }
-  </style>
-</head>
-<body>
+{% extends "products/base.html" %}
 
-<p>User authenticated? {{ auth }}{% if auth %}... I always see you {{ user.email }}{% endif %}</p>
-{% if auth %}
-  <form action="{% url 'logout' %}" method="post">
-    <button type="submit">Log Out</button>
-  </form>
-{% else %}
-  <a href="{% url 'login' %}">Accedi</a>
-{% endif %}
-
+{% block content %}
 <!-- Categories Menu -->
 <ul>
-  {% for category in root_categories %}
-    {% if category in ancestors %}
-      <li>
-        {% include 'products/subcategory.html' with category=category ancestors=ancestors selected_category=selected_category selected_colors=selected_colors %}
-      </li>
-    {% else %}
-      <li>
-        <a href="{% url 'search' %}?category={{ category.id }}
-            {% if search_terms %}&search_terms={{ search_terms }}{% endif %}
-            {% if selected_colors %}{% for color in selected_colors %}&color={{ color.id }}{% endfor %}{% endif %}
-            {% if selected_sizes %}{% for size in selected_sizes %}&size={{ size.id }}{% endfor %}{% endif %}"
-        >{{ category.name }}</a>
-      </li>
-    {% endif %}
+  {% for category in categories %}
+    <li>
+     {% if category %}
+        <a href="{% url 'search_category' category.id %}">{% if selected_category.parent == category %}Torna indietro - {% endif %}{{ category.name }}</a>
+     {% else %}
+        <a href="{% url 'search' %}">Torna indietro - Root</a>
+     {% endif %}
+    </li>
   {% endfor %}
 </ul>
 
-<!-- Text Filter Section -->
-<form style="border: 1px solid black" action="{% url 'search' %}" method="get">
-  {% if selected_category %}
-    <input type="hidden" name="category" value="{{ selected_category.id }}">
-  {% endif %}
-  {% if selected_colors %}
-    {% for color in selected_colors %}
-      <input type="hidden" name="color" value="{{ color.id }}">
-    {% endfor %}
-  {% endif %}
-  {% if selected_sizes %}
-    {% for size in selected_sizes %}
-      <input type="hidden" name="size" value="{{ size.id }}">
-    {% endfor %}
-  {% endif %}
-
+<!-- Colors and Sizes Filter Section -->
+<form style="border: 1px solid black" action="{% if selected_category %}{% url 'search_category' selected_category.id %}{% else %}{% url 'search' %}{% endif %}" id="filtersForm" method="get">
   <input type="text" name="search_terms" id="search_terms" placeholder="Cerca il tuo prodotto"
          {% if search_terms %}value="{{ search_terms }}"{% endif %}>
   <input type="submit" value="Search">
-</form>
-
-<!-- Colors and Sizes Filter Section -->
-<form style="border: 1px solid black" action="{% url 'search' %}" id="filtersForm" method="get">
-  {% if selected_category %}
-    <input type="hidden" name="category" value="{{ selected_category.id }}">
-  {% endif %}
-  {% if search_terms %}
-    <input type="hidden" name="search_terms" value="{{ search_terms }}">
-  {% endif %}
 
   <div class="filters">
     <p>Colors</p>
@@ -103,5 +54,4 @@
   <p>Nessun prodotto disponibile</p>
 {% endif %}
 
-</body>
-</html>
+{% endblock %}
