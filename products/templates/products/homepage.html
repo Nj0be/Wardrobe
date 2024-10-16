@@ -12,7 +12,7 @@
         {% for category in main_categories_list %}
             <div class="category">
                 <a href="{% url 'search' %}?category={{ category.id }}">
-                    <img src="#" alt="{{ category.name }}">
+                    <img src="{{ category.image.url }}" alt="{{ category.name }}">
                     <h3>{{ category.name }}</h3>
                 </a>
             </div>
