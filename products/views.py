@@ -30,17 +30,15 @@ def search(request, category_id=None):  # da implementare anche la logica per i 
     """ Selezione prodotti """
     # selezioniamo solo i prodotto che hanno almeno una product variant
     selected_category = Category.objects.filter(id=category_id).first()
-    import sys
+    products = Product.objects.filter(is_active=True ,productcolor__productvariant__isnull=False).distinct()
     try:
         categories = [selected_category.parent] + list(selected_category.children.all())
-        products = Product.objects.filter(productcolor__productvariant__isnull=False,
-                                          categories__in=selected_category.descendants(include_self=True)).distinct()
+        products.filter(categories__in=selected_category.descendants(include_self=True))
     except AttributeError:
         categories = Category.objects.with_tree_fields().extra(where=["__tree.tree_depth <= %s"], params=[0])
-        products = Product.objects.filter(productcolor__productvariant__isnull=False).distinct()
 
     """ Filtraggio per colori """
-    colors = Color.objects.filter(productcolor__product__in=list(products)).distinct()
+    colors = Color.objects.filter(productcolor__product__in=list(products)).distinct().order_by('-hex')
     selected_colors = colors.filter(pk__in=request.GET.getlist('color', None))
 
     """ Filtraggio per taglie """
@@ -48,9 +46,9 @@ def search(request, category_id=None):  # da implementare anche la logica per i 
     selected_sizes = sizes.filter(pk__in=request.GET.getlist('size', None))
 
     if selected_colors:
-        products = products.filter(productcolor__color__in=selected_colors).distinct()
+        products = products.filter(productcolor__color__in=selected_colors)
     if 'size' in request.GET:
-        products = products.filter(productcolor__productvariant__size__id__in=request.GET['size']).distinct()
+        products = products.filter(productcolor__productvariant__size__id__in=request.GET['size'])
     if search_terms and len(search_terms) > 2:
         # get words with len > 2 and create query for postgres search ( word1:* & word2:* & etc...)
         query_str = ' & '.join([w+':*' for w in search_terms.split() if len(w) > 2])
@@ -62,8 +60,8 @@ def search(request, category_id=None):  # da implementare anche la logica per i 
         query = SearchQuery(query_str, search_type="raw", config='italian')
         # query = SearchQuery(search_terms, config='italian')
         products = products.annotate(
-            categories_names=ArrayAgg('categories__name', distinct=True),
-            productcolor__color_names=ArrayAgg("productcolor__color__name", distinct=True),
+            categories_names=ArrayAgg('categories__name'),
+            productcolor__color_names=ArrayAgg("productcolor__color__name"),
             rank=SearchRank(vector, query), search=vector).filter(rank__gte=0.1).order_by('-rank')
             # rank = SearchRank(vector, query), search = vector).filter(search=search_terms).order_by('-rank')
         import sys
@@ -88,7 +86,7 @@ def search(request, category_id=None):  # da implementare anche la logica per i 
 
 
 def product_page(request, product_id, color_id=None, size_id=None):
-    product = get_object_or_404(Product, pk=product_id)
+    product = get_object_or_404(Product, pk=product_id, is_active=True)
     price = product.price
     stock = 0
 
@@ -105,8 +103,7 @@ def product_page(request, product_id, color_id=None, size_id=None):
 
     product_color = ProductColor.objects.get(product=product_id, color=selected_color)
     variants = ProductVariant.objects.filter(product_color__product=product,
-                                             product_color__color_id=color_id,
-                                             is_active=True)
+                                             product_color__color_id=color_id)
 
     if not size_id and len(variants) == 1 and variants[0].stock > 0:
         return redirect('product_color_size', product_id=product_id, color_id=color_id,

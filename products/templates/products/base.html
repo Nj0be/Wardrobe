@@ -1,16 +1,5 @@
 {% extends "base.html" %}
 
-{% block header %}
-    <a class="text-5xl text-blue-600 dark:text-blue-500 hover:underline"
-       href="{% url 'homepage' %}">My Ecommerce</a>
-    <nav>
-        <ul>
-            <li><a href="{% url "cart" %}">Carrello</a></li>
-            {% if user.is_authenticated %}
-                <li><a href="#">Hi, {{ user.first_name }}</a></li>
-            {% else %}
-                <li><a href="{% url 'login' %}">Accedi</a></li>
-            {% endif %}
-        </ul>
-    </nav>
+{% block header_urls %}
+  <li><a href="{% url "cart" %}">Carrello</a></li>
 {% endblock %}

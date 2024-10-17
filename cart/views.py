@@ -17,7 +17,8 @@ class Cart:
 
         for variant_id, attr in list(self.session_cart.items()):
             try:
-                variant = ProductVariant.objects.get(id=variant_id)
+                variant = ProductVariant.objects.get(id=variant_id,
+                                                     product_color__product__is_active=True)
                 quantity = int(attr['quantity'])
                 is_active = bool(attr['is_active'])
             except (ObjectDoesNotExist, ValueError, TypeError) as e:
@@ -155,7 +156,7 @@ def cart_edit(request):
 
     try:
         variant_id = request.POST['variant_id']
-        variant = ProductVariant.objects.get(id=variant_id)
+        variant = ProductVariant.objects.get(id=variant_id, product_color__product__is_active=True)
     except KeyError:
         return HttpResponseBadRequest("missing product variant")
     except ObjectDoesNotExist:
@@ -190,7 +191,7 @@ def cart_delete(request):
 
     try:
         variant_id = request.POST['variant_id']
-        variant = ProductVariant.objects.get(id=variant_id)
+        variant = ProductVariant.objects.get(id=variant_id, product_color__product__is_active=True)
     except KeyError:
         return HttpResponseBadRequest("missing product variant")
     except ObjectDoesNotExist:
@@ -211,7 +212,7 @@ def cart_add(request):
 
     try:
         variant_id = request.POST['variant_id']
-        variant = ProductVariant.objects.get(id=variant_id)
+        variant = ProductVariant.objects.get(id=variant_id, product_color__product__is_active=True)
     except KeyError:
         return HttpResponseBadRequest("missing product variant")
     except ObjectDoesNotExist:

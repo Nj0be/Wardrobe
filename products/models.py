@@ -3,6 +3,8 @@ from django.db import models
 from django.core.validators import MaxValueValidator
 from django_extensions.validators import HexValidator
 
+from cart.models import CartItem
+
 
 class Category(TreeNode):
     name = models.CharField(max_length=100)
@@ -51,6 +53,11 @@ class Product(models.Model):
 
     def has_variants(self):
         return len(ProductVariant.objects.filter(product_color__product=self)) > 0
+
+    def save(self, *args, **kwargs):
+        super(Product, self).save(args, kwargs)
+        if not self.is_active:
+            CartItem.objects.filter(product_variant__product_color__product=self).delete()
 
     def __str__(self):
         return f'{self.id}-{self.name}'
@@ -101,7 +108,9 @@ class ProductVariant(models.Model):
     size = models.ForeignKey(Size, on_delete=models.CASCADE)
     price = models.FloatField(default=0)
     stock = models.PositiveIntegerField()
-    is_active = models.BooleanField(default=True)
+
+    def is_active(self):
+        return self.product_color.product.is_active
 
     def get_images(self):
         return self.product_color.get_images()

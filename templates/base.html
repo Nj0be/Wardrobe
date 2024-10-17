@@ -10,7 +10,20 @@
 <body hx-ext="preload">
 <header>
   {% block header %}
-    <h1><a href="{% url 'homepage' %}">My Ecommerce</a></h1>
+    <a class="text-5xl text-blue-600 dark:text-blue-500 hover:underline"
+       href="{% url 'homepage' %}">My Ecommerce</a>
+    <nav>
+      <ul>
+        {% if user.is_authenticated %}
+          <li><a href="{% url 'profile' %}">Hi, {{ user.first_name }}</a></li>
+          <form action="{% url 'logout' %}" method="post">{% csrf_token %}<button type="submit">Logout</button></form>
+        {% else %}
+          <li><a href="{% url 'login' %}">Accedi</a></li>
+        {% endif %}
+        {% block header_urls %}
+        {% endblock %}
+      </ul>
+    </nav>
   {% endblock %}
 </header>
 
