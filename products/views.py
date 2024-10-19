@@ -31,10 +31,11 @@ def search(request, category_id=None):  # da implementare anche la logica per i 
     # selezioniamo solo i prodotto che hanno almeno una product variant
     selected_category = Category.objects.filter(id=category_id).first()
     products = Product.objects.filter(is_active=True ,productcolor__productvariant__isnull=False).distinct()
-    try:
+    if selected_category:
         categories = [selected_category.parent] + list(selected_category.children.all())
-        products.filter(categories__in=selected_category.descendants(include_self=True))
-    except AttributeError:
+        products = products.filter(categories__in=selected_category.descendants(include_self=True))
+    else:
+        # get 'root' categories (first layer)
         categories = Category.objects.with_tree_fields().extra(where=["__tree.tree_depth <= %s"], params=[0])
 
     """ Filtraggio per marca """

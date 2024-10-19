@@ -2,11 +2,19 @@
 <ul>
   {% for category in categories %}
     <li>
+        <a
+            hx-target="#content"
+            hx-push-url="true"
+            hx-include="#filtersForm"
+            preload="mouseover" preload-images="true"
      {% if category %}
-        <a href="{% url 'search_category' category.id %}">{% if selected_category.parent == category %}Torna indietro - {% endif %}{{ category.name }}</a>
+            hx-get="{% url 'search_category' category.id %}"
+        href="{% url 'search_category' category.id %}">{% if selected_category.parent == category %}Torna indietro - {% endif %}{{ category.name }}
      {% else %}
-        <a href="{% url 'search' %}">Torna indietro - Root</a>
+       hx-get="{% url 'search' %}"
+        href="{% url 'search' %}">Torna indietro - Root
      {% endif %}
+      </a>
     </li>
   {% endfor %}
 </ul>
