@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'django_cleanup',
     'django_htmx',
     'django_unused_media',
+    'adminsortable2',
+    'feincms3',
 
     # Local
     'accounts',

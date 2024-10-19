@@ -21,7 +21,17 @@
   <input type="submit" value="Search">
 
   <div class="filters">
-    <p>Colors</p>
+    <p>Marche</p>
+    {% for brand in brands %}
+      <input type="checkbox" name="brand" id="brand_{{ forloop.counter }}" value="{{ brand.id }}"
+          {% if brand in selected_brands %} checked {% endif %}
+             onchange="document.getElementById('filtersForm').submit();">
+      <label for="brand_{{ forloop.counter }}">{{ brand.name }}</label><br>
+    {% endfor %}
+  </div>
+
+  <div class="filters">
+    <p>Colori</p>
     {% for color in colors %}
       <input type="checkbox" name="color" id="color_{{ forloop.counter }}" value="{{ color.id }}"
           {% if color in selected_colors %} checked {% endif %}
@@ -32,7 +42,7 @@
   </div>
 
   <div class="filters">
-    <p>Sizes</p>
+    <p>Taglie</p>
     {% for size in sizes %}
       <input type="checkbox" name="size" id="size_{{ forloop.counter }}" value="{{ size.id }}"
           {% if size in selected_sizes %} checked {% endif %}

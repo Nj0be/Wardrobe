@@ -6,4 +6,6 @@ pillow~=10.4.0
 django-cleanup~=9.0.0
 django-htmx~=1.19.0
 django-unused-media~=0.2.2
+django-admin-sortable2~=2.2.3
 django-tree-queries~=0.19.0
+feincms3~=5.2.3

@@ -2,17 +2,22 @@ from tree_queries.models import TreeNode
 from django.db import models
 from django.core.validators import MaxValueValidator
 from django_extensions.validators import HexValidator
-
 from cart.models import CartItem
 
 
 class Category(TreeNode):
     name = models.CharField(max_length=100)
     image = models.ImageField(upload_to='categories/', null=True, blank=True)
+    position = models.PositiveIntegerField(default=0)
 
     class Meta:
+        ordering = ['position']
         unique_together = [['parent', 'name']]
         verbose_name_plural = "Categories"
+
+    def _set_parent(self, parent):
+        # Method used for moving categories in admin panel
+        self.parent = parent
 
     def __str__(self):
         parent_category = self.parent
@@ -35,6 +40,7 @@ class Discount(models.Model):
     
 class Brand(models.Model):
     name = models.CharField(max_length=50)
+    image = models.ImageField(upload_to='categories/', null=True, blank=True)
 
     def __str__(self):
         return f'{self.name}'
@@ -73,6 +79,10 @@ class Color(models.Model):
 
 class Size(models.Model):
     name = models.CharField(max_length=10, unique=True)
+    position = models.PositiveIntegerField(default=0, blank=False, null=False, db_index=True)
+
+    class Meta:
+        ordering = ['position']
 
     def __str__(self):
         return f'{self.name}'

@@ -7,7 +7,7 @@ from django.http import HttpResponseNotFound, Http404
 from django.views import generic
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Product, ProductVariant, ProductColor, Category, Color, Size, Review, \
-    ProductImage
+    ProductImage, Brand
 
 
 class HomepageView(generic.ListView):
@@ -37,18 +37,24 @@ def search(request, category_id=None):  # da implementare anche la logica per i 
     except AttributeError:
         categories = Category.objects.with_tree_fields().extra(where=["__tree.tree_depth <= %s"], params=[0])
 
+    """ Filtraggio per marca """
+    brands = Brand.objects.filter(product__in=list(products)).distinct().order_by('-name')
+    selected_brands = brands.filter(pk__in=request.GET.getlist('brand', None))
+
     """ Filtraggio per colori """
     colors = Color.objects.filter(productcolor__product__in=list(products)).distinct().order_by('-hex')
     selected_colors = colors.filter(pk__in=request.GET.getlist('color', None))
 
     """ Filtraggio per taglie """
-    sizes = Size.objects.filter(productvariant__product_color__product__in=list(products)).distinct()
+    sizes = Size.objects.filter(productvariant__product_color__product__in=list(products)).distinct().order_by('position')
     selected_sizes = sizes.filter(pk__in=request.GET.getlist('size', None))
 
+    if selected_brands:
+        products = products.filter(brand__in=selected_brands)
     if selected_colors:
         products = products.filter(productcolor__color__in=selected_colors)
-    if 'size' in request.GET:
-        products = products.filter(productcolor__productvariant__size__id__in=request.GET['size'])
+    if selected_sizes:
+        products = products.filter(productcolor__productvariant__size__id__in=selected_sizes)
     if search_terms and len(search_terms) > 2:
         # get words with len > 2 and create query for postgres search ( word1:* & word2:* & etc...)
         query_str = ' & '.join([w+':*' for w in search_terms.split() if len(w) > 2])
@@ -76,12 +82,14 @@ def search(request, category_id=None):  # da implementare anche la logica per i 
         {
             "categories": categories,
             "selected_category": selected_category,
-            "products": products,
+            "brands": brands,
+            "selected_brands": selected_brands,
             "colors": colors,
             "selected_colors": selected_colors,
             "sizes": sizes,
             "selected_sizes": selected_sizes,
             "search_terms": search_terms,
+            "products": products,
         })
 
 
