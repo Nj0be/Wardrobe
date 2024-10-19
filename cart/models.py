@@ -9,6 +9,9 @@ class CartItem(models.Model):
     quantity = models.PositiveIntegerField(validators=[MinValueValidator(1)])
     is_active = models.BooleanField(default=True)
 
+    class Meta:
+        unique_together = [['product_variant', 'customer']]
+
     def clean(self):
         # Don't add product to cart if stock == 0
         self.quantity = min(self.quantity, self.product_variant.stock)

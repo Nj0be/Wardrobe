@@ -4,13 +4,14 @@ from django.shortcuts import render
 from django.conf import settings
 from cart.models import CartItem
 from products.models import ProductVariant
-
+from django.contrib.auth.signals import user_logged_in
+from django.dispatch import receiver
 
 class Cart:
     def __init__(self, request):
         request.session.modified = True
         self.user = request.user
-        if not request.session.get(settings.CART_SESSION_ID) or self.user.is_authenticated:
+        if not request.session.get(settings.CART_SESSION_ID):
             request.session[settings.CART_SESSION_ID] = {}
         self.session_cart = request.session[settings.CART_SESSION_ID]
         self.cart = {}
@@ -24,7 +25,12 @@ class Cart:
             except (ObjectDoesNotExist, ValueError, TypeError) as e:
                 del self.session_cart[variant_id]
                 continue
-            self.cart[variant] = self.session_cart[variant_id]
+            if self.user.is_authenticated:
+                # if user is authenticated, remove everything from session cookie and create objects in db
+                self[variant] += quantity
+                del self.session_cart[variant_id]
+            else:
+                self.cart[variant] = self.session_cart[variant_id]
 
     def __setitem__(self, variant: ProductVariant, quantity: int):
         if not isinstance(variant, ProductVariant):
@@ -131,6 +137,12 @@ class Cart:
 
     def __len__(self):
         return len(self.session_cart)
+
+
+# create cart on login to transfer cartitems from session to db
+@receiver(user_logged_in)
+def login_handler(sender, user, request, **kwargs):
+    Cart(request)
 
 
 def cart_page(request):
