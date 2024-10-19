@@ -70,15 +70,16 @@ def search(request, category_id=None):  # da implementare anche la logica per i 
             productcolor__color_names=ArrayAgg("productcolor__color__name"),
             rank=SearchRank(vector, query), search=vector).filter(rank__gte=0.1).order_by('-rank')
             # rank = SearchRank(vector, query), search = vector).filter(search=search_terms).order_by('-rank')
-        import sys
-        for product in products:
-            print(product.rank, file=sys.stderr)
 
+    if request.htmx:
+        template_name = "products/search.html",
+    else:
+        template_name = "products/search_full.html",
 
     """ Invia la risposta """
     return render(
         request,
-        "products/search.html",
+        template_name,
         {
             "categories": categories,
             "selected_category": selected_category,
