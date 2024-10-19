@@ -24,8 +24,6 @@ def search(request, category_id=None):  # da implementare anche la logica per i 
     if request.method != "GET":
         return HttpResponseNotFound('<h1>Page not found</h1>')
 
-    """ Filtraggio per ricerca testuale """
-    search_terms = request.GET.get('search_terms', None)
 
     """ Selezione prodotti """
     # selezioniamo solo i prodotto che hanno almeno una product variant
@@ -38,24 +36,8 @@ def search(request, category_id=None):  # da implementare anche la logica per i 
         # get 'root' categories (first layer)
         categories = Category.objects.with_tree_fields().extra(where=["__tree.tree_depth <= %s"], params=[0])
 
-    """ Filtraggio per marca """
-    brands = Brand.objects.filter(product__in=list(products)).distinct().order_by('-name')
-    selected_brands = brands.filter(pk__in=request.GET.getlist('brand', None))
-
-    """ Filtraggio per colori """
-    colors = Color.objects.filter(productcolor__product__in=list(products)).distinct().order_by('-hex')
-    selected_colors = colors.filter(pk__in=request.GET.getlist('color', None))
-
-    """ Filtraggio per taglie """
-    sizes = Size.objects.filter(productvariant__product_color__product__in=list(products)).distinct().order_by('position')
-    selected_sizes = sizes.filter(pk__in=request.GET.getlist('size', None))
-
-    if selected_brands:
-        products = products.filter(brand__in=selected_brands)
-    if selected_colors:
-        products = products.filter(productcolor__color__in=selected_colors)
-    if selected_sizes:
-        products = products.filter(productcolor__productvariant__size__id__in=selected_sizes)
+    """ Filtraggio per ricerca testuale """
+    search_terms = request.GET.get('search_terms', None)
     if search_terms and len(search_terms) > 2:
         # get words with len > 2 and create query for postgres search ( word1:* & word2:* & etc...)
         query_str = ' & '.join([w+':*' for w in search_terms.split() if len(w) > 2])
@@ -70,7 +52,25 @@ def search(request, category_id=None):  # da implementare anche la logica per i 
             categories_names=ArrayAgg('categories__name'),
             productcolor__color_names=ArrayAgg("productcolor__color__name"),
             rank=SearchRank(vector, query), search=vector).filter(rank__gte=0.1).order_by('-rank')
-            # rank = SearchRank(vector, query), search = vector).filter(search=search_terms).order_by('-rank')
+        # rank = SearchRank(vector, query), search = vector).filter(search=search_terms).order_by('-rank')
+
+    """ Filtraggio per marca """
+    brands = Brand.objects.filter(product__in=list(products)).distinct().order_by('-name')
+    selected_brands = brands.filter(pk__in=request.GET.getlist('brand', None))
+    if selected_brands:
+        products = products.filter(brand__in=selected_brands)
+
+    """ Filtraggio per colori """
+    colors = Color.objects.filter(productcolor__product__in=list(products)).distinct().order_by('-hex')
+    selected_colors = colors.filter(pk__in=request.GET.getlist('color', None))
+    if selected_colors:
+        products = products.filter(productcolor__color__in=selected_colors)
+
+    """ Filtraggio per taglie """
+    sizes = Size.objects.filter(productvariant__product_color__product__in=list(products)).distinct().order_by('position')
+    selected_sizes = sizes.filter(pk__in=request.GET.getlist('size', None))
+    if selected_sizes:
+        products = products.filter(productcolor__productvariant__size__id__in=selected_sizes)
 
     if request.htmx:
         template_name = "products/search.html",
