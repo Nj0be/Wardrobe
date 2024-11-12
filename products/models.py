@@ -1,6 +1,8 @@
+from decimal import Decimal
+
 from tree_queries.models import TreeNode
 from django.db import models
-from django.core.validators import MaxValueValidator
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django_extensions.validators import HexValidator
 from cart.models import CartItem
 
@@ -32,7 +34,7 @@ class Discount(models.Model):
     name = models.CharField(max_length=100)
     start_date = models.DateTimeField(auto_now_add=True)
     end_date = models.DateTimeField()
-    percentage = models.FloatField()
+    percentage = models.DecimalField(max_digits=5, decimal_places=2, validators=[MinValueValidator(Decimal('0.01')), MaxValueValidator(Decimal(100))])
 
     def __str__(self):
         return f'{self.name}-{self.percentage}%'
@@ -49,7 +51,7 @@ class Brand(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField(max_length=2000)
-    price = models.FloatField()
+    price = models.DecimalField(max_digits=8, decimal_places=2, validators=[MinValueValidator(Decimal('0.01'))])
     is_active = models.BooleanField(default=True)
     date_created = models.DateTimeField(auto_now_add=True)
     last_modification = models.DateTimeField(auto_now=True)
@@ -116,7 +118,7 @@ class ProductImage(models.Model):
 class ProductVariant(models.Model):
     product_color = models.ForeignKey(ProductColor, on_delete=models.CASCADE)
     size = models.ForeignKey(Size, on_delete=models.CASCADE)
-    price = models.FloatField(default=0)
+    price = models.DecimalField(default=0, max_digits=8, decimal_places=2, validators=[MinValueValidator(Decimal('0.01'))])
     stock = models.PositiveIntegerField()
 
     def is_active(self):

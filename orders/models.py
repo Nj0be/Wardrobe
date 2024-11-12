@@ -1,3 +1,4 @@
+from decimal import Decimal
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
 from django.db import models
@@ -15,10 +16,10 @@ class Order(models.Model):
 
 
 class OrderProduct(models.Model):
-    order = models.ForeignKey('orders.Order', on_delete=models.CASCADE)
-    product_variant = models.ForeignKey('products.ProductVariant', on_delete=models.SET_NULL, null=True)
+    order = models.ForeignKey('orders.Order', on_delete=models.CASCADE, editable=False)
+    product_variant = models.ForeignKey('products.ProductVariant', on_delete=models.PROTECT, editable=False)
     quantity = models.PositiveIntegerField(validators=[MinValueValidator(1)])
-    price = type(ProductVariant._meta.get_field('price'))()
+    price = models.DecimalField(max_digits=8, decimal_places=2, validators=[MinValueValidator(Decimal('0.01'))])
 
     @property
     def first_image(self):
@@ -29,27 +30,8 @@ class OrderProduct(models.Model):
                 return product_images.first().image.url  # Return the URL of the first image
         return None  # Return None if no image is found
 
-    @classmethod
-    def from_db(cls, db, field_names, values):
-        instance = super(OrderProduct, cls).from_db(db, field_names, values)
-        # customization to store the original field values on the instance
-        instance._loaded_values = dict(
-            zip(field_names, (value for value in values if value is not models.DEFERRED))
-        )
-        return instance
-
-    def clean(self):
-        # Don't add product_variant to order if quantity is 0
-        if self.quantity > self.product_variant.stock:
-            raise ValidationError(_("Can't create OrderProduct: not enough products"))
-
     def save(self, *args, **kwargs):
         if self._state.adding:
-            self.name = self.product_variant.product.name
             self.price = self.product_variant.price or self.product_variant.product.price
-        elif self.name != self._loaded_values['name'] or self.price != self._loaded_values['price']:
-            raise ValueError("Changing the name or the price of the OrderProduct is not allowed")
-
-        self.full_clean()
 
         super(OrderProduct, self).save(*args, **kwargs)
