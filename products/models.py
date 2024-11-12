@@ -118,7 +118,7 @@ class ProductImage(models.Model):
 class ProductVariant(models.Model):
     product_color = models.ForeignKey(ProductColor, on_delete=models.CASCADE)
     size = models.ForeignKey(Size, on_delete=models.CASCADE)
-    price = models.DecimalField(default=0, max_digits=8, decimal_places=2, validators=[MinValueValidator(Decimal('0.01'))])
+    price = models.DecimalField(default=0, max_digits=8, decimal_places=2)
     stock = models.PositiveIntegerField()
 
     def is_active(self):

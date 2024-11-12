@@ -96,6 +96,9 @@ def search(request, category_id=None):  # da implementare anche la logica per i 
 
 
 def product_page(request, product_id, color_id=None, size_id=None):
+    if request.method != "GET":
+        return HttpResponseNotFound('<h1>Page not found</h1>')
+
     product = get_object_or_404(Product, pk=product_id, is_active=True)
     price = product.price
     stock = 0
