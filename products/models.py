@@ -1,5 +1,7 @@
 from decimal import Decimal
 
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from tree_queries.models import TreeNode
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -140,6 +142,19 @@ class ProductVariant(models.Model):
 
     def __str__(self):
         return f'{self.product}-{self.color}-{self.size}'
+
+
+# method that run after updating ProductVariant
+# it checks if all CartItems associated with the ProductVariant have the right quantity
+# if not, it will delete/update the CartItems
+@receiver(post_save, sender=ProductVariant, dispatch_uid="update_cart_quantity")
+def update_cart_quantity(sender, instance, **kwargs):
+    for cart_item in CartItem.objects.filter(product_variant=instance):
+        if instance.stock == 0:
+            cart_item.delete()
+        elif cart_item.quantity >= instance.stock:
+            cart_item.quantity = instance.stock
+            cart_item.save()
 
 
 class Review(models.Model):

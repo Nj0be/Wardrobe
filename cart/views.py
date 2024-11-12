@@ -43,6 +43,10 @@ class Cart:
         if quantity > variant.stock:
             quantity = variant.stock
 
+        if quantity == 0:
+            del self[variant]
+            return
+
         if self.user.is_authenticated:
             try:
                 item = CartItem.objects.get(product_variant=variant, customer=self.user)
