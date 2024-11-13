@@ -1,8 +1,9 @@
 services:
   django:
     build:
-      dockerfile: Dockerfile.django
+      context: "."
     container_name: django
+    command: bash -c "./manage.py migrate && ./manage.py loaddata db.json && ./manage.py runserver 0.0.0.0:8000"
     # disable restart to avoid autostart containers on boot
     restart: no
     # volume used to hot reload changes
@@ -25,16 +26,16 @@ services:
 
   tailwind:
     build:
-      dockerfile: Dockerfile.tailwind
+      context: "."
     container_name: tailwind
-    # disable restart to avoid autostart containers on boot
-    restart: no
-    # Fix tailwindcss script exiting even if using --watch
-    tty: true
-    # volume used to hot reload changes
     volumes:
       - .:/app
-    stop_grace_period: 0.1s
+    restart: no
+    #command: bash -c "./manage.py tailwind install --no-input && ./manage.py tailwind build --no-input && ./manage.py tailwind start"
+    command: ./manage.py tailwind start
+    # Without tty, no stdin, and tailwind watcher aborts
+    # https://github.com/tailwindlabs/tailwindcss/issues/5324
+    tty: true
 
   db:
     image: postgres:16.2

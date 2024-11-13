@@ -1,9 +1,9 @@
-{% load static %}
+{% load static tailwind_tags %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <title>{% block title %}Ecommerce Rossi{% endblock %}</title>
-  <link rel="stylesheet" href="{% static "css/base.min.css" %}">
+  {% tailwind_css %}
   <script src="{% static "js/htmx.min.js" %}"></script>
   <script src="{% static "js/preload.js" %}"></script>
 </head>
