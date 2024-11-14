@@ -1,10 +1,10 @@
-FROM python:3.12.2
+FROM python:3.12.4
 
 EXPOSE 8000
 WORKDIR /app
 
 # installing node
-ARG NODE_MAJOR=18
+ARG NODE_MAJOR=22
 
 RUN apt-get update
 RUN apt-get install -y ca-certificates curl gnupg

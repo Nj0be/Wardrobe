@@ -4,8 +4,8 @@
 <head>
   <title>{% block title %}Ecommerce Rossi{% endblock %}</title>
   {% tailwind_css %}
-  <script src="{% static "js/htmx.min.js" %}"></script>
-  <script src="{% static "js/preload.js" %}"></script>
+  <script src="{% static "js/htmx.min.js" %}" defer></script>
+  <script src="{% static "js/preload.js" %}" defer></script>
 </head>
 <body hx-ext="preload">
 <header>
