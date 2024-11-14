@@ -8,35 +8,85 @@
   <script src="{% static "js/preload.js" %}" defer></script>
 </head>
 <body hx-ext="preload">
-<header>
-  {% block header %}
-    <a class="text-5xl text-blue-600 dark:text-blue-500 hover:underline"
-       href="{% url 'homepage' %}">My Ecommerce</a>
-    <nav>
-      <ul>
-        {% if user.is_authenticated %}
-          <li><a href="{% url 'profile' %}">Hi, {{ user.first_name }}</a></li>
-          <form action="{% url 'logout' %}" method="post">{% csrf_token %}<button type="submit">Logout</button></form>
-        {% else %}
-          <li><a href="{% url 'login' %}">Accedi</a></li>
-        {% endif %}
-        {% block header_urls %}
-        {% endblock %}
-      </ul>
-    </nav>
-  {% endblock %}
-</header>
+
+{% block header %}
+    <header>
+        <nav>
+            <ul>
+                <li>
+                    <a href="{% url 'search' %}">
+                        Visita tutti i prodotti
+                    </a>
+                </li>
+                <li>
+                    <a class="text-5xl text-blue-600 dark:text-blue-500 hover:underline" href="{% url 'homepage' %}">
+                        Wardrobe
+                    </a>
+                </li>
+                {% block header_urls %}
+                {% endblock %}
+                {% if user.is_authenticated %}
+                    <li>
+                        <a href="{% url 'profile' %}">
+                        Hi, {{ user.first_name }}
+                        </a>
+                    </li>
+                {% else %}
+                    <li>
+                        <a href="{% url 'login' %}">
+                            Accedi
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+{% endblock %}
 
 <main id="content">
-  {% block content %}{% endblock %}
+  {% block content %}
+  {% endblock %}
 </main>
 
 <div id="modal"></div>
 
-<footer>
-  {% block footer %}
-    <p>&copy; 2024 My Ecommerce</p>
-  {% endblock %}
-</footer>
+{% block footer %}
+    <footer>
+        <!-- Links -->
+        <div>
+            <div>
+                <h3>WARDROBE</h3>
+                <p>Il tuo armadio, online!</p>
+            </div>
+
+            <div>
+                <h3>Supporto</h3>
+                <a href="#">Contatti</a>
+                <a href="#">FAQ</a>
+                <a href="#">Supporto tecnico</a>
+            </div>
+
+            <div>
+                <h3>Legale</h3>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Termini di servizio</a>
+                <a href="#">Cookie Policy</a>
+            </div>
+
+            <div>
+                <h3>Seguici</h3>
+                <a href="#">Facebook</a>
+                <a href="#">Twitter</a>
+                <a href="#">Instagram</a>
+            </div>
+        </div>
+
+        <!-- copyright -->
+        <div class="footer-bottom">
+            &copy; 2024 Wardrobe. Tutti i diritti riservati.
+        </div>
+    </footer>
+{% endblock %}
+
 </body>
 </html>
