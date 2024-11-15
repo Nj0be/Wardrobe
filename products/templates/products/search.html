@@ -1,95 +1,113 @@
-<!-- Categories Menu -->
-<ul>
-  {% for category in categories %}
-    <li>
-        <a
-            hx-target="#content"
-            hx-push-url="true"
-            hx-include="#filtersForm"
-            preload="mouseover" preload-images="true"
-     {% if category %}
-            hx-get="{% url 'search_category' category.id %}"
-        href="{% url 'search_category' category.id %}">{% if selected_category.parent == category %}Torna indietro - {% endif %}{{ category.name }}
-     {% else %}
-       hx-get="{% url 'search' %}"
-        href="{% url 'search' %}">Torna indietro - Root
-     {% endif %}
-      </a>
-    </li>
-  {% endfor %}
-</ul>
+<div>
+    <!-- Aside - Filter Section -->
+    <div>
+        <!-- Categories Filter Section -->
+        <div>
+            <ul>
+              {% for category in categories %}
+                <li>
+                    <a
+                        hx-target="#content"
+                        hx-push-url="true"
+                        hx-include="#filtersForm"
+                        preload="mouseover" preload-images="true"
+                 {% if category %}
+                        hx-get="{% url 'search_category' category.id %}"
+                    href="{% url 'search_category' category.id %}">{% if selected_category.parent == category %}Torna indietro - {% endif %}{{ category.name }}
+                 {% else %}
+                   hx-get="{% url 'search' %}"
+                    href="{% url 'search' %}">Torna indietro - Root
+                 {% endif %}
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+        </div>
 
-<!-- Colors and Sizes Filter Section -->
-<div style="border: 1px solid black" id="filtersForm">
-  <input type="text" name="search_terms" id="search_terms" placeholder="Cerca il tuo prodotto"
-         autocomplete="off"
-         {% if search_terms %}value="{{ search_terms }}"{% endif %}
-         hx-get="{% if selected_category %}{% url 'search_category' selected_category.id %}{% else %}{% url 'search' %}{% endif %}"
-         hx-target="#content"
-         hx-push-url="true"
-         hx-include="#filtersForm"
-         hx-trigger="keyup changed delay:0.5s"
-         preload="mouseover" preload-images="true"
-  >
+        <!-- Other Filters Section -->
+        <div style="border: 1px solid black" id="filtersForm">
 
-  <div class="filters">
-    <p>Marche</p>
-    {% for brand in brands %}
-      <input type="checkbox" name="brand" id="brand_{{ forloop.counter }}" value="{{ brand.id }}"
-             autocomplete="off"
-          {% if brand in selected_brands %} checked {% endif %}
-             hx-get="{% if selected_category %}{% url 'search_category' selected_category.id %}{% else %}{% url 'search' %}{% endif %}"
-             hx-target="#content"
-             hx-push-url="true"
-             hx-include="#filtersForm"
-             preload="mouseover" preload-images="true"
-      >
-      <label for="brand_{{ forloop.counter }}">{{ brand.name }}</label><br>
-    {% endfor %}
-  </div>
+            <!-- Text Search Bar -->
+            <input type="text" name="search_terms" id="search_terms" placeholder="Cerca il tuo prodotto"
+                 autocomplete="off"
+                 {% if search_terms %}value="{{ search_terms }}"{% endif %}
+                 hx-get="{% if selected_category %}{% url 'search_category' selected_category.id %}{% else %}{% url 'search' %}{% endif %}"
+                 hx-target="#content"
+                 hx-push-url="true"
+                 hx-include="#filtersForm"
+                 hx-trigger="keyup changed delay:0.5s"
+                 preload="mouseover" preload-images="true"
+            >
 
-  <div class="filters">
-    <p>Colori</p>
-    {% for color in colors %}
-      <input type="checkbox" name="color" id="color_{{ forloop.counter }}" value="{{ color.id }}"
-             autocomplete="off"
-          {% if color in selected_colors %} checked {% endif %}
-             hx-get="{% if selected_category %}{% url 'search_category' selected_category.id %}{% else %}{% url 'search' %}{% endif %}"
-             hx-target="#content"
-             hx-push-url="true"
-             hx-include="#filtersForm"
-             preload="mouseover" preload-images="true"
-      >
-      <label style="color: #{{ color.hex }}"
-             for="color_{{ forloop.counter }}">{{ color.name }}</label><br>
-    {% endfor %}
-  </div>
+            <!-- Brand Filter -->
+            <div class="filters">
+                <p>Marche</p>
+                {% for brand in brands %}
+                    <input type="checkbox" name="brand" id="brand_{{ forloop.counter }}" value="{{ brand.id }}"
+                         autocomplete="off"
+                      {% if brand in selected_brands %} checked {% endif %}
+                         hx-get="{% if selected_category %}{% url 'search_category' selected_category.id %}{% else %}{% url 'search' %}{% endif %}"
+                         hx-target="#content"
+                         hx-push-url="true"
+                         hx-include="#filtersForm"
+                         preload="mouseover" preload-images="true"
+                    >
+                    <label for="brand_{{ forloop.counter }}">{{ brand.name }}</label><br>
+                {% endfor %}
+            </div>
 
-  <div class="filters">
-    <p>Taglie</p>
-    {% for size in sizes %}
-      <input type="checkbox" name="size" id="size_{{ forloop.counter }}" value="{{ size.id }}"
-             autocomplete="off"
-          {% if size in selected_sizes %} checked {% endif %}
-             hx-get="{% if selected_category %}{% url 'search_category' selected_category.id %}{% else %}{% url 'search' %}{% endif %}"
-             hx-target="#content"
-             hx-push-url="true"
-             hx-include="#filtersForm"
-             preload="mouseover" preload-images="true"
-      >
-      <label for="size_{{ forloop.counter }}">{{ size.name }}</label><br>
-    {% endfor %}
-  </div>
+            <!-- Color Filter -->
+            <div class="filters">
+                <p>Colori</p>
+                {% for color in colors %}
+                    <input type="checkbox" name="color" id="color_{{ forloop.counter }}" value="{{ color.id }}"
+                        autocomplete="off"
+                        {% if color in selected_colors %} checked {% endif %}
+                            hx-get="{% if selected_category %}{% url 'search_category' selected_category.id %}{% else %}{% url 'search' %}{% endif %}"
+                            hx-target="#content"
+                            hx-push-url="true"
+                            hx-include="#filtersForm"
+                            preload="mouseover" preload-images="true"
+                    >
+                    <label style="color: #{{ color.hex }}" for="color_{{ forloop.counter }}">
+                        {{ color.name }}
+                    </label>
+                    <br>
+                {% endfor %}
+            </div>
+
+            <!-- Size Filter -->
+            <div class="filters">
+                <p>Taglie</p>
+                {% for size in sizes %}
+                    <input type="checkbox" name="size" id="size_{{ forloop.counter }}" value="{{ size.id }}"
+                        autocomplete="off"
+                        {% if size in selected_sizes %} checked {% endif %}
+                             hx-get="{% if selected_category %}{% url 'search_category' selected_category.id %}{% else %}{% url 'search' %}{% endif %}"
+                             hx-target="#content"
+                             hx-push-url="true"
+                             hx-include="#filtersForm"
+                             preload="mouseover" preload-images="true"
+                    >
+                    <label for="size_{{ forloop.counter }}">{{ size.name }}</label>
+                    <br>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Start Content # mostra i prodotti -->
+    <div>
+        {% if products %}
+          <h1>Prodotti:</h1>
+          <ul>
+            {% for product in products %}
+              <li><a href="{% url 'product' product.id %}">{{ product.name }}</a></li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p>Nessun prodotto disponibile</p>
+        {% endif %}
+    </div>
 </div>
-
-<!-- Start Content # mostra i prodotti -->
-{% if products %}
-  <h1>Prodotti:</h1>
-  <ul>
-    {% for product in products %}
-      <li><a href="{% url 'product' product.id %}">{{ product.name }}</a></li>
-    {% endfor %}
-  </ul>
-{% else %}
-  <p>Nessun prodotto disponibile</p>
-{% endif %}
