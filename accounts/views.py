@@ -42,3 +42,4 @@ def edit_profile(request):
         form = UserUpdateForm(instance=user)  # Precompila il modulo con i dati dell'utente
 
     return render(request, 'accounts/edit_profile.html', {'form': form})
+
