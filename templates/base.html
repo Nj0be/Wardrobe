@@ -13,31 +13,15 @@
     <header>
         <nav>
             <ul>
-                <li>
-                    <a href="{% url 'search' %}">
-                        Visita tutti i prodotti
-                    </a>
-                </li>
+                {% block left_header_links %}
+                {% endblock %}
                 <li>
                     <a class="text-5xl text-blue-600 dark:text-blue-500 hover:underline" href="{% url 'homepage' %}">
                         Wardrobe
                     </a>
                 </li>
-                {% block header_urls %}
+                {% block right_header_links %}
                 {% endblock %}
-                {% if user.is_authenticated %}
-                    <li>
-                        <a href="{% url 'profile' %}">
-                        Hi, {{ user.first_name }}
-                        </a>
-                    </li>
-                {% else %}
-                    <li>
-                        <a href="{% url 'login' %}">
-                            Accedi
-                        </a>
-                    </li>
-                {% endif %}
             </ul>
         </nav>
     </header>

@@ -1,1 +1,24 @@
 {% extends "base.html" %}
+
+{% block left_header_links %}
+    <li>
+        <a href="{% url 'search' %}">
+            Visita tutti i prodotti
+        </a>
+    </li>
+{% endblock %}
+{% block right_header_links %}
+    {% if user.is_authenticated %}
+        <li>
+            <a href="{% url 'profile' %}">
+            Hi, {{ user.first_name }}
+            </a>
+        </li>
+    {% else %}
+        <li>
+            <a href="{% url 'login' %}">
+                Accedi
+            </a>
+        </li>
+    {% endif %}
+{% endblock %}
