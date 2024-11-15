@@ -7,6 +7,11 @@ from django.utils.translation import gettext_lazy as _
 from products.models import Product, ProductVariant, ProductImage
 
 
+class Province(models.Model):
+    acronym = models.CharField(max_length=2, unique=True)
+    name = models.CharField(max_length=50, unique=True)
+
+
 class Order(models.Model):
     user = models.ForeignKey('accounts.User', on_delete=models.CASCADE)
     date_created = models.DateTimeField(auto_now_add=True)
