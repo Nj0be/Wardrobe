@@ -31,11 +31,12 @@ services:
     volumes:
       - .:/app
     restart: no
-    #command: bash -c "./manage.py tailwind install --no-input && ./manage.py tailwind build --no-input && ./manage.py tailwind start"
-    command: ./manage.py tailwind start
+    #command: bash -c "./manage.py tailwind install --no-input && ./manage.py tailwind build --no-input && ./manage.py collectstatic --no-input && ./manage.py tailwind start"
+    command: bash -c "./manage.py tailwind install --no-input && ./manage.py tailwind start"
     # Without tty, no stdin, and tailwind watcher aborts
     # https://github.com/tailwindlabs/tailwindcss/issues/5324
     tty: true
+    stop_grace_period: 1s  # SIGKILL after 1s
 
   db:
     image: postgres:16.2

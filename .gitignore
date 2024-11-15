@@ -13,7 +13,7 @@ __pycache__/
 *.ldb
 
 # compiled tailwind css
-static/css/base.min.css
+theme/static
 
 # ignore media folder for now
 # media/
