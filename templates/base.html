@@ -11,18 +11,26 @@
 
 {% block header %}
     <header>
-        <nav>
-            <ul>
-                {% block left_header_links %}
-                {% endblock %}
-                <li>
-                    <a class="text-5xl text-blue-600 dark:text-blue-500 hover:underline" href="{% url 'homepage' %}">
-                        Wardrobe
+        <nav class="bg-blue0 dark:bg-blue3">
+            <div class="grid grid-cols-3 justify-center items-center m-auto p-6">
+                <div class="text-blue3 dark:text-blue0 flex justify-center items-center">
+                    <ul class="grid grid-cols-1 justify-center items-center">
+                        {% block left_header_links %}
+                        {% endblock %}
+                    </ul>
+                </div>
+                <div class="flex justify-center items-center">
+                    <a class="text-5xl text-blue3 dark:text-blue0 hover:underline" href="{% url 'homepage' %}">
+                        WARDROBE
                     </a>
-                </li>
-                {% block right_header_links %}
-                {% endblock %}
-            </ul>
+                </div>
+                <div class="text-blue3 dark:text-blue0 flex justify-center items-center">
+                    <ul class="grid grid-cols-2 justify-center items-center gap-6">
+                        {% block right_header_links %}
+                        {% endblock %}
+                    </ul>
+                </div>
+            </div>
         </nav>
     </header>
 {% endblock %}
@@ -35,42 +43,41 @@
 <div id="modal"></div>
 
 {% block footer %}
-    <footer>
+    <footer class="bg-blue0 dark:bg-blue3">
         <!-- Links -->
-        <div>
-            <div>
-                <h3>WARDROBE</h3>
-                <p>Il tuo armadio, online!</p>
+        <div class="flex justify-center items-center py-6">
+            <div class="grid grid-cols-1 m-auto">
+                <p class="text-5xl py-2 text-blue3 dark:text-blue0">WARDROBE</p>
+                <p class="text-blue2 dark:text-blue1">Il tuo armadio, online!</p>
             </div>
 
-            <div>
-                <h3>Supporto</h3>
-                <a href="#">Contatti</a>
-                <a href="#">FAQ</a>
-                <a href="#">Supporto tecnico</a>
+            <div class="grid grid-cols-1 m-auto">
+                <p class="text-3xl py-2 text-blue3 dark:text-blue0">Supporto</p>
+                <a href="#" class="text-blue2 dark:text-blue1 hover:underline">Contatti</a>
+                <a href="#" class="text-blue2 dark:text-blue1 hover:underline">FAQ</a>
+                <a href="#" class="text-blue2 dark:text-blue1 hover:underline">Supporto tecnico</a>
             </div>
 
-            <div>
-                <h3>Legale</h3>
-                <a href="#">Privacy Policy</a>
-                <a href="#">Termini di servizio</a>
-                <a href="#">Cookie Policy</a>
+            <div class="grid grid-cols-1 m-auto">
+                <p class="text-3xl py-2 text-blue3 dark:text-blue0">Legale</p>
+                <a href="#" class="text-blue2 dark:text-blue1 hover:underline">Privacy Policy</a>
+                <a href="#" class="text-blue2 dark:text-blue1 hover:underline">Termini di servizio</a>
+                <a href="#" class="text-blue2 dark:text-blue1 hover:underline">Cookie Policy</a>
             </div>
 
-            <div>
-                <h3>Seguici</h3>
-                <a href="#">Facebook</a>
-                <a href="#">Twitter</a>
-                <a href="#">Instagram</a>
+            <div class="grid grid-cols-1 m-auto">
+                <p class="text-3xl py-2 text-blue3 dark:text-blue0">Seguici</p>
+                <a href="#" class="text-blue2 dark:text-blue1 hover:underline">Facebook</a>
+                <a href="#" class="text-blue2 dark:text-blue1 hover:underline">Twitter</a>
+                <a href="#" class="text-blue2 dark:text-blue1 hover:underline">Instagram</a>
             </div>
         </div>
 
         <!-- copyright -->
-        <div class="footer-bottom">
-            &copy; 2024 Wardrobe. Tutti i diritti riservati.
+        <div class="bg-blue2 dark:bg-blue1 text-blue0 dark:text-blue3 flex justify-center items-center p-3">
+            <p>&copy; 2024 Wardrobe. Tutti i diritti riservati.</p>
         </div>
     </footer>
 {% endblock %}
-
 </body>
 </html>
