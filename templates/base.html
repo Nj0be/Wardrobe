@@ -13,7 +13,7 @@
     <header>
         <nav class="bg-blue0 dark:bg-blue3">
             <div class="grid grid-cols-3 justify-center items-center m-auto p-6">
-                <div class="text-blue3 dark:text-blue0 flex justify-center items-center">
+                <div class="text-2xl text-blue3 dark:text-blue0 flex justify-center items-center">
                     <ul class="grid grid-cols-1 justify-center items-center">
                         {% block left_header_links %}
                         {% endblock %}
@@ -24,7 +24,7 @@
                         WARDROBE
                     </a>
                 </div>
-                <div class="text-blue3 dark:text-blue0 flex justify-center items-center">
+                <div class="text-2xl text-blue3 dark:text-blue0 flex justify-center items-center">
                     <ul class="grid grid-cols-2 justify-center items-center gap-6">
                         {% block right_header_links %}
                         {% endblock %}
@@ -45,28 +45,28 @@
 {% block footer %}
     <footer class="bg-blue0 dark:bg-blue3">
         <!-- Links -->
-        <div class="flex justify-center items-center py-6">
-            <div class="grid grid-cols-1 m-auto">
-                <p class="text-5xl py-2 text-blue3 dark:text-blue0">WARDROBE</p>
+        <div class="flex flex-row py-8">
+            <div class="basis-2/5 flex flex-col justify-center text-center">
+                <p class="text-5xl text-blue3 dark:text-blue0">WARDROBE</p>
                 <p class="text-blue2 dark:text-blue1">Il tuo armadio, online!</p>
             </div>
 
-            <div class="grid grid-cols-1 m-auto">
-                <p class="text-3xl py-2 text-blue3 dark:text-blue0">Supporto</p>
+            <div class="basis-1/5 flex flex-col justify-center">
+                <p class="text-3xl text-blue3 dark:text-blue0">Supporto</p>
                 <a href="#" class="text-blue2 dark:text-blue1 hover:underline">Contatti</a>
                 <a href="#" class="text-blue2 dark:text-blue1 hover:underline">FAQ</a>
                 <a href="#" class="text-blue2 dark:text-blue1 hover:underline">Supporto tecnico</a>
             </div>
 
-            <div class="grid grid-cols-1 m-auto">
-                <p class="text-3xl py-2 text-blue3 dark:text-blue0">Legale</p>
+            <div class="basis-1/5 flex flex-col justify-center">
+                <p class="text-3xl text-blue3 dark:text-blue0">Legale</p>
                 <a href="#" class="text-blue2 dark:text-blue1 hover:underline">Privacy Policy</a>
                 <a href="#" class="text-blue2 dark:text-blue1 hover:underline">Termini di servizio</a>
                 <a href="#" class="text-blue2 dark:text-blue1 hover:underline">Cookie Policy</a>
             </div>
 
-            <div class="grid grid-cols-1 m-auto">
-                <p class="text-3xl py-2 text-blue3 dark:text-blue0">Seguici</p>
+            <div class="basis-1/5 flex flex-col justify-center">
+                <p class="text-3xl text-blue3 dark:text-blue0">Seguici</p>
                 <a href="#" class="text-blue2 dark:text-blue1 hover:underline">Facebook</a>
                 <a href="#" class="text-blue2 dark:text-blue1 hover:underline">Twitter</a>
                 <a href="#" class="text-blue2 dark:text-blue1 hover:underline">Instagram</a>
@@ -74,7 +74,7 @@
         </div>
 
         <!-- copyright -->
-        <div class="bg-blue2 dark:bg-blue1 text-blue0 dark:text-blue3 flex justify-center items-center p-3">
+        <div class="bg-blue2 dark:bg-blue1 text-blue0 dark:text-blue3 flex justify-center items-center py-3">
             <p>&copy; 2024 Wardrobe. Tutti i diritti riservati.</p>
         </div>
     </footer>
