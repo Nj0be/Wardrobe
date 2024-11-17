@@ -38,6 +38,28 @@ class UserRegisterForm(UserCreationForm):
 
 class UserAuthenticatorForm(AuthenticationForm):
     username = forms.EmailField(widget=forms.TextInput(attrs={"autofocus": True}))
+    username.widget.attrs = {
+        'id': 'email',
+        'name': 'email',
+        'type': 'email',
+        'required': True,
+        'autocomplete': "email",
+        'class':'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6'
+        }
+    password = forms.CharField(
+        label=_("Password"),
+        strip=False,
+        widget=forms.PasswordInput(attrs={"autocomplete": "current-password"}),
+    )
+    password.widget.attrs = {
+        'id': 'password',
+        'name': 'password',
+        'type': 'password',
+        'required': True,
+        'autocomplete': "current-password",
+        'class': 'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6'
+    }
+
     error_messages = {
         "invalid_login": _("Your %(username)s and password didn't match. Please try again."),
         "inactive": _("This account is inactive."),
