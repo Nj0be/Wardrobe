@@ -49,7 +49,10 @@ module.exports = {
                 'blue2': '#054A91',
                 'blue3': '#010922',
                 'orange': '#F17300',
-            }
+            },
+            fontFamily: {
+            'robo': ["Roboto", "sans-serif"],
+            },
         },
     },
     plugins: [
