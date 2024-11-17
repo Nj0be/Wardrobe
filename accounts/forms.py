@@ -61,8 +61,8 @@ class UserAuthenticatorForm(AuthenticationForm):
     }
 
     error_messages = {
-        "invalid_login": _("Your %(username)s and password didn't match. Please try again."),
-        "inactive": _("This account is inactive."),
+        "invalid_login": _("La tua email e password non corrispondono. Perfavore prova di nuovo."),
+        "inactive": _("Il tuo account è inattivo."),
     }
 
 
