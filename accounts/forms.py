@@ -27,9 +27,53 @@ class CustomSetPasswordMixin(SetPasswordMixin):
 
 class UserRegisterForm(UserCreationForm):
     first_name = forms.CharField(required=True)
+    first_name.widget.attrs = {
+        'id': 'first_name',
+        'name': 'first_name',
+        'type': 'first_name',
+        'required': True,
+        'autocomplete': "first_name",
+        'class': 'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6'
+    }
     last_name = forms.CharField(required=True)
+    last_name.widget.attrs = {
+        'id': 'last_name',
+        'name': 'last_name',
+        'type': 'last_name',
+        'required': True,
+        'autocomplete': "last_name",
+        'class': 'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6'
+    }
     email = forms.EmailField(required=True)
+    email.widget.attrs = {
+        'id': 'email',
+        'name': 'email',
+        'type': 'email',
+        'required': True,
+        'autocomplete': "email",
+        'class': 'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6'
+    }
     password1, password2 = CustomSetPasswordMixin.create_password_fields()
+    password1.widget.attrs = {
+        'id': 'password1',
+        'name': 'password1',
+        'type': 'password1',
+        'required': True,
+        'autocomplete': "password1",
+        'class': 'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6'
+    }
+    password2.widget.attrs = {
+        'id': 'password2',
+        'name': 'password2',
+        'type': 'password2',
+        'required': True,
+        'autocomplete': "password2",
+        'class': 'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6'
+    }
+
+    error_messages = {
+        "password_mismatch": _("Le due password non corrispondono."),
+    }
 
     class Meta:
         model = User
