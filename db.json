@@ -9,10 +9,10 @@
 },
 {
     "model": "sessions.session",
-    "pk": "16dvzchodsk9iubaywb2c9eegj9lzxet",
+    "pk": "460fxxghmb778hxea3m107ynd2hanrlk",
     "fields": {
-        "session_data": ".eJxVjEEOgyAQRe8y64ZIGaC67N4zkGEGim2jiejKePfWxI3b_977GzDNC3TbfoNA61LCWtMcBoEONFy2SPxJ4wHkTeNrUjyNyzxEdSjqpFX1k6Tv83QvB4Vq-dds0ZFzmbTJ2Ir1NrH4GE3DzumIqdGNQcdGMlrNWbcx0R299yL-gS3sPy7kOyI:1tD1j6:__eulO2xtf5DsHxwlzhWPMnk2uXNMwGp9brN8UV017c",
-        "expire_date": "2024-12-02T13:23:36.313Z"
+        "session_data": ".eJxVjEEOgyAQRe8y64ZIGaC67N4zkGEGim2jiejKePfWxI3b_977GzDNC3TbfoNA61LCWtMcBoEONFy2SPxJ4wHkTeNrUjyNyzxEdSjqpFX1k6Tv83QvB4Vq-dds0ZFzmbTJ2Ir1NrH4GE3DzumIqdGNQcdGMlrNWbcx0R299yL-gS3sPy7kOyI:1tD3lf:4Uab-J80cLAMdh_8E6yo-rapmrEsf17t9lUiwUW_pKY",
+        "expire_date": "2024-12-02T15:34:23.504Z"
     }
 },
 {
@@ -51,7 +51,7 @@
     "model": "accounts.user",
     "fields": {
         "password": "pbkdf2_sha256$870000$rwbJ46Kw1n6piuQ5enK64V$9H7No6hrZhrHqUou59q357aVYYBF7tOm5I/eGrTKZyM=",
-        "last_login": "2024-11-18T07:50:11.279Z",
+        "last_login": "2024-11-18T15:34:09.655Z",
         "is_superuser": true,
         "first_name": "Alessio",
         "last_name": "Pelusi",
@@ -1868,6 +1868,18 @@
         "variant": 13,
         "quantity": 1,
         "price": "120.00"
+    }
+},
+{
+    "model": "cart.cartitem",
+    "pk": 1,
+    "fields": {
+        "variant": 4,
+        "customer": [
+            "root@root.it"
+        ],
+        "quantity": 1,
+        "is_active": true
     }
 },
 {
