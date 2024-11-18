@@ -46,12 +46,15 @@ module.exports = {
             colors: {
                 'blue0': '#DBE4EE',
                 'blue1': '#81A4CD',
-                'blue2': '#054A91',
+                'blue2': '#3730a3',
                 'blue3': '#010922',
                 'orange': '#F17300',
             },
             fontFamily: {
-            'robo': ["Roboto", "sans-serif"],
+                'robo': ["Roboto", "sans-serif"],
+                'kani': ["Kanit", "sans-serif"],
+                'rhat': ["Red Hat Display", "sans-serif"],
+                'right': ["Righteous", "sans-serif"]
             },
         },
     },

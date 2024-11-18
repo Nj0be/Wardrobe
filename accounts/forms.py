@@ -44,7 +44,10 @@ class UserRegisterForm(UserCreationForm):
         'autocomplete': "last_name",
         'class': 'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6'
     }
-    email = forms.EmailField(required=True)
+    email = forms.EmailField(
+        required=True,
+        error_messages={"invalid": "Perfavore inserisci una email valida"},
+    )
     email.widget.attrs = {
         'id': 'email',
         'name': 'email',
