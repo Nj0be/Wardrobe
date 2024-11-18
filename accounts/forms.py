@@ -1,11 +1,11 @@
 from django import forms
-from django.contrib.auth.forms import SetPasswordMixin, AuthenticationForm, BaseUserCreationForm
+from django.contrib.auth.forms import SetPasswordMixin, AuthenticationForm, UserCreationForm
 from django.utils.translation import gettext as _
 from django.contrib.auth import password_validation
 from .models import User
 
 
-class UserRegisterForm(BaseUserCreationForm):
+class UserRegistrationForm(UserCreationForm):
     first_name = forms.CharField(
         label = "Nome",
         widget=forms.TextInput(),
@@ -27,13 +27,13 @@ class UserRegisterForm(BaseUserCreationForm):
     password1 = forms.CharField(
         label = "Password",
         required=True,
-        widget=forms.PasswordInput(),
+        widget=forms.PasswordInput(attrs={"autocomplete": "new-password"}),
     )
 
     password2 = forms.CharField(
         label="Conferma Password",
         required=True,
-        widget=forms.PasswordInput(),
+        widget=forms.PasswordInput(attrs={"autocomplete": "new-password"}),
     )
 
     error_messages = {
@@ -46,28 +46,18 @@ class UserRegisterForm(BaseUserCreationForm):
 
 
 class UserAuthenticatorForm(AuthenticationForm):
-    username = forms.EmailField(widget=forms.TextInput(attrs={"autofocus": True}))
-    username.widget.attrs = {
-        'id': 'email',
-        'name': 'email',
-        'type': 'email',
-        'required': True,
-        'autocomplete': "email",
-        'class':'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6'
-        }
+    username = forms.EmailField(
+        label = "Email",
+        error_messages={"invalid": "Perfavore inserisci una email valida"},
+        widget=forms.EmailInput(attrs={"autofocus": True}),
+        required=True,
+    )
+
     password = forms.CharField(
-        label=_("Password"),
-        strip=False,
+        label = "Password",
+        required=True,
         widget=forms.PasswordInput(attrs={"autocomplete": "current-password"}),
     )
-    password.widget.attrs = {
-        'id': 'password',
-        'name': 'password',
-        'type': 'password',
-        'required': True,
-        'autocomplete': "current-password",
-        'class': 'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6'
-    }
 
     error_messages = {
         "invalid_login": _("La tua email e password non corrispondono. Perfavore prova di nuovo."),
@@ -75,7 +65,7 @@ class UserAuthenticatorForm(AuthenticationForm):
     }
 
 
-class UserUpdateForm(BaseUserCreationForm):
+class UserUpdateForm(UserCreationForm):
     first_name = forms.CharField(required=True, widget=forms.TextInput(attrs={'placeholder': 'First Name'}))
     last_name = forms.CharField(required=True, widget=forms.TextInput(attrs={'placeholder': 'Last Name'}))
     email = forms.EmailField(required=True, widget=forms.TextInput(attrs={'placeholder': 'Email'}))

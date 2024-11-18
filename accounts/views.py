@@ -5,21 +5,24 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
 
-from .forms import UserRegisterForm, UserUpdateForm
+from .forms import UserRegistrationForm, UserUpdateForm
 from orders.models import Order
 
 
-class SignupView(SuccessMessageMixin, CreateView):
-    template_name = 'accounts/signup.html'
-    success_url = reverse_lazy('login')
-    form_class = UserRegisterForm
-    success_message = "Your profile was created successfully"
+def signup(request):
+    if request.user.is_authenticated:
+        return redirect("homepage")
 
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            # L'utente è già loggato, lo reindirizziamo alla homepage
-            return redirect('homepage')
-        return super().dispatch(request, *args, **kwargs)
+    if request.method == 'POST':
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect("homepage")
+    else:
+        form = UserRegistrationForm()
+
+    return render(request, 'accounts/signup.html', {'form': form})
 
 
 @login_required
