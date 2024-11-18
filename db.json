@@ -51,7 +51,7 @@
     "model": "accounts.user",
     "fields": {
         "password": "pbkdf2_sha256$870000$rwbJ46Kw1n6piuQ5enK64V$9H7No6hrZhrHqUou59q357aVYYBF7tOm5I/eGrTKZyM=",
-        "last_login": "2024-11-18T15:34:09.655Z",
+        "last_login": "2024-11-18T17:12:20.633Z",
         "is_superuser": true,
         "first_name": "Alessio",
         "last_name": "Pelusi",
@@ -59,6 +59,38 @@
         "is_active": true,
         "date_joined": "2024-10-04T16:18:34.016Z",
         "email": "root@root.it",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "accounts.user",
+    "fields": {
+        "password": "pbkdf2_sha256$870000$KkLVEqxYiyb94SPLFhN9kG$tUKeljOyy7CEJsnVyDz/JwuFiRzH5x+foihS141kBK4=",
+        "last_login": null,
+        "is_superuser": false,
+        "first_name": "fdas",
+        "last_name": "fdasdfsa",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2024-11-18T17:10:36.535Z",
+        "email": "fadsjfjsda@a.com",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "accounts.user",
+    "fields": {
+        "password": "pbkdf2_sha256$870000$7anQNyJGGncFO7DDEJ3Ga3$N0V3D4bA0YA5L1XAIgWMb0Jzr8578geVlEHKLWRaaEA=",
+        "last_login": null,
+        "is_superuser": false,
+        "first_name": "fadfads",
+        "last_name": "fdsadfksa",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2024-11-18T17:30:08.255Z",
+        "email": "cipollone@gmail.com",
         "groups": [],
         "user_permissions": []
     }
