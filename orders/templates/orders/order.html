@@ -1,39 +1,46 @@
-<div class="orders-section">
-  <div class="order">
-    <p><strong>Order date:</strong> {{order.date_created|date:'Y-m-d H:i' }}</p>
-    <p><strong>Status:</strong> {{ order.status }}</p>
-    <table>
-      <thead>
-      <tr>
-        <th>Product</th>
-        <th>Name</th>
-        {# <th>Size</th> #}
-        <th>Quantity</th>
-        <th>Price</th>
-        <th>Total</th>
-      </tr>
-      </thead>
-      <tbody>
-      {% for order_product in order.orderproduct_set.all %}
-        <tr>
-          <td><img src="{{ order_product.first_image }}" alt="{{ order_product.name }}" height="150" width="auto" ></td>
-          <td>{{ order_product.name }}</td>
-          {# <td>{{ order_product.size }}</td> #}
-          <td>{{ order_product.quantity }}</td>
-          <td>{{ order_product.price }} €</td>
-          <td>{% widthratio order_product.quantity 1 order_product.price %} €</td>
-        </tr>
-      {% empty %}
-        <tr>
-          <td colspan="4">No products in this order.</td>
-        </tr>
-      {% endfor %}
-      </tbody>
-    </table>
+{% extends "orders/base.html" %}
 
-    <h3>Total Order Price:
-      {{ order.total_price }} €
-    </h3>
-    <hr>
+{% block title %}Ordine {{ order.id }}{% endblock %}
+
+{% block content %}
+  <div class="orders-section">
+    <div class="order">
+      <p><strong>Order date:</strong> {{ order.date_created|date:'Y-m-d H:i' }}</p>
+      <p><strong>Status:</strong> {{ order.status }}</p>
+      <table>
+        <thead>
+        <tr>
+          <th>Product</th>
+          <th>Name</th>
+          {# <th>Size</th> #}
+          <th>Quantity</th>
+          <th>Price</th>
+          <th>Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for order_product in order.orderproduct_set.all %}
+          <tr>
+            <td><img src="{{ order_product.first_image }}" alt="{{ order_product.name }}"
+                     height="150" width="auto"></td>
+            <td>{{ order_product.name }}</td>
+            {# <td>{{ order_product.size }}</td> #}
+            <td>{{ order_product.quantity }}</td>
+            <td>{{ order_product.price }} €</td>
+            <td>{% widthratio order_product.quantity 1 order_product.price %} €</td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="4">No products in this order.</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+
+      <h3>Total Order Price:
+        {{ order.total_price }} €
+      </h3>
+      <hr>
+    </div>
   </div>
-</div>
+{% endblock %}

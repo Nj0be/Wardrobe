@@ -48,10 +48,18 @@
     }
 },
 {
+    "model": "sessions.session",
+    "pk": "yfc1msas60ppn5jbonu2eh1ckigoo0cj",
+    "fields": {
+        "session_data": ".eJxVjEEOwiAQRe_C2pAiA0iX7j1DM8yArRpIoF01vbtt0oVu_3v_rWLAZR6HpcU6TCx6ocTldwtI75gPwC_MzyKp5LlOQR6KPGmTj8Lxcz_dv8CIbdzfZMCitQmVTuDZOBOJXQi6I2tVgNipToMlzQmMoqR8iHgF5xyzu4Hfo4R1Fv26bV8kxjsi:1tD8Sz:p4R1Fs7R4HTdVspAKVebZCO5kJWfOvxGvS7pVr9G_fU",
+        "expire_date": "2024-12-02T20:35:25.218Z"
+    }
+},
+{
     "model": "accounts.user",
     "fields": {
         "password": "pbkdf2_sha256$870000$rwbJ46Kw1n6piuQ5enK64V$9H7No6hrZhrHqUou59q357aVYYBF7tOm5I/eGrTKZyM=",
-        "last_login": "2024-11-18T17:12:20.633Z",
+        "last_login": "2024-11-18T20:35:25.214Z",
         "is_superuser": true,
         "first_name": "Alessio",
         "last_name": "Pelusi",
@@ -91,6 +99,22 @@
         "is_active": true,
         "date_joined": "2024-11-18T17:30:08.255Z",
         "email": "cipollone@gmail.com",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "accounts.user",
+    "fields": {
+        "password": "pbkdf2_sha256$870000$6PggZ9VnoJ5b4iaq9YzsMk$mz1Mv2gBqdrHoJux9Z2vNVG3MW5BTXXac/i10Jdag8k=",
+        "last_login": "2024-11-18T18:44:10.053Z",
+        "is_superuser": false,
+        "first_name": "fdasjl",
+        "last_name": "fdsjkl",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2024-11-18T18:38:38.969Z",
+        "email": "123@gmail.com",
         "groups": [],
         "user_permissions": []
     }
@@ -222,7 +246,7 @@
         "price": "120.00",
         "is_active": true,
         "date_created": "2024-10-16T06:09:53.551Z",
-        "last_modification": "2024-11-18T13:23:07.004Z",
+        "last_modification": "2024-11-18T20:35:34.026Z",
         "discount": null,
         "brand": 3,
         "categories": [
@@ -512,7 +536,7 @@
         "product_color": 4,
         "size": 2,
         "price": "0.00",
-        "stock": 0
+        "stock": 3
     }
 },
 {
@@ -1915,6 +1939,30 @@
     }
 },
 {
+    "model": "cart.cartitem",
+    "pk": 2,
+    "fields": {
+        "variant": 7,
+        "customer": [
+            "123@gmail.com"
+        ],
+        "quantity": 1,
+        "is_active": true
+    }
+},
+{
+    "model": "cart.cartitem",
+    "pk": 3,
+    "fields": {
+        "variant": 4,
+        "customer": [
+            "123@gmail.com"
+        ],
+        "quantity": 1,
+        "is_active": true
+    }
+},
+{
     "model": "admin.logentry",
     "pk": 1,
     "fields": {
@@ -2777,6 +2825,24 @@
     "pk": 56,
     "fields": {
         "action_time": "2024-11-18T13:23:07.020Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "product"
+        ],
+        "object_id": "3",
+        "object_repr": "3-Jeans",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"name\": \"product variant\", \"object\": \"3-Jeans-Blu-M\", \"fields\": [\"Stock\"]}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 57,
+    "fields": {
+        "action_time": "2024-11-18T20:35:34.069Z",
         "user": [
             "root@root.it"
         ],

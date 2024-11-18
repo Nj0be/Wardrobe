@@ -166,7 +166,8 @@ def product_page(request, product_id, color_id=None, size_id=None):
 
     reviews = Review.objects.filter(product=product_id)
 
-    if request.htmx:
+    # if request come from htmx-boost, send full page
+    if request.htmx and not request.htmx.boosted:
         template_name = "products/product.html",
     else:
         template_name = "products/product_full.html",

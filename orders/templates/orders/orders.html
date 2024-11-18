@@ -2,8 +2,8 @@
   <h2>Your Orders</h2>
   {% if orders %}
     {% for order in orders %}
-      <div class="order">
-        <p><strong>Order date:</strong> {{order.date_created|date:'Y-m-d H:i' }}</p>
+      <a href="{% url 'view_order' order.id %}" hx-boost="true" preload="mouseover" preload-images="true" class="order">
+        <p><strong>Order date:</strong> {{ order.date_created|date:'Y-m-d H:i' }}</p>
         <p><strong>Status:</strong> {{ order.status }}</p>
         <table>
           <thead>
@@ -19,7 +19,8 @@
           <tbody>
           {% for order_product in order.orderproduct_set.all %}
             <tr>
-              <td><img src="{{ order_product.first_image }}" alt="{{ order_product.name }}" height="150" width="auto" ></td>
+              <td><img src="{{ order_product.first_image }}" alt="{{ order_product.name }}"
+                       height="150" width="auto"></td>
               <td>{{ order_product.name }}</td>
               {# <td>{{ order_product.size }}</td> #}
               <td>{{ order_product.quantity }}</td>
@@ -38,7 +39,7 @@
           {{ order.total_price }} €
         </h3>
         <hr>
-      </div>
+      </a>
     {% endfor %}
   {% else %}
     <p>You have no orders yet.</p>

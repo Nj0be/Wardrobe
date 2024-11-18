@@ -19,8 +19,8 @@ def view_orders(request):
 # TODO
 @login_required
 def view_order(request, order_id: int):
-    order = Order.objects.get(pk=order_id, user=request.user.id)
-    return render(request, 'orders/order_full.html', {'order': order})
+    order = Order.objects.prefetch_related('orderproduct_set').get(pk=order_id, user=request.user.id)
+    return render(request, 'orders/order.html', {'order': order})
 
 # Function not thread safe (if multiple users buy at the same time, bad things can happen)!!
 @login_required
@@ -86,9 +86,4 @@ def place(request):
 
     total_price = sum(product['subtotal_price'] for product in products)
 
-    if request.htmx:
-        template_name = "orders/place.html",
-    else:
-        template_name = "orders/place_full.html",
-
-    return render(request, template_name, {"form": form, "products": products, "total_price": total_price})
+    return render(request, 'orders/place.html', {"form": form, "products": products, "total_price": total_price})

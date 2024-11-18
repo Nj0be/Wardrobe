@@ -38,16 +38,11 @@
   </form>
 {% endfor %}
 {% if cart.items %}
-<button type="submit" id="delete{{ variant.id }}"
-        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none
+  <a href="{% url 'place_order' %}" hx-boost="true"
+          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none
             focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5
             text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800
             disabled:bg-gray-300"
-        hx-get="{% url "place_order" %}"
-        hx-target="#content"
-        hx-swap="innerHTML show:window:top"
-        hx-push-url="true"
-        hx-params="none"
-        preload="mouseover" preload-images="true"
->Procedi all'ordine</button>
+  >Procedi all'ordine
+  </a>
 {% endif %}

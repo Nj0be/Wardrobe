@@ -51,6 +51,10 @@ class OrderProduct(models.Model):
     price = models.DecimalField(max_digits=8, decimal_places=2, validators=[MinValueValidator(Decimal('0.01'))])
 
     @property
+    def name(self):
+        return self.variant.product.name
+
+    @property
     def first_image(self):
         """Returns the first image of the associated product variant."""
         if self.variant and self.variant.product_color:
