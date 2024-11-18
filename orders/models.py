@@ -1,20 +1,40 @@
 from decimal import Decimal
-from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
 from django.db import models
-from django.utils.translation import gettext_lazy as _
-
+from phonenumber_field.modelfields import PhoneNumberField
 from products.models import Product, ProductVariant, ProductImage
-
+from django.core.validators import RegexValidator
+from django.utils.text import gettext_lazy as _
 
 class Province(models.Model):
     acronym = models.CharField(max_length=2, unique=True)
     name = models.CharField(max_length=50, unique=True)
 
+    class Meta:
+        ordering = ["name"]
+
+    def __str__(self):
+        return f'{self.name}'
+
+
+class PaymentMethod(models.Model):
+    name = models.CharField(max_length=20, unique=True)
+
+    def __str__(self):
+        return f'{self.name}'
+
 
 class Order(models.Model):
     user = models.ForeignKey('accounts.User', on_delete=models.CASCADE)
     date_created = models.DateTimeField(auto_now_add=True)
+    name = models.CharField("Nome completo (nome e cognome)", max_length=40)
+    phone_number = PhoneNumberField("Numero di telefono", region="IT")
+    address_line_one = models.CharField("Riga Indirizzo 1", max_length=40)
+    address_line_two = models.CharField("Riga Indirizzo 2", max_length=40)
+    province = Province("Provincia")
+    postal_code = models.CharField("CAP", max_length=5, validators = [RegexValidator('^[0-9]{5}$', _('CAP non valido, inserisci 5 numeri'))])
+    city = models.CharField("city", max_length=40)
+    payment_method = PaymentMethod("Metodo di Pagamento")
     # remove possibility to change order after shipping
     # before shipping it's possible to add OrderProducts to the order and create new payments to pay the OrderProducts
     # the payment class should mark which OrderProducts are paid
