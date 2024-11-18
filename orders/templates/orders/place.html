@@ -1,7 +1,6 @@
 <form action="{% url "place_order" %}" method="post">
   {% load widget_tweaks %}
   {% csrf_token %}
-  {% csrf_token %}
   <div class="fieldWrapper">
     {{ form.name.errors }}
     {{ form.name.label_tag }}
@@ -42,10 +41,16 @@
     {{ form.payment_method.label_tag }}
     {{ form.payment_method |add_class:"" }}
   </div>
-  {% for variant in variants %}
+  {% for product in products %}
     <div>
-      <img class="product-image" src="{{ variant.get_images.0.url }}" alt="{{ variant.product }}">
-      <p><strong>Prezzo:</strong> {% if variant.price != 0 %}{{ variant.price }}{% else %}{{ variant.product.price }}{% endif %}</p>
+      <p><strong>Nome:</strong>{{ product.variant.product.name }}</p>
+      <p><strong>Brand:</strong>{{ product.variant.product.brand.name }}</p>
+      <p><strong>Descrizione:</strong>{{ product.variant.product.description }}</p>
+      <img class="product-image" src="{{ product.variant.get_images.0.url }}" alt="{{ variant.product }}">
+      <p><strong>Prezzo:</strong> {{ product.price }} X {{ product.quantity }} = {{ product.subtotal_price }}</p>
+      <input type="hidden" name="product_ids" value="{{ product.variant.id }}">
+      <input type="hidden" name="product_prices" value="{{ product.price }}">
+      <input type="hidden" name="product_quantities" value="{{ product.quantity }}">
     </div>
   {% endfor %}
   <p><strong>Totale:</strong> {{ total_price }}</p>

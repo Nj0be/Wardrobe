@@ -49,11 +49,11 @@ class Cart:
 
         if self.user.is_authenticated:
             try:
-                item = CartItem.objects.get(product_variant=variant, customer=self.user)
+                item = CartItem.objects.get(variant=variant, customer=self.user)
                 item.quantity = quantity
                 item.save()
             except ObjectDoesNotExist:
-                CartItem.objects.create(product_variant=variant, customer=self.user, quantity=quantity)
+                CartItem.objects.create(variant=variant, customer=self.user, quantity=quantity)
         else:
             if variant not in self.cart:
                 self.cart[variant] = {}
@@ -67,7 +67,7 @@ class Cart:
             raise TypeError("variant argument is not a ProductVariant")
 
         if self.user.is_authenticated:
-            item = CartItem.objects.filter(product_variant=variant, customer=self.user).first()
+            item = CartItem.objects.filter(variant=variant, customer=self.user).first()
             if item:
                 return item.quantity
             else:
@@ -85,7 +85,7 @@ class Cart:
 
         if self.user.is_authenticated:
             try:
-                CartItem.objects.get(product_variant=variant, customer=self.user).delete()
+                CartItem.objects.get(variant=variant, customer=self.user).delete()
             except ObjectDoesNotExist:
                 pass
         else:
@@ -107,7 +107,7 @@ class Cart:
 
         if self.user.is_authenticated:
             try:
-                item = CartItem.objects.filter(product_variant=variant, customer=self.user).first()
+                item = CartItem.objects.filter(variant=variant, customer=self.user).first()
                 item.is_active = is_active
                 item.save()
             except:
@@ -122,16 +122,36 @@ class Cart:
         self.set_is_active(variant, False)
 
     def values(self):
-        return self.session_cart.values()
+        if self.user.is_authenticated:
+            if self.user.is_authenticated:
+                cart = {}
+                for item in CartItem.objects.filter(customer=self.user):
+                    variant = item.variant
+                    cart[variant] = {}
+                    cart[variant]['quantity'] = item.quantity
+                    cart[variant]['is_active'] = item.is_active
+                return cart.values()
+        else:
+            return self.session_cart.values()
 
     def keys(self):
-        return self.session_cart.keys()
+        if self.user.is_authenticated:
+            if self.user.is_authenticated:
+                cart = {}
+                for item in CartItem.objects.filter(customer=self.user):
+                    variant = item.variant
+                    cart[variant] = {}
+                    cart[variant]['quantity'] = item.quantity
+                    cart[variant]['is_active'] = item.is_active
+                return cart.keys()
+        else:
+            return self.session_cart.keys()
 
     def items(self):
         if self.user.is_authenticated:
             cart = {}
             for item in CartItem.objects.filter(customer=self.user):
-                variant = item.product_variant
+                variant = item.variant
                 cart[variant] = {}
                 cart[variant]['quantity'] = item.quantity
                 cart[variant]['is_active'] = item.is_active
@@ -140,7 +160,17 @@ class Cart:
             return self.cart.items()
 
     def __len__(self):
-        return len(self.session_cart)
+        if self.user.is_authenticated:
+            if self.user.is_authenticated:
+                cart = {}
+                for item in CartItem.objects.filter(customer=self.user):
+                    variant = item.variant
+                    cart[variant] = {}
+                    cart[variant]['quantity'] = item.quantity
+                    cart[variant]['is_active'] = item.is_active
+                return len(cart)
+        else:
+            return len(self.session_cart)
 
 
 # create cart on login to transfer cartitems from session to db
@@ -219,7 +249,13 @@ def cart_delete(request):
     except Exception as e:
         return HttpResponseBadRequest(e)
 
-    return HttpResponse("")
+    if len(cart) == 0:
+        return render(
+            request,
+            "cart/empty_cart.html"
+        )
+    else:
+        return HttpResponse("")
 
 
 def cart_add(request):

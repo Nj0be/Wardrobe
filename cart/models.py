@@ -4,17 +4,17 @@ from django.core.validators import MinValueValidator
 from django.core.exceptions import ValidationError
 
 class CartItem(models.Model):
-    product_variant = models.ForeignKey('products.ProductVariant', on_delete=models.CASCADE)
+    variant = models.ForeignKey('products.ProductVariant', on_delete=models.CASCADE)
     customer = models.ForeignKey('accounts.User', on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(validators=[MinValueValidator(1)])
     is_active = models.BooleanField(default=True)
 
     class Meta:
-        unique_together = [['product_variant', 'customer']]
+        unique_together = [['variant', 'customer']]
 
     def clean(self):
         # Don't add product to cart if stock == 0
-        self.quantity = min(self.quantity, self.product_variant.stock)
+        self.quantity = min(self.quantity, self.variant.stock)
         if self.quantity == 0:
             raise ValidationError(_("Can't add Product to cart with quantity = 0"))
 

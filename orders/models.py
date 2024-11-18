@@ -31,10 +31,14 @@ class Order(models.Model):
     phone_number = PhoneNumberField("Numero di telefono", region="IT")
     address_line_one = models.CharField("Riga Indirizzo 1", max_length=40)
     address_line_two = models.CharField("Riga Indirizzo 2", max_length=40)
-    province = Province("Provincia")
+    province = models.ForeignKey(Province, on_delete=models.PROTECT)
     postal_code = models.CharField("CAP", max_length=5, validators = [RegexValidator('^[0-9]{5}$', _('CAP non valido, inserisci 5 numeri'))])
     city = models.CharField("city", max_length=40)
-    payment_method = PaymentMethod("Metodo di Pagamento")
+    payment_method = models.ForeignKey(PaymentMethod, on_delete=models.PROTECT)
+
+    @property
+    def total_price(self):
+        return sum(product.price * product.quantity for product in OrderProduct.objects.filter(order=self))
     # remove possibility to change order after shipping
     # before shipping it's possible to add OrderProducts to the order and create new payments to pay the OrderProducts
     # the payment class should mark which OrderProducts are paid
@@ -42,21 +46,21 @@ class Order(models.Model):
 
 class OrderProduct(models.Model):
     order = models.ForeignKey('orders.Order', on_delete=models.CASCADE, editable=False)
-    product_variant = models.ForeignKey('products.ProductVariant', on_delete=models.PROTECT, editable=False)
+    variant = models.ForeignKey('products.ProductVariant', on_delete=models.PROTECT, editable=False)
     quantity = models.PositiveIntegerField(validators=[MinValueValidator(1)])
     price = models.DecimalField(max_digits=8, decimal_places=2, validators=[MinValueValidator(Decimal('0.01'))])
 
     @property
     def first_image(self):
         """Returns the first image of the associated product variant."""
-        if self.product_variant and self.product_variant.product_color:
-            product_images = ProductImage.objects.filter(product_color=self.product_variant.product_color)
+        if self.variant and self.variant.product_color:
+            product_images = ProductImage.objects.filter(product_color=self.variant.product_color)
             if product_images.exists():
                 return product_images.first().image.url  # Return the URL of the first image
         return None  # Return None if no image is found
 
     def save(self, *args, **kwargs):
         if self._state.adding:
-            self.price = self.product_variant.price or self.product_variant.product.price
+            self.price = self.variant.price or self.variant.product.price
 
         super(OrderProduct, self).save(*args, **kwargs)

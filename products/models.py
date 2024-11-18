@@ -67,7 +67,7 @@ class Product(models.Model):
     def save(self, *args, **kwargs):
         super(Product, self).save(args, kwargs)
         if not self.is_active:
-            CartItem.objects.filter(product_variant__product_color__product=self).delete()
+            CartItem.objects.filter(variant__product_color__product=self).delete()
 
     def __str__(self):
         return f'{self.id}-{self.name}'
@@ -149,7 +149,7 @@ class ProductVariant(models.Model):
 # if not, it will delete/update the CartItems
 @receiver(post_save, sender=ProductVariant, dispatch_uid="update_cart_quantity")
 def update_cart_quantity(sender, instance, **kwargs):
-    for cart_item in CartItem.objects.filter(product_variant=instance):
+    for cart_item in CartItem.objects.filter(variant=instance):
         if instance.stock == 0:
             cart_item.delete()
         elif cart_item.quantity >= instance.stock:
