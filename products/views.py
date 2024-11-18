@@ -1,8 +1,5 @@
-from idlelib.autocomplete import ATTRS
-
 from django.contrib.postgres.aggregates import ArrayAgg
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
-from django.db.models import Q
 from django.http import HttpResponseNotFound, Http404
 from django.views import generic
 from django.shortcuts import render, get_object_or_404, redirect

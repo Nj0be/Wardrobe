@@ -49,9 +49,9 @@ INSTALLED_APPS = [
     'feincms3',
     'tailwind',
     'theme',
-    'crispy_forms',
-    'crispy_tailwind',
     'django_browser_reload',
+    'widget_tweaks',
+    'phonenumber_field',
 
     # Local
     'accounts',
@@ -183,10 +183,6 @@ TAILWIND_APP_NAME = 'theme'
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
-# crispy forms tailwind
-CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
-
-CRISPY_TEMPLATE_PACK = "tailwind"
 
 # SMTP configuration for sending emails from the Django app
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

@@ -1,0 +1,58 @@
+<form action="{% url "place_order" %}" method="post">
+  {% load widget_tweaks %}
+  {% csrf_token %}
+  <div class="fieldWrapper">
+    {{ form.name.errors }}
+    {{ form.name.label_tag }}
+    {{ form.name |add_class:"" }}
+  </div>
+  <div class="fieldWrapper">
+    {{ form.phone_number.errors }}
+    {{ form.phone_number.label_tag }}
+    {{ form.phone_number |add_class:"" }}
+  </div>
+  <div class="fieldWrapper">
+    {{ form.address_line_one.errors }}
+    {{ form.address_line_one.label_tag }}
+    {{ form.address_line_one |add_class:"" }}
+  </div>
+  <div class="fieldWrapper">
+    {{ form.address_line_two.errors }}
+    {{ form.address_line_two.label_tag }}
+    {{ form.address_line_two |add_class:"" }}
+  </div>
+  <div class="fieldWrapper">
+    {{ form.province.errors }}
+    {{ form.province.label_tag }}
+    {{ form.province |add_class:"" }}
+  </div>
+  <div class="fieldWrapper">
+    {{ form.postal_code.errors }}
+    {{ form.postal_code.label_tag }}
+    {{ form.postal_code |add_class:"" }}
+  </div>
+  <div class="fieldWrapper">
+    {{ form.city.errors }}
+    {{ form.city.label_tag }}
+    {{ form.city |add_class:"" }}
+  </div>
+  <div class="fieldWrapper">
+    {{ form.payment_method.errors }}
+    {{ form.payment_method.label_tag }}
+    {{ form.payment_method |add_class:"" }}
+  </div>
+  {% for product in products %}
+    <div>
+      <p><strong>Nome:</strong>{{ product.variant.product.name }}</p>
+      <p><strong>Brand:</strong>{{ product.variant.product.brand.name }}</p>
+      <p><strong>Descrizione:</strong>{{ product.variant.product.description }}</p>
+      <img class="product-image" src="{{ product.variant.get_images.0.url }}" alt="{{ variant.product }}">
+      <p><strong>Prezzo:</strong> {{ product.price }} X {{ product.quantity }} = {{ product.subtotal_price }}</p>
+      <input type="hidden" name="product_ids" value="{{ product.variant.id }}">
+      <input type="hidden" name="product_prices" value="{{ product.price }}">
+      <input type="hidden" name="product_quantities" value="{{ product.quantity }}">
+    </div>
+  {% endfor %}
+  <p><strong>Totale:</strong> {{ total_price }}</p>
+  <input type="submit" value="Submit">
+</form>
