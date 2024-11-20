@@ -1,6 +1,7 @@
-<div>
-  <!-- Aside - Filter Section -->
-  <div>
+<div class="flex justify-center items-center my-16">
+<div class="grid grid-cols-5 w-3/5">
+    <!-- Aside - Filter Section -->
+  <aside>
     <!-- Categories Filter Section -->
     <div>
       <ul>
@@ -12,13 +13,14 @@
                 hx-include="#filtersForm"
                 preload="mouseover" preload-images="true"
                 {% if category %}
-                hx-get="{% url 'search_category' category.id %}"
-                href="{% url 'search_category' category.id %}">
-                  {% if selected_category.parent == category %}Torna indietro
-                    - {% endif %}{{ category.name }}
+                    hx-get="{% url 'search_category' category.id %}"
+                    href="{% url 'search_category' category.id %}" {% if selected_category.parent == category %} class="text-blue2" >
+                      Torna indietro
+                        - {% endif %} > {{ category.name }}
                 {% else %}
+                    class="text-blue2"
                   hx-get="{% url 'search' %}"
-                  href="{% url 'search' %}">Torna indietro - Root
+                  href="{% url 'search' %}" >Tutti i prodotti
                 {% endif %}
             </a>
           </li>
@@ -27,7 +29,7 @@
     </div>
 
     <!-- Other Filters Section -->
-    <div style="border: 1px solid black" id="filtersForm">
+    <div style="border: 1px solid black" class="grid grid-cols-1 justify-center gap-6 p-6" id="filtersForm">
 
       <!-- Text Search Bar -->
       <input type="text" name="search_terms" id="search_terms" placeholder="Cerca il tuo prodotto"
@@ -45,68 +47,89 @@
       <!-- Brand Filter -->
       <div class="filters">
         <p>Marche</p>
+        {% if brands|length == 0 %}<p>Nessuna marca disponibile</p>{% endif %}
+        <ul class="grid grid-cols-3 justify-center items-center gap-2">
         {% for brand in brands %}
-          <input type="checkbox" name="brand" id="brand_{{ forloop.counter }}"
-                 value="{{ brand.id }}"
-                 autocomplete="off"
-              {% if brand in selected_brands %} checked {% endif %}
-                 hx-get="
-                     {% if selected_category %}{% url 'search_category' selected_category.id %}{% else %}{% url 'search' %}{% endif %}"
-                 hx-target="#content"
-                 hx-push-url="true"
-                 hx-include="#filtersForm"
-                 preload="mouseover" preload-images="true"
-          >
-          <label for="brand_{{ forloop.counter }}">{{ brand.name }}</label><br>
+            <li>
+                <input type="checkbox" name="brand" id="brand_{{ forloop.counter }}" class="hidden peer"
+                     value="{{ brand.id }}"
+                     autocomplete="off"
+                  {% if brand in selected_brands %} checked {% endif %}
+                     hx-get="
+                         {% if selected_category %}{% url 'search_category' selected_category.id %}{% else %}{% url 'search' %}{% endif %}"
+                     hx-target="#content"
+                     hx-push-url="true"
+                     hx-include="#filtersForm"
+                     preload="mouseover" preload-images="true"
+                    >
+                <label for="brand_{{ forloop.counter }}" class="inline-flex items-center justify-between px-2 py-1 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue3 peer-checked:text-blue3 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
+                    <div class="block justify-center items-center">
+                        <div class="w-full">
+                            {{ brand.name }}
+                        </div>
+                    </div>
+                </label>
+            </li>
         {% endfor %}
+        </ul>
       </div>
 
       <!-- Color Filter -->
       <div class="filters">
         <p>Colori</p>
+        {% if colors|length == 0 %}<p>Nessun colore disponibile</p>{% endif %}
+        <ul class="grid grid-cols-3 justify-center items-center gap-2">
         {% for color in colors %}
-          <input type="checkbox" name="color" id="color_{{ forloop.counter }}"
-                 value="{{ color.id }}"
-                 autocomplete="off"
-              {% if color in selected_colors %} checked {% endif %}
-                 hx-get="
-                     {% if selected_category %}{% url 'search_category' selected_category.id %}{% else %}{% url 'search' %}{% endif %}"
-                 hx-target="#content"
-                 hx-push-url="true"
-                 hx-include="#filtersForm"
-                 preload="mouseover" preload-images="true"
-          >
-          <label style="color: #{{ color.hex }}" for="color_{{ forloop.counter }}">
-            {{ color.name }}
-          </label>
-          <br>
+            <li>
+                <input type="checkbox" name="color" id="color_{{ forloop.counter }}" class="hidden peer"
+                     value="{{ color.id }}"
+                     autocomplete="off"
+                  {% if color in selected_colors %} checked {% endif %}
+                     hx-get="
+                         {% if selected_category %}{% url 'search_category' selected_category.id %}{% else %}{% url 'search' %}{% endif %}"
+                     hx-target="#content"
+                     hx-push-url="true"
+                     hx-include="#filtersForm"
+                     preload="mouseover" preload-images="true"
+                >
+                <label for="color_{{ forloop.counter }}" style="background-color:#{{ color.hex }};" class="inline-flex justify-center items-center w-12 h-6 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue3 peer-checked:text-blue3 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"></label>
+            </li>
         {% endfor %}
+        </ul>
       </div>
 
       <!-- Size Filter -->
       <div class="filters">
         <p>Taglie</p>
+        {% if sizes|length == 0 %}<p>Nessuna taglia disponibile</p>{% endif %}
+        <ul class="grid grid-cols-3 justify-center items-center gap-2">
         {% for size in sizes %}
-          <input type="checkbox" name="size" id="size_{{ forloop.counter }}" value="{{ size.id }}"
-                 autocomplete="off"
-              {% if size in selected_sizes %} checked {% endif %}
-                 hx-get="
-                     {% if selected_category %}{% url 'search_category' selected_category.id %}{% else %}{% url 'search' %}{% endif %}"
-                 hx-target="#content"
-                 hx-push-url="true"
-                 hx-include="#filtersForm"
-                 preload="mouseover" preload-images="true"
-          >
-          <label for="size_{{ forloop.counter }}">{{ size.name }}</label>
-          <br>
+            <li class="flex-none">
+                <input type="checkbox" name="size" id="size_{{ forloop.counter }}" value="{{ size.id }}" class="hidden peer"
+                     autocomplete="off"
+                  {% if size in selected_sizes %} checked {% endif %}
+                     hx-get="
+                         {% if selected_category %}{% url 'search_category' selected_category.id %}{% else %}{% url 'search' %}{% endif %}"
+                     hx-target="#content"
+                     hx-push-url="true"
+                     hx-include="#filtersForm"
+                     preload="mouseover" preload-images="true"
+                >
+              <label for="size_{{ forloop.counter }}" class="inline-flex justify-center items-center w-12 h-12 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue3 peer-checked:text-blue3 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
+                  <div class="mx-auto">
+                      {{ size.name }}
+                  </div>
+              </label>
+            </li>
         {% endfor %}
+        </ul>
       </div>
     </div>
-  </div>
+  </aside>
 
 
   <!-- Start Content # mostra i prodotti -->
-  <div>
+  <div class="">
     {% if products %}
       <h1>Prodotti:</h1>
       <ul>
@@ -118,4 +141,6 @@
       <p>Nessun prodotto disponibile</p>
     {% endif %}
   </div>
+</div>
+
 </div>
