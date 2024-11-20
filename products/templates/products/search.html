@@ -1,5 +1,5 @@
 <div class="flex justify-center items-center my-16">
-<div class="grid grid-cols-5 w-3/5">
+<div class="grid grid-cols-5 w-3/5 gap-10">
     <!-- Aside - Filter Section -->
   <aside>
     <!-- Categories Filter Section -->
@@ -129,14 +129,27 @@
 
 
   <!-- Start Content # mostra i prodotti -->
-  <div class="">
+  <div class="col-span-4">
     {% if products %}
-      <h1>Prodotti:</h1>
-      <ul>
+      <div class="grid grid-cols-3 justify-center items-center gap-4">
         {% for product in products %}
-          <li><a href="{% url 'product' product.id %}" hx-boost="true" preload="mouseover" preload-images="true">{{ product.name }}</a></li>
+            <div class="bg-blue0">
+                <a href="{% url 'product' product.id %}" hx-boost="true" preload="mouseover" preload-images="true">
+                    <img src="{{ product.get_first_image.url }}" alt="{{ product.name }}" class="w-full">
+                    <div class="grid grid-cols-2 justify-between my-2">
+                        <div class="mx-auto">
+                            <p>{{ product.name }}</p>
+                        </div>
+                        <div class="mx-auto inline-flex items-center justify-center gap-1">
+                            {% for color in product.get_colors %}
+                                <div style="background-color: #{{ color.hex }};" class="w-5 h-5" title="{{ color.name }}"></div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </a>
+            </div>
         {% endfor %}
-      </ul>
+      </div>
     {% else %}
       <p>Nessun prodotto disponibile</p>
     {% endif %}
