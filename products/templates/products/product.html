@@ -40,11 +40,7 @@
                                  hx-params="none"
                                  preload="mouseover" preload-images="true"
                         >
-                        <label for="color_{{ color.id }}" class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue3 peer-checked:text-blue3 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
-                            <div class="block">
-                                <div class="w-full">{{ color.hex|lower }}</div>
-                            </div>
-                        </label>
+                        <label for="color_{{ color.id }}" style="background-color:#{{ color.hex }};" class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue3 peer-checked:text-blue3 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"></label>
                     </li>
                 {% endfor %}
                 </ul>
@@ -80,14 +76,12 @@
               {% endfor %}
                 </ul>
 
-
-              {% if stock %}
                   <div class="grid grid-cols-1 justify-center items-center gap-4 mt-10">
                       <div class="grid grid-cols-2">
                           <label for="quantity">Quantità:</label>
-                          <input type="number" id="quantity" name="quantity" min="1" max="{{ stock }}" value="1">
+                          <input type="number" id="quantity" name="quantity" min="1" max="{{ stock }}" value="1" {% if selected_size == None %} disabled {% endif %}>
                       </div>
-                      <button type="submit"
+                      <button type="submit" {% if selected_size == None %} disabled {% endif %}
                               class="text-white bg-blue2 hover:bg-blue-800 focus:ring-4 focus:outline-none
                                 focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5
                                 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800
@@ -98,8 +92,6 @@
                       >Aggiungi al carrello
                       </button>
                   </div>
-              {% endif %}
-
             </form>
         </div>
 
@@ -115,7 +107,7 @@
             <div>
                 {% for review in reviews %}
                   <div class="review">
-                      <p><strong>Recensione di </strong>{{ review.customer.first_name }} {{ review.customer.last_name }}.</p>
+                     <p><strong>Recensione di </strong>{{ review.customer.first_name }} {{ review.customer.last_name }}.</p>
                     <h4 class="text-2xl">{{ review.vote }}/5 {{ review.title }}</h4>
                     <p>{{ review.description }}</p>
 
