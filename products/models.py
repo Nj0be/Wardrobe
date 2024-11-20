@@ -64,6 +64,10 @@ class Product(models.Model):
     def has_variants(self):
         return len(ProductVariant.objects.filter(product_color__product=self)) > 0
 
+    # TODO fix
+    def get_first_image(self):
+        return ProductImage.objects.filter(product_color__product=self).first().image
+
     def save(self, *args, **kwargs):
         super(Product, self).save(args, kwargs)
         if not self.is_active:
