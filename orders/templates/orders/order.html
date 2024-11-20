@@ -5,17 +5,17 @@
 {% block content %}
   <div class="orders-section">
     <div class="order">
-      <p><strong>Order date:</strong> {{ order.date_created|date:'Y-m-d H:i' }}</p>
-      <p><strong>Status:</strong> {{ order.status }}</p>
+      <p><strong>Data ordine:</strong> {{ order.date_created|date:'Y-m-d H:i' }}</p>
+      <p><strong>Stato:</strong> {{ order.status }}</p>
       <table>
         <thead>
         <tr>
-          <th>Product</th>
-          <th>Name</th>
+          <th>Prodotto</th>
+          <th>Nome</th>
           {# <th>Size</th> #}
-          <th>Quantity</th>
-          <th>Price</th>
-          <th>Total</th>
+          <th>Quantità</th>
+          <th>Prezzo</th>
+          <th>Totale</th>
         </tr>
         </thead>
         <tbody>
@@ -31,16 +31,15 @@
           </tr>
         {% empty %}
           <tr>
-            <td colspan="4">No products in this order.</td>
+            <td colspan="4">Non ci sono prodotti in quest ordine.</td>
           </tr>
         {% endfor %}
         </tbody>
       </table>
 
-      <h3>Total Order Price:
+      <h3>Prezzo Totale:
         {{ order.total_price }} €
       </h3>
-      <hr>
     </div>
   </div>
 {% endblock %}

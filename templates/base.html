@@ -24,6 +24,11 @@
                 <div class="text-2xl text-blue3 dark:text-blue0 flex justify-center items-center">
                     <ul class="grid grid-cols-1 justify-center items-center">
                         {% block left_header_links %}
+                          <li class="hover:underline">
+                            <a href="{% url 'search' %}">
+                              Tutti i prodotti
+                            </a>
+                          </li>
                         {% endblock %}
                     </ul>
                 </div>
@@ -35,6 +40,24 @@
                 <div class="text-2xl text-blue3 dark:text-blue0 flex justify-center items-center">
                     <ul class="grid grid-cols-2 justify-center items-center gap-6">
                         {% block right_header_links %}
+                          <li class="hover:underline">
+                            <a href="{% url "cart" %}">
+                              Carrello
+                            </a>
+                          </li>
+                          {% if user.is_authenticated %}
+                            <li class="hover:underline">
+                              <a href="{% url 'profile' %}">
+                                Hi, {{ user.first_name }}
+                              </a>
+                            </li>
+                          {% else %}
+                            <li class="hover:underline">
+                              <a href="{% url 'login' %}">
+                                Accedi
+                              </a>
+                            </li>
+                          {% endif %}
                         {% endblock %}
                     </ul>
                 </div>

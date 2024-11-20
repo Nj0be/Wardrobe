@@ -1,19 +1,19 @@
 <div class="orders-section">
-  <h2>Your Orders</h2>
+  <h2>I tuoi ordini</h2>
   {% if orders %}
     {% for order in orders %}
       <a href="{% url 'view_order' order.id %}" hx-boost="true" preload="mouseover" preload-images="true" class="order">
-        <p><strong>Order date:</strong> {{ order.date_created|date:'Y-m-d H:i' }}</p>
-        <p><strong>Status:</strong> {{ order.status }}</p>
+        <p><strong>Data ordine:</strong> {{ order.date_created|date:'Y-m-d H:i' }}</p>
+        <p><strong>Stato:</strong> {{ order.status }}</p>
         <table>
           <thead>
           <tr>
-            <th>Product</th>
-            <th>Name</th>
+            <th>Prodotto</th>
+            <th>Nome</th>
             {# <th>Size</th> #}
-            <th>Quantity</th>
-            <th>Price</th>
-            <th>Total</th>
+            <th>Quantità</th>
+            <th>Prezzo</th>
+            <th>Totale</th>
           </tr>
           </thead>
           <tbody>
@@ -29,19 +29,18 @@
             </tr>
           {% empty %}
             <tr>
-              <td colspan="4">No products in this order.</td>
+              <td colspan="4">Non ci sono prodotti in quest ordine.</td>
             </tr>
           {% endfor %}
           </tbody>
         </table>
 
-        <h3>Total Order Price:
+        <h3>Prezzo Totale:
           {{ order.total_price }} €
         </h3>
-        <hr>
       </a>
     {% endfor %}
   {% else %}
-    <p>You have no orders yet.</p>
+    <p>Non hai ancora ordini</p>
   {% endif %}
 </div>

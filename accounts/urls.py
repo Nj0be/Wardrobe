@@ -18,6 +18,7 @@ urlpatterns = [
     path("signup/", views.signup, name="signup"),
     path("", views.profile, name="profile"),
     path("edit/", views.edit_profile, name="edit_profile"),
+    path("change-password/", views.change_password, name="change_password"),
 
     path('password-reset/', PasswordResetView.as_view(template_name='accounts/password_reset.html'), name='password-reset'),
     path('password-reset/done/', PasswordResetDoneView.as_view(template_name='accounts/password_reset_done.html'), name='password_reset_done'),

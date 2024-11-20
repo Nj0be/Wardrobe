@@ -5,7 +5,7 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
 
-from .forms import UserRegistrationForm, UserUpdateForm
+from .forms import UserRegistrationForm, UserUpdateForm, UserPasswordChangeForm
 from orders.models import Order
 
 
@@ -33,15 +33,27 @@ def profile(request):
 
 @login_required
 def edit_profile(request):
-    user = request.user  # Ottieni l'utente attualmente autenticato
-
     if request.method == 'POST':
-        form = UserUpdateForm(request.POST, instance=user)  # Passa l'istanza dell'utente
+        form = UserUpdateForm(request.POST, instance=request.user)  # Passa l'istanza dell'utente
         if form.is_valid():
             form.save()  # Salva i dati del modulo
-            login(request, user) # Esegui il login dell'utente
+            login(request, request.user)
             return redirect('profile')  # Reindirizza all'URL 'profile' (assicurati di avere questo URL configurato)
     else:
-        form = UserUpdateForm(instance=user)  # Precompila il modulo con i dati dell'utente
+        form = UserUpdateForm(instance=request.user)  # Precompila il modulo con i dati dell'utente
 
     return render(request, 'accounts/edit_profile.html', {'form': form})
+
+
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        form = UserPasswordChangeForm(request.user, request.POST)  # Passa l'istanza dell'utente
+        if form.is_valid():
+            form.save()  # Salva i dati del modulo
+            login(request, request.user)
+            return redirect('profile')  # Reindirizza all'URL 'profile' (assicurati di avere questo URL configurato)
+    else:
+        form = UserPasswordChangeForm(request.user)  # Precompila il modulo con i dati dell'utente
+
+    return render(request, 'accounts/change_password.html', {'form': form})
