@@ -4,7 +4,7 @@
         <!-- Image Gallery -->
         <div>
           {% for image in images %}
-            <img src="{{ image.image.url }}" alt="{{ product.name }}" class="w-120 h-full">
+            <img src="{{ image.url }}" alt="{{ product.name }}" class="w-120 h-full">
           {% endfor %}
         </div>
 

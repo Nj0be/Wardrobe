@@ -131,9 +131,7 @@ def product_page(request, product_id, color_id=None, size_id=None):
 
     sizes = Size.objects.filter(productvariant__product_color__product=product_id).distinct()
 
-    images = ProductImage.objects.filter(
-        product_color=product_color
-    )
+    images = product_color.get_images()
 
     # second one take priority
     size_variants = {size: None for size in sizes} | {variant.size: variant for variant in variants
