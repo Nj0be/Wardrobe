@@ -68,6 +68,9 @@ class Product(models.Model):
     def get_first_image(self):
         return ProductImage.objects.filter(product_color__product=self).first().image
 
+    def get_colors(self):
+        return Color.objects.filter(productcolor__product=self)
+
     def save(self, *args, **kwargs):
         super(Product, self).save(args, kwargs)
         if not self.is_active:
