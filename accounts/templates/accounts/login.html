@@ -21,6 +21,7 @@
             {% endfor %}</ol>
           </div>
         {% endfor %}
+        <a href="{% url 'password-reset' %}" class="font-semibold text-indigo-600 hover:text-indigo-500">Hai dimenticato la password?</a>
         <!-- Signup form errors -->
         <ol>{% for error in form.non_field_errors %}
           <li>{{ error|escape }}</li>
