@@ -14,56 +14,56 @@
         {% csrf_token %}
         <div class="fieldWrapper">
           {{ form.name|add_label_class:"block text-sm/6 font-medium text-gray-900" }}
-          {{ form.name|add_class:"block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" }}
+          {% render_field form.name class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" %}
           <ol>{% for error in form.name.errors %}
             <li>{{ error|escape }}</li>
           {% endfor %}</ol>
         </div>
         <div class="fieldWrapper">
           {{ form.phone_number|add_label_class:"block text-sm/6 font-medium text-gray-900" }}
-          {{ form.phone_number|add_class:"block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" }}
+          {% render_field form.phone_number class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" %}
           <ol>{% for error in form.phone_number.errors %}
             <li>{{ error|escape }}</li>
           {% endfor %}</ol>
         </div>
         <div class="fieldWrapper">
           {{ form.address_line_one|add_label_class:"block text-sm/6 font-medium text-gray-900" }}
-          {{ form.address_line_one|add_class:"block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" }}
+          {% render_field form.address_line_one class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" %}
           <ol>{% for error in form.address_line_one.errors %}
             <li>{{ error|escape }}</li>
           {% endfor %}</ol>
         </div>
         <div class="fieldWrapper">
           {{ form.address_line_two|add_label_class:"block text-sm/6 font-medium text-gray-900" }}
-          {{ form.address_line_two|add_class:"block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" }}
+          {% render_field form.address_line_two class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" %}
           <ol>{% for error in form.address_line_two.errors %}
             <li>{{ error|escape }}</li>
           {% endfor %}</ol>
         </div>
         <div class="fieldWrapper">
           {{ form.province|add_label_class:"block text-sm/6 font-medium text-gray-900" }}
-          {{ form.province|add_class:"block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" }}
+          {% render_field form.province class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" %}
           <ol>{% for error in form.province.errors %}
             <li>{{ error|escape }}</li>
           {% endfor %}</ol>
         </div>
         <div class="fieldWrapper">
           {{ form.postal_code|add_label_class:"block text-sm/6 font-medium text-gray-900" }}
-          {{ form.postal_code|add_class:"block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" }}
+          {% render_field form.postal_code class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" %}
           <ol>{% for error in form.postal_code.errors %}
             <li>{{ error|escape }}</li>
           {% endfor %}</ol>
         </div>
         <div class="fieldWrapper">
           {{ form.city|add_label_class:"block text-sm/6 font-medium text-gray-900" }}
-          {{ form.city|add_class:"block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" }}
+          {% render_field form.city class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" %}
           <ol>{% for error in form.city.errors %}
             <li>{{ error|escape }}</li>
           {% endfor %}</ol>
         </div>
         <div class="fieldWrapper">
           {{ form.payment_method|add_label_class:"" }}
-          {{ form.payment_method|add_class:"" }}
+          {% render_field form.payment_method class="" %}
           <ol>{% for error in form.payment_method.errors %}
             <li>{{ error|escape }}</li>
           {% endfor %}</ol>
