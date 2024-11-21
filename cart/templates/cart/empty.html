@@ -1,6 +1,8 @@
 {% if cart.items|length == 0 %}
-    <div class="flex flex-col justify-center items-center gap-2">
+    <div id="empty-cart" class="flex flex-col justify-center items-center gap-2" hx-swap-oob="true">
         <p class="text-xl">Ops, sembra che il tuo carrello sia ancora vuoto</p>
         <a href="{% url 'search' %}" class="text-blue2">Inizia a riempire il tuo armadio!</a>
     </div>
+{% else %}
+  <div id="empty-cart" hx-swap-oob="true"></div>
 {% endif %}
