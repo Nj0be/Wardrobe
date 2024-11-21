@@ -43,8 +43,8 @@
     "model": "sessions.session",
     "pk": "rii99rl3skwnioctlrqeiynnxt8hxwe3",
     "fields": {
-        "session_data": ".eJxVjEEOwiAQRe_C2pAiA0iX7j1DM8yArRpIoF01vbtt0oVu_3v_rWLAZR6HpcU6TCx6ocTldwtI75gPwC_MzyKp5LlOQR6KPGmTj8Lxcz_dv8CIbdzfZMCitQmVTuDZOBOJXQi6I2tVgNipToMlzQmMoqR8iHgF5xyzu4Hfo4R1Fv26bV8kxjsi:1tE5cc:IsFTnHzUyNYnBY_AtGDcWG-ui8hMOomsuYXTIRSg3uE",
-        "expire_date": "2024-12-05T11:45:18.023Z"
+        "session_data": ".eJxVjEEOwiAQRe_C2pAiA0iX7j1DM8yArRpIoF01vbtt0oVu_3v_rWLAZR6HpcU6TCx6ocTldwtI75gPwC_MzyKp5LlOQR6KPGmTj8Lxcz_dv8CIbdzfZMCitQmVTuDZOBOJXQi6I2tVgNipToMlzQmMoqR8iHgF5xyzu4Hfo4R1Fv26bV8kxjsi:1tEAoz:HT8owtHVI9Hnk02MJXFGkitRwTwoQkvDE03AvwLvzjU",
+        "expire_date": "2024-12-05T17:18:25.077Z"
     }
 },
 {
@@ -149,7 +149,7 @@
     "fields": {
         "parent": null,
         "name": "Uomo",
-        "image": "categories/T-Shirt-Uomo_5710VVn.jpg",
+        "image": "categories/uomo.jpeg",
         "position": 0
     }
 },
@@ -159,7 +159,7 @@
     "fields": {
         "parent": null,
         "name": "Donna",
-        "image": "categories/donna_vLAkL6o.webp",
+        "image": "categories/donna.jpeg",
         "position": 0
     }
 },
@@ -169,7 +169,7 @@
     "fields": {
         "parent": null,
         "name": "Bambini",
-        "image": "categories/bambini_AG2547r.webp",
+        "image": "categories/bambini.jpeg",
         "position": 0
     }
 },
@@ -586,6 +586,19 @@
         "size": 2,
         "price": "0.00",
         "stock": 5
+    }
+},
+{
+    "model": "products.review",
+    "pk": 1,
+    "fields": {
+        "product": 1,
+        "customer": [
+            "cipollone@gmail.com"
+        ],
+        "title": "cipolla",
+        "description": "dasflkjadsfkasdflkjasfkjlsdalfkjdsalflksfkjlsdklafkjlsdfkjlsdaklfdksafjkl",
+        "vote": 2
     }
 },
 {
@@ -3099,6 +3112,78 @@
         "object_repr": "1-T-Shirt-Rosso",
         "action_flag": 2,
         "change_message": "[{\"deleted\": {\"name\": \"product image\", \"object\": \"1-T-Shirt-Rosso-products/Barack_obama.jpg\"}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 70,
+    "fields": {
+        "action_time": "2024-11-21T12:13:20.000Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "review"
+        ],
+        "object_id": "1",
+        "object_repr": "Review object (1)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 71,
+    "fields": {
+        "action_time": "2024-11-21T17:17:49.548Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "category"
+        ],
+        "object_id": "1",
+        "object_repr": "Uomo",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"fields\": [\"Image\"]}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 72,
+    "fields": {
+        "action_time": "2024-11-21T17:17:55.562Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "category"
+        ],
+        "object_id": "2",
+        "object_repr": "Donna",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"fields\": [\"Image\"]}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 73,
+    "fields": {
+        "action_time": "2024-11-21T17:18:02.594Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "category"
+        ],
+        "object_id": "3",
+        "object_repr": "Bambini",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"fields\": [\"Image\"]}}]"
     }
 }
 ]
