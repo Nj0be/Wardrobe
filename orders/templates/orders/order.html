@@ -5,46 +5,48 @@
 {% block content %}
   <div class="grid grid-cols-2 gap-4 my-4">
     <div class="flex flex-col p-10 border border-gray-200 lg:ml-96 md:ml-auto sm:ml-auto">
-        <div>
-            <p class="text-xl">Ordine effettuato in data: {{ order.date_created|date:"M d, Y" }} alle {{ order.date_created|date:"h:i" }}</p>
-            <p>Stato: {{ order.status }}</p>
-            <p>Prezzo Totale: {{ order.total_price }} €</p>
-        </div>
-        <hr class="my-4">
-        <div>
-            <p class="text-xl">Indirizzo di spedizione inserito</p>
-            <p>{{ order.name }}</p>
-            <p>
-                {{ order.address_line_one }}
-                {% if order.address_line_two %}
-                    , {{ order.address_line_two }}
-                {% endif %}
-            </p>
-            <p>CAP: {{ order.postal_code }}</p>
-            <p>Provincia: {{ order.province }}</p>
-            <p>Città: {{ order.city }}</p>
-            <p>Numero di telefono: {{ order.phone_number }}</p>
-        </div>
-        <hr class="my-4">
-        <div>
-            <p class="text-xl">Metodo di Pagamento utilizzato</p>
-            <p>Pagamento tramite: {{ order.payment_method }}</p>
-        </div>
+      <div>
+        <p class="text-xl">Ordine effettuato in data: {{ order.date_created|date:"M d, Y" }}
+          alle {{ order.date_created|date:"h:i" }}</p>
+        <p>Stato: {{ order.status }}</p>
+        <p>Prezzo Totale: {{ order.total_price }} €</p>
+      </div>
+      <hr class="my-4">
+      <div>
+        <p class="text-xl">Indirizzo di spedizione inserito</p>
+        <p>{{ order.name }}</p>
+        <p>
+          {{ order.address_line_one }}
+          {% if order.address_line_two %}
+            , {{ order.address_line_two }}
+          {% endif %}
+        </p>
+        <p>CAP: {{ order.postal_code }}</p>
+        <p>Provincia: {{ order.province }}</p>
+        <p>Città: {{ order.city }}</p>
+        <p>Numero di telefono: {{ order.phone_number }}</p>
+      </div>
+      <hr class="my-4">
+      <div>
+        <p class="text-xl">Metodo di Pagamento utilizzato</p>
+        <p>Pagamento tramite: {{ order.payment_method }}</p>
+      </div>
     </div>
     <div class="p-10">
-        <p class="text-xl">Hai acquistato i seguenti prodotti:</p>
-        <div class="grid grid-cols-1 justify-center items-center gap-2 mt-2">
-            {% for order_product in order.orderproduct_set.all %}
-                <div class="inline-flex items-center gap-4">
-                    <img src="{{ order_product.first_image }}" alt="{{ order_product.name }}" class="w-[15rem]">
-                    <div class="grid grid-cols-1 gap-4">
-                        <p>{{ order_product.name }}</p>
-                        <p>Quantità: {{ order_product.quantity }}</p>
-                        <p>Prezzo: {% widthratio order_product.quantity 1 order_product.price %} €</p>
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
+      <p class="text-xl">Hai acquistato i seguenti prodotti:</p>
+      <div class="grid grid-cols-1 justify-center items-center gap-2 mt-2">
+        {% for order_product in order.orderproduct_set.all %}
+          <div class="inline-flex items-center gap-4">
+            <img src="{{ order_product.first_image }}" alt="{{ order_product.name }}"
+                 class="w-[15rem]">
+            <div class="grid grid-cols-1 gap-4">
+              <p>{{ order_product.name }}</p>
+              <p>Quantità: {{ order_product.quantity }}</p>
+              <p>Prezzo: {{ order_product.total_price }} €</p>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
     </div>
-</div>
+  </div>
 {% endblock %}

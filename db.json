@@ -41,6 +41,14 @@
 },
 {
     "model": "sessions.session",
+    "pk": "rii99rl3skwnioctlrqeiynnxt8hxwe3",
+    "fields": {
+        "session_data": ".eJxVjEEOwiAQRe_C2pAiA0iX7j1DM8yArRpIoF01vbtt0oVu_3v_rWLAZR6HpcU6TCx6ocTldwtI75gPwC_MzyKp5LlOQR6KPGmTj8Lxcz_dv8CIbdzfZMCitQmVTuDZOBOJXQi6I2tVgNipToMlzQmMoqR8iHgF5xyzu4Hfo4R1Fv26bV8kxjsi:1tE5cc:IsFTnHzUyNYnBY_AtGDcWG-ui8hMOomsuYXTIRSg3uE",
+        "expire_date": "2024-12-05T11:45:18.023Z"
+    }
+},
+{
+    "model": "sessions.session",
     "pk": "w230e9h3htcnq0vfg76vmolh13vgr0ro",
     "fields": {
         "session_data": ".eJxVjEEOgyAQRe8y64ZIGaC67N4zkGEGim2jiejKePfWxI3b_977GzDNC3TbfoNA61LCWtMcBoEONFy2SPxJ4wHkTeNrUjyNyzxEdSjqpFX1k6Tv83QvB4Vq-dds0ZFzmbTJ2Ir1NrH4GE3DzumIqdGNQcdGMlrNWbcx0R299yL-gS3sPy7kOyI:1t2Aug:XXxUwbTeRVRPvHYWP2-w-8tSmvci2xW7Ev35d_t1u48",
@@ -115,6 +123,22 @@
         "is_active": true,
         "date_joined": "2024-11-18T18:38:38.969Z",
         "email": "123@gmail.com",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "accounts.user",
+    "fields": {
+        "password": "pbkdf2_sha256$870000$kGGzi0WT1rnPjzNgtm0Zyz$JhJ8B7Z1qtZfZ2aBHCR/Cgzz8fh7FshSYXZpnWBx4D4=",
+        "last_login": "2024-11-20T16:07:35.833Z",
+        "is_superuser": false,
+        "first_name": "1234dfsew",
+        "last_name": "fjsadfjdsjkda",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2024-11-20T15:12:03Z",
+        "email": "fsj@fajdsk.co",
         "groups": [],
         "user_permissions": []
     }
@@ -212,7 +236,7 @@
         "price": "15.00",
         "is_active": true,
         "date_created": "2024-10-04T16:22:56.062Z",
-        "last_modification": "2024-11-18T08:41:52.726Z",
+        "last_modification": "2024-11-21T07:49:35.392Z",
         "discount": null,
         "brand": 1,
         "categories": [
@@ -404,7 +428,8 @@
     "pk": 1,
     "fields": {
         "product_color": 1,
-        "image": "products/09598151926-p_ZMOpe17.webp"
+        "image": "products/09598151926-p_ZMOpe17.webp",
+        "position": 1
     }
 },
 {
@@ -412,7 +437,8 @@
     "pk": 2,
     "fields": {
         "product_color": 2,
-        "image": "products/09598151926-a1_hSqUgPh.webp"
+        "image": "products/09598151926-a1_hSqUgPh.webp",
+        "position": 0
     }
 },
 {
@@ -420,7 +446,8 @@
     "pk": 3,
     "fields": {
         "product_color": 3,
-        "image": "products/09598151832-p_l3iodXf.webp"
+        "image": "products/09598151832-p_l3iodXf.webp",
+        "position": 0
     }
 },
 {
@@ -428,7 +455,8 @@
     "pk": 4,
     "fields": {
         "product_color": 4,
-        "image": "products/005010114-detail1-pdp-ld.jpg"
+        "image": "products/005010114-detail1-pdp-ld.jpg",
+        "position": 0
     }
 },
 {
@@ -436,7 +464,8 @@
     "pk": 5,
     "fields": {
         "product_color": 5,
-        "image": "products/005013524-alt1-pdp-ld.jpg"
+        "image": "products/005013524-alt1-pdp-ld.jpg",
+        "position": 0
     }
 },
 {
@@ -1934,7 +1963,7 @@
         "customer": [
             "root@root.it"
         ],
-        "quantity": 1,
+        "quantity": 3,
         "is_active": true
     }
 },
@@ -2854,6 +2883,222 @@
         "object_repr": "3-Jeans",
         "action_flag": 2,
         "change_message": "[{\"changed\": {\"name\": \"product variant\", \"object\": \"3-Jeans-Blu-M\", \"fields\": [\"Stock\"]}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 58,
+    "fields": {
+        "action_time": "2024-11-20T15:46:40.262Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "accounts",
+            "user"
+        ],
+        "object_id": "5",
+        "object_repr": "fsj@fajdsk.co",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"fields\": [\"Password\"]}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 59,
+    "fields": {
+        "action_time": "2024-11-20T17:21:29.720Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "productcolor"
+        ],
+        "object_id": "2",
+        "object_repr": "1-T-Shirt-Verde",
+        "action_flag": 2,
+        "change_message": "[{\"added\": {\"name\": \"product image\", \"object\": \"1-T-Shirt-Verde-products/Barack_obama.jpg\"}}, {\"changed\": {\"name\": \"product image\", \"object\": \"1-T-Shirt-Verde-products/09598151926-a1_hSqUgPh.webp\", \"fields\": [\"Position\"]}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 60,
+    "fields": {
+        "action_time": "2024-11-20T17:52:42.855Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "product"
+        ],
+        "object_id": "1",
+        "object_repr": "1-T-Shirt",
+        "action_flag": 2,
+        "change_message": "[{\"deleted\": {\"name\": \"product image\", \"object\": \"1-T-Shirt-Verde-products/Barack_obama.jpg\"}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 61,
+    "fields": {
+        "action_time": "2024-11-21T07:31:30.701Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "productcolor"
+        ],
+        "object_id": "1",
+        "object_repr": "1-T-Shirt-Rosso",
+        "action_flag": 2,
+        "change_message": "[{\"added\": {\"name\": \"product image\", \"object\": \"1-T-Shirt-Rosso-products/Barack_obama.jpg\"}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 62,
+    "fields": {
+        "action_time": "2024-11-21T07:31:37.121Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "productcolor"
+        ],
+        "object_id": "1",
+        "object_repr": "1-T-Shirt-Rosso",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"name\": \"product image\", \"object\": \"1-T-Shirt-Rosso-products/09598151926-p_ZMOpe17.webp\", \"fields\": [\"Position\"]}}, {\"changed\": {\"name\": \"product image\", \"object\": \"1-T-Shirt-Rosso-products/Barack_obama.jpg\", \"fields\": [\"Position\"]}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 63,
+    "fields": {
+        "action_time": "2024-11-21T07:31:41.435Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "productcolor"
+        ],
+        "object_id": "1",
+        "object_repr": "1-T-Shirt-Rosso",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"name\": \"product image\", \"object\": \"1-T-Shirt-Rosso-products/Barack_obama.jpg\", \"fields\": [\"Position\"]}}, {\"changed\": {\"name\": \"product image\", \"object\": \"1-T-Shirt-Rosso-products/09598151926-p_ZMOpe17.webp\", \"fields\": [\"Position\"]}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 64,
+    "fields": {
+        "action_time": "2024-11-21T07:40:16.069Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "product"
+        ],
+        "object_id": "1",
+        "object_repr": "1-T-Shirt",
+        "action_flag": 2,
+        "change_message": "[]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 65,
+    "fields": {
+        "action_time": "2024-11-21T07:49:26.310Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "product"
+        ],
+        "object_id": "1",
+        "object_repr": "1-T-Shirt",
+        "action_flag": 2,
+        "change_message": "[]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 66,
+    "fields": {
+        "action_time": "2024-11-21T07:49:35.421Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "product"
+        ],
+        "object_id": "1",
+        "object_repr": "1-T-Shirt",
+        "action_flag": 2,
+        "change_message": "[]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 67,
+    "fields": {
+        "action_time": "2024-11-21T10:51:07.709Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "productcolor"
+        ],
+        "object_id": "1",
+        "object_repr": "1-T-Shirt-Rosso",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"name\": \"product image\", \"object\": \"1-T-Shirt-Rosso-products/09598151926-p_ZMOpe17.webp\", \"fields\": [\"Position\"]}}, {\"changed\": {\"name\": \"product image\", \"object\": \"1-T-Shirt-Rosso-products/Barack_obama.jpg\", \"fields\": [\"Position\"]}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 68,
+    "fields": {
+        "action_time": "2024-11-21T10:51:12.707Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "productcolor"
+        ],
+        "object_id": "1",
+        "object_repr": "1-T-Shirt-Rosso",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"name\": \"product image\", \"object\": \"1-T-Shirt-Rosso-products/Barack_obama.jpg\", \"fields\": [\"Position\"]}}, {\"changed\": {\"name\": \"product image\", \"object\": \"1-T-Shirt-Rosso-products/09598151926-p_ZMOpe17.webp\", \"fields\": [\"Position\"]}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 69,
+    "fields": {
+        "action_time": "2024-11-21T10:54:55.693Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "productcolor"
+        ],
+        "object_id": "1",
+        "object_repr": "1-T-Shirt-Rosso",
+        "action_flag": 2,
+        "change_message": "[{\"deleted\": {\"name\": \"product image\", \"object\": \"1-T-Shirt-Rosso-products/Barack_obama.jpg\"}}]"
     }
 }
 ]

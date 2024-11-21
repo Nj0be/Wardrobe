@@ -2,29 +2,33 @@
   <!--<h2 class="text-xl">I tuoi ordini</h2>-->
   {% if orders %}
     {% for order in orders %}
-        <div>
-            <a href="{% url 'view_order' order.id %}" hx-boost="true" preload="mouseover" preload-images="true" class="order">
-                <p class="text-xl">Ordine effettuato in data: {{ order.date_created|date:"M d, Y" }} alle {{ order.date_created|date:"h:i" }}</p>
-                <p>Stato: {{ order.status }}</p>
-                <p>Prezzo Totale: {{ order.total_price }} €</p>
-                <div class="mt-4">
-                    <p class="text-xl">Hai acquistato i seguenti prodotti:</p>
-                    <div class="grid grid-cols-1 justify-center items-center gap-2 mt-2">
-                        {% for order_product in order.orderproduct_set.all %}
-                            <div class="inline-flex items-center gap-4">
-                                <img src="{{ order_product.first_image }}" alt="{{ order_product.name }}" class="w-[15rem]">
-                                <div class="grid grid-cols-1 gap-4">
-                                    <p>{{ order_product.name }}</p>
-                                    <p>Quantità: {{ order_product.quantity }}</p>
-                                    <p>Prezzo: {% widthratio order_product.quantity 1 order_product.price %} €</p>
-                                </div>
-                            </div>
-                        {% endfor %}
-                    </div>
+      <div>
+        <a href="{% url 'view_order' order.id %}" hx-boost="true" preload="mouseover"
+           preload-images="true" class="order">
+          <p class="text-xl">Ordine effettuato in data: {{ order.date_created|date:"M d, Y" }}
+            alle {{ order.date_created|date:"h:i" }}</p>
+          <p>Stato: {{ order.status }}</p>
+          <p>Prezzo Totale: {{ order.total_price }} €</p>
+          <div class="mt-4">
+            <p class="text-xl">Hai acquistato i seguenti prodotti:</p>
+            <div class="grid grid-cols-1 justify-center items-center gap-2 mt-2">
+              {% for order_product in order.orderproduct_set.all %}
+                <div class="inline-flex items-center gap-4">
+                  <img src="{{ order_product.first_image }}" alt="{{ order_product.name }}"
+                       class="w-[15rem]">
+                  <div class="grid grid-cols-1 gap-4">
+                    <p>{{ order_product.name }}</p>
+                    <p>Quantità: {{ order_product.quantity }}</p>
+                    <p>Prezzo: {{ order_product.total_price }} €</p>
+                  </div>
                 </div>
-          </a>
-        {% if not forloop.last %} <hr class="my-10"> {% endif %}
-        </div>
+              {% endfor %}
+            </div>
+          </div>
+        </a>
+        {% if not forloop.last %}
+          <hr class="my-10"> {% endif %}
+      </div>
     {% endfor %}
   {% else %}
     <p>Gli ordini che effettuerai verranno mostrati qui!</p>

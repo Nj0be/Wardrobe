@@ -126,7 +126,7 @@ def product_page(request, product_id, color_id=None, size_id=None):
         return redirect('product_color', product_id=product_id, color_id=color_id)
 
     if selected_size:
-        price = variants.filter(size=selected_size).first().price or price
+        price = variants.filter(size=selected_size).first().real_price
         stock = variants.get(size_id=selected_size).stock
 
     sizes = Size.objects.filter(productvariant__product_color__product=product_id).distinct()

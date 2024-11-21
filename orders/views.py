@@ -77,9 +77,8 @@ def place(request):
         products = []
         for item in cart_items:
             variant = item.variant
-            price = variant.price or variant.product.price
             products.append({'variant': variant, 'quantity': item.quantity,
-                             'price': price, 'subtotal_price': price*item.quantity})
+                             'subtotal_price': variant.real_price*item.quantity})
 
         if len(products) == 0:
             return redirect('homepage')

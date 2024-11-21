@@ -79,7 +79,7 @@
             <p><strong>Descrizione:</strong>{{ product.variant.product.description }}</p>
             <img class="product-image" src="{{ product.variant.get_images.0.url }}"
                  alt="{{ variant.product }}">
-            <p><strong>Prezzo:</strong> {{ product.price }} X {{ product.quantity }}
+            <p><strong>Prezzo:</strong> {{ product.variant.real_price }} X {{ product.quantity }}
               = {{ product.subtotal_price }}</p>
             <input type="hidden" name="product_ids" value="{{ product.variant.id }}">
             <input type="hidden" name="product_prices" value="{{ product.price }}">

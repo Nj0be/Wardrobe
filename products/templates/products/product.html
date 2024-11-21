@@ -1,204 +1,215 @@
 <div class="flex flex-col justify-center items-center my-16">
-    <div class="grid grid-cols-2 justify-center gap-10 w-3/5">
+  <div class="grid grid-cols-2 justify-center gap-10 w-3/5">
 
-        <!-- Image Gallery -->
-        <div>
-          {% for image in images %}
-            <img src="{{ image.url }}" alt="{{ product.name }}" class="w-120 h-full">
+    <!-- Image Gallery -->
+    <div>
+      {% for image in images %}
+        <img src="{{ image.url }}" alt="{{ product.name }}" class="w-120 h-full">
+      {% endfor %}
+    </div>
+
+    <!-- Product Details -->
+    <div>
+      <div>
+        <h1 class="text-7xl mt-10">{{ product.name }}</h1>
+        <hr class="my-10">
+        <p class="my-10">{{ product.description }}</p>
+        <p class="text-3xl my-10">{{ price }} €</p>
+
+
+        {% if discount %}
+          <p><strong>Sconto:</strong> {{ product.discount_percentage }}%</p>
+        {% endif %}
+      </div>
+
+      <div>
+        <!-- Sezione colori -->
+        {% if colors|length %}
+          <label for="color_{{ color.id }}">
+            Colore: {{ selected_color.name }}
+          </label>
+          <ul class="grid w-full gap-4 md:grid-cols-4">
+            {% for color in colors %}
+              <li>
+                <input type="radio" name="color" id="color_{{ color.id }}" class="hidden peer"
+                    {% if color == selected_color %} checked {% endif %}
+                    {% if forloop.first %} required {% endif %}
+                       hx-get="{% url 'product_color' product.id color.id %}"
+                       hx-target="#content"
+                       hx-push-url="true"
+                       hx-params="none"
+                       preload="mouseover" preload-images="true"
+                >
+                <label for="color_{{ color.id }}" style="background-color:#{{ color.hex }};"
+                       class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue3 peer-checked:text-blue3 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"></label>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+
+      <!-- Product Variations -->
+      <form id="cart-add-form" method="post">{% csrf_token %}
+        <!-- Sezione taglie -->
+        <h2 class="text-4xl mt-10">Taglia</h2>
+        <ul class="grid w-full gap-4 md:grid-cols-4">
+          {% for size, variant in size_variants.items %}
+            <li>
+              <input type="radio" name="variant_id" id="size_{{ size.id }}" value="{{ variant.id }}"
+                     class="hidden peer" required
+                     hx-get="{% url 'product_color_size' product.id selected_color.id size.id %}"
+                     hx-target="#content"
+                     hx-push-url="true"
+                     hx-params="none"
+                  {% if size == selected_size %} checked {% endif %}
+                  {% if not variant %} disabled {% endif %}
+              >
+              <label for="size_{{ size.id }}"
+                     class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue3 peer-checked:text-blue3 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
+                <div class="block">
+                  <div class="w-full text-lg font-semibold">{{ size.name }} </div>
+                  {% if not variant %}
+                    <div class="w-full">Non
+                      Disponibile
+                    </div>
+                  {% endif %}
+                </div>
+              </label>
+            </li>
           {% endfor %}
-        </div>
+        </ul>
 
-        <!-- Product Details -->
-        <div>
-            <div>
-              <h1 class="text-7xl mt-10">{{ product.name }}</h1>
-              <hr class="my-10">
-                <p class="my-10">{{ product.description }}</p>
-              <p class="text-3xl my-10">{{ price }} €</p>
-
-
-              {% if discount %}
-                <p><strong>Sconto:</strong> {{ product.discount_percentage }}%</p>
-              {% endif %}
-            </div>
-
-            <div>
-              <!-- Sezione colori -->
-              {% if colors|length %}
-                    <label for="color_{{ color.id }}">
-                        Colore: {{ selected_color.name }}
-                    </label>
-                  <ul class="grid w-full gap-4 md:grid-cols-4">
-                  {% for color in colors %}
-                    <li>
-                        <input type="radio" name="color" id="color_{{ color.id }}" class="hidden peer"
-                              {% if color == selected_color %} checked {% endif %}
-                              {% if forloop.first %} required {% endif %}
-                                 hx-get="{% url 'product_color' product.id color.id %}"
-                                 hx-target="#content"
-                                 hx-push-url="true"
-                                 hx-params="none"
-                                 preload="mouseover" preload-images="true"
-                        >
-                        <label for="color_{{ color.id }}" style="background-color:#{{ color.hex }};" class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue3 peer-checked:text-blue3 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"></label>
-                    </li>
-                {% endfor %}
-                </ul>
-              {% endif %}
-            </div>
-
-            <!-- Product Variations -->
-            <form id="cart-add-form" method="post">{% csrf_token %}
-              <!-- Sezione taglie -->
-                <h2 class="text-4xl mt-10">Taglia</h2>
-                <ul class="grid w-full gap-4 md:grid-cols-4">
-              {% for size, variant in size_variants.items %}
-                  <li>
-                    <input type="radio" name="variant_id" id="size_{{ size.id }}" value="{{ variant.id }}" class="hidden peer" required
-                           hx-get="{% url 'product_color_size' product.id selected_color.id size.id %}"
-                           hx-target="#content"
-                           hx-push-url="true"
-                           hx-params="none"
-                        {% if size == selected_size %} checked {% endif %}
-                        {% if not variant %} disabled {% endif %}
-                    >
-                      <label for="size_{{ size.id }}" class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue3 peer-checked:text-blue3 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
-                        <div class="block">
-                            <div class="w-full text-lg font-semibold">{{ size.name }} </div>
-                            {% if not variant %}
-                                <div class="w-full">Non
-                                    Disponibile
-                                </div>
-                            {% endif %}
-                        </div>
-                      </label>
-                  </li>
-              {% endfor %}
-                </ul>
-
-                  <div class="grid grid-cols-1 justify-center items-center gap-4 mt-10">
-                      <div class="grid grid-cols-2">
-                          <label for="quantity">Quantità:</label>
-                          <input type="number" id="quantity" name="quantity" min="1" max="{{ stock }}" value="1" {% if selected_size == None %} disabled {% endif %}>
-                      </div>
-                      <button type="submit" {% if selected_size == None %} disabled {% endif %}
-                              class="text-white bg-blue2 hover:bg-blue-800 focus:ring-4 focus:outline-none
+        <div class="grid grid-cols-1 justify-center items-center gap-4 mt-10">
+          <div class="grid grid-cols-2">
+            <label for="quantity">Quantità:</label>
+            <input type="number" id="quantity" name="quantity" min="1" max="{{ stock }}" value="1"
+                {% if selected_size == None %} disabled {% endif %}>
+          </div>
+          <button type="submit" {% if selected_size == None %} disabled {% endif %}
+                  class="text-white bg-blue2 hover:bg-blue-800 focus:ring-4 focus:outline-none
                                 focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5
                                 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800
                                 disabled:bg-gray-300"
-                              id="add-to-cart-btn"
-                              hx-post="{% url "cart_add" %}"
-                              hx-target="#modal"
-                      >Aggiungi al carrello
-                      </button>
-                  </div>
-            </form>
+                  id="add-to-cart-btn"
+                  hx-post="{% url "cart_add" %}"
+                  hx-target="#modal"
+          >Aggiungi al carrello
+          </button>
         </div>
-
+      </form>
     </div>
-    <div class="w-3/5">
 
-        <!-- Sezione delle recensioni -->
-        <div class="mt-14">
-          <hr class="mb-10">
-          <h2 class="text-5xl">Recensioni</h2>
+  </div>
+  <div class="w-3/5">
 
-          {% if reviews %}
-            <div>
-                {% for review in reviews %}
-                  <div class="review">
-                     <p><strong>Recensione di </strong>{{ review.customer.first_name }} {{ review.customer.last_name }}.</p>
-                    <h4 class="text-2xl">{{ review.vote }}/5 {{ review.title }}</h4>
-                    <p>{{ review.description }}</p>
+    <!-- Sezione delle recensioni -->
+    <div class="mt-14">
+      <hr class="mb-10">
+      <h2 class="text-5xl">Recensioni</h2>
 
-                    <!-- <p class="review-date">Pubblicata il: {# review.date|date:"d M Y" #}</p>-->
-                  </div>
-                {% endfor %}
+      {% if reviews %}
+        <div>
+          {% for review in reviews %}
+            <div class="review">
+              <p><strong>Recensione
+                di </strong>{{ review.customer.first_name }} {{ review.customer.last_name }}.</p>
+              <h4 class="text-2xl">{{ review.vote }}/5 {{ review.title }}</h4>
+              <p>{{ review.description }}</p>
+
+              <!-- <p class="review-date">Pubblicata il: {# review.date|date:"d M Y" #}</p>-->
             </div>
-
-          {% else %}
-            <p class="text-2xl mt-2">Non ci sono recensioni per questo prodotto.</p>
-          {% endif %}
+          {% endfor %}
         </div>
 
-        <!-- Sezione aggiungi recensione -->
-        <div class="add-review-section">
-          <h3 class="text-5xl mt-10">Lascia una recensione</h3>
+      {% else %}
+        <p class="text-2xl mt-2">Non ci sono recensioni per questo prodotto.</p>
+      {% endif %}
+    </div>
 
-          {% if user.is_authenticated %}
-            <form action="{% url 'product' product.id %}" method="post">{% csrf_token %}
-              <div class="grid grid-cols-1">
-                <label for="review_description">Descrizione:</label>
-                <textarea name="review_description" id="review_description" rows="4"
-                          placeholder="Scrivi qui la tua recensione"></textarea>
-              </div>
+    <!-- Sezione aggiungi recensione -->
+    <div class="add-review-section">
+      <h3 class="text-5xl mt-10">Lascia una recensione</h3>
 
-              <div class="form-group">
-                <label for="review_vote">Voto:</label>
-                <div class="rating-options">
-                    <ul class="grid w-full gap-4 md:grid-cols-5">
-                        <li>
-                            <input type="radio" name="review_vote" id="vote_1" value="1" class="hidden peer">
-                            <label for="vote_1" class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue3 peer-checked:text-blue3 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
-                                <div class="block">
-                                    <div class="w-full">&#9733;</div>
-                                </div>
-                            </label>
-                        </li>
-                        <li>
-                            <input type="radio" name="review_vote" id="vote_2" value="2" class="hidden peer">
-                            <label for="vote_2" class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue3 peer-checked:text-blue3 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
-                                <div class="block">
-                                    <div class="w-full">&#9733;&#9733;</div>
-                                </div>
-                            </label>
-                        </li>
-                        <li>
-                            <input type="radio" name="review_vote" id="vote_3" value="3" class="hidden peer">
-                            <label for="vote_3" class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue3 peer-checked:text-blue3 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
-                                <div class="block">
-                                    <div class="w-full">&#9733;&#9733;&#9733;</div>
-                                </div>
-                            </label>
-                        </li>
-                        <li>
-                            <input type="radio" name="review_vote" id="vote_4" value="4" class="hidden peer">
-                            <label for="vote_4" class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue3 peer-checked:text-blue3 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
-                                <div class="block">
-                                    <div class="w-full">&#9733;&#9733;&#9733;&#9733;</div>
-                                </div>
-                            </label>
-                        </li>
-                        <li>
-                            <input type="radio" name="review_vote" id="vote_5" value="5" class="hidden peer">
-                            <label for="vote_5" class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue3 peer-checked:text-blue3 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
-                                <div class="block">
-                                    <div class="w-full">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-                                </div>
-                            </label>
-                        </li>
-                    </ul>
-                </div>
-              </div>
-                <div class="grid grid-cols-1 justify-center items-center mt-4">
-                  <input type="submit" value="Invia Recensione" class="grid grid-col-1 justify-center items-center text-white bg-blue2 hover:bg-blue-800 focus:ring-4 focus:outline-none
+      {% if user.is_authenticated %}
+        <form action="{% url 'product' product.id %}" method="post">{% csrf_token %}
+          <div class="grid grid-cols-1">
+            <label for="review_description">Descrizione:</label>
+            <textarea name="review_description" id="review_description" rows="4"
+                      placeholder="Scrivi qui la tua recensione"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="review_vote">Voto:</label>
+            <div class="rating-options">
+              <ul class="grid w-full gap-4 md:grid-cols-5">
+                <li>
+                  <input type="radio" name="review_vote" id="vote_1" value="1" class="hidden peer">
+                  <label for="vote_1"
+                         class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue3 peer-checked:text-blue3 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
+                    <div class="block">
+                      <div class="w-full">&#9733;</div>
+                    </div>
+                  </label>
+                </li>
+                <li>
+                  <input type="radio" name="review_vote" id="vote_2" value="2" class="hidden peer">
+                  <label for="vote_2"
+                         class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue3 peer-checked:text-blue3 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
+                    <div class="block">
+                      <div class="w-full">&#9733;&#9733;</div>
+                    </div>
+                  </label>
+                </li>
+                <li>
+                  <input type="radio" name="review_vote" id="vote_3" value="3" class="hidden peer">
+                  <label for="vote_3"
+                         class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue3 peer-checked:text-blue3 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
+                    <div class="block">
+                      <div class="w-full">&#9733;&#9733;&#9733;</div>
+                    </div>
+                  </label>
+                </li>
+                <li>
+                  <input type="radio" name="review_vote" id="vote_4" value="4" class="hidden peer">
+                  <label for="vote_4"
+                         class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue3 peer-checked:text-blue3 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
+                    <div class="block">
+                      <div class="w-full">&#9733;&#9733;&#9733;&#9733;</div>
+                    </div>
+                  </label>
+                </li>
+                <li>
+                  <input type="radio" name="review_vote" id="vote_5" value="5" class="hidden peer">
+                  <label for="vote_5"
+                         class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue3 peer-checked:text-blue3 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
+                    <div class="block">
+                      <div class="w-full">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                    </div>
+                  </label>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 justify-center items-center mt-4">
+            <input type="submit" value="Invia Recensione" class="grid grid-col-1 justify-center items-center text-white bg-blue2 hover:bg-blue-800 focus:ring-4 focus:outline-none
                                     focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5
                                     text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800
                                     disabled:bg-gray-300">
-                </div>
-            </form>
+          </div>
+        </form>
 
-          {% else %}
-            <p class="text-2xl mt-2"><a href="{% url 'login' %}">Accedi</a> per pubblicare una recensione.</p>
-          {% endif %}
+      {% else %}
+        <p class="text-2xl mt-2"><a href="{% url 'login' %}">Accedi</a> per pubblicare una
+          recensione.</p>
+      {% endif %}
 
-          {% if error_message %}
-            <div class="error-message">
-              <p>{{ error_message }}</p>
-            </div>
-          {% endif %}
+      {% if error_message %}
+        <div class="error-message">
+          <p>{{ error_message }}</p>
         </div>
+      {% endif %}
     </div>
+  </div>
 
 
 </div>

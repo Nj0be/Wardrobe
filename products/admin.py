@@ -1,4 +1,5 @@
-from adminsortable2.admin import SortableAdminMixin
+from adminsortable2.admin import SortableAdminMixin, SortableAdminBase, \
+    SortableTabularInline, SortableInlineAdminMixin
 from django.contrib import admin
 import nested_admin
 from feincms3.admin import TreeAdmin
@@ -11,13 +12,24 @@ class ProductVariantInline(nested_admin.NestedTabularInline):
     model = ProductVariant
 
 
-class ProductImageInline(nested_admin.NestedTabularInline):
+class ProductImageSortableInline(SortableTabularInline):
     model = ProductImage
+    readonly_fields = ['image_tag']
+
+
+@admin.register(ProductColor)
+class ProductColorAdmin(SortableAdminBase, admin.ModelAdmin):
+    inlines = [ProductImageSortableInline]
+
+
+class ProductImageSortableInlineNested(nested_admin.NestedTabularInline):
+    model = ProductImage
+    readonly_fields = ['image_tag']
 
 
 class ProductColorInline(nested_admin.NestedTabularInline):
     model = ProductColor
-    inlines = [ProductVariantInline, ProductImageInline]
+    inlines = [ProductVariantInline, ProductImageSortableInlineNested]
 
 
 @admin.register(Product)
@@ -27,13 +39,16 @@ class ProductAdmin(nested_admin.NestedModelAdmin):
     def has_delete_permission(self, request, obj=None):
         return False
 
+
 @admin.register(Category)
 class CategoryAdmin(TreeAdmin):
     pass
 
+
 @admin.register(Size)
 class SizeAdmin(SortableAdminMixin, admin.ModelAdmin):
     pass
+
 
 admin.site.register(Color)
 admin.site.register(Discount)

@@ -55,6 +55,10 @@ class OrderProduct(models.Model):
         return self.variant.product.name
 
     @property
+    def total_price(self):
+        return self.price * self.quantity
+
+    @property
     def first_image(self):
         """Returns the first image of the associated product variant."""
         if self.variant and self.variant.product_color:

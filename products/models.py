@@ -2,6 +2,7 @@ from decimal import Decimal
 
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.utils.safestring import mark_safe
 from tree_queries.models import TreeNode
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -116,9 +117,15 @@ class ProductColor(models.Model):
 class ProductImage(models.Model):
     product_color = models.ForeignKey(ProductColor, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='products/')
+    position = models.PositiveIntegerField(default=0, blank=False, null=False, db_index=True)
+
+    @property
+    def image_tag(self):
+        return mark_safe('<img src="%s" width ="50" height="50"/>'%self.image.url)
 
     class Meta:
         unique_together = [['product_color', 'image']]
+        ordering = ['position']
 
     def __str__(self):
         return f'{self.product_color.product}-{self.product_color.color}-{self.image}'
@@ -127,6 +134,7 @@ class ProductImage(models.Model):
 class ProductVariant(models.Model):
     product_color = models.ForeignKey(ProductColor, on_delete=models.CASCADE)
     size = models.ForeignKey(Size, on_delete=models.CASCADE)
+    # if price is 0 it means that it's the same as the product
     price = models.DecimalField(default=0, max_digits=8, decimal_places=2)
     stock = models.PositiveIntegerField()
 
@@ -143,6 +151,11 @@ class ProductVariant(models.Model):
     @property
     def color(self):
         return self.product_color.color
+
+    # get effective variant price
+    @property
+    def real_price(self):
+        return self.price or self.product.price
 
     class Meta:
         unique_together = [['product_color', 'size']]

@@ -99,28 +99,6 @@ class Cart:
         else:
             yield from self.cart
 
-    def set_is_active(self, variant: ProductVariant, is_active: bool):
-        if not isinstance(variant, ProductVariant):
-            raise TypeError("variant argument is not a ProductVariant")
-        if not isinstance(is_active, bool):
-            raise TypeError("quantity argument is not a bool")
-
-        if self.user.is_authenticated:
-            try:
-                item = CartItem.objects.filter(variant=variant, customer=self.user).first()
-                item.is_active = is_active
-                item.save()
-            except:
-                raise ValueError(f"User {self.user.id} doesn't have variant {variant.id} in the cart")
-        else:
-            self[variant]['is_active'] = is_active
-
-    def enable(self, variant: ProductVariant):
-        self.set_is_active(variant, True)
-
-    def disable(self, variant: ProductVariant):
-        self.set_is_active(variant, False)
-
     def values(self):
         if self.user.is_authenticated:
             if self.user.is_authenticated:
@@ -171,6 +149,41 @@ class Cart:
                 return len(cart)
         else:
             return len(self.session_cart)
+
+    def set_is_active(self, variant: ProductVariant, is_active: bool):
+        if not isinstance(variant, ProductVariant):
+            raise TypeError("variant argument is not a ProductVariant")
+        if not isinstance(is_active, bool):
+            raise TypeError("quantity argument is not a bool")
+
+        if self.user.is_authenticated:
+            try:
+                item = CartItem.objects.filter(variant=variant, customer=self.user).first()
+                item.is_active = is_active
+                item.save()
+            except:
+                raise ValueError(f"User {self.user.id} doesn't have variant {variant.id} in the cart")
+        else:
+            self[variant]['is_active'] = is_active
+
+    def enable(self, variant: ProductVariant):
+        self.set_is_active(variant, True)
+
+    def disable(self, variant: ProductVariant):
+        self.set_is_active(variant, False)
+
+    def get_total_price(self):
+        total_price = 0
+
+        for variant, attr in self.items():
+            if not attr['is_active']:
+                continue
+
+            total_price += variant.real_price * attr['quantity']
+
+        import sys
+        print(total_price, file=sys.stderr)
+        return total_price
 
 
 # create cart on login to transfer cartitems from session to db
@@ -228,7 +241,11 @@ def cart_edit(request):
         except Exception as e:
             return HttpResponseBadRequest(e)
 
-    return HttpResponse("")
+    return render(
+        request,
+        "cart/total_price.html",
+        {'cart':cart}
+    )
 
 
 def cart_delete(request):
