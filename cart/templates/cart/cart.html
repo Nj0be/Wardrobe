@@ -1,4 +1,4 @@
-{% include "cart/empty_cart.html" with cart=cart %}
+{% include "cart/empty.html" with cart=cart %}
 <div class="grid lg:grid-cols-5 md:grid-cols-3 sm:grid-cols-1">
   {% for variant, attr in cart.items %}
     <div class="border-solid border-0 border-r border-grey-200">
@@ -31,7 +31,6 @@
                        class="inline-flex justify-center items-center p-3 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue3 peer-checked:text-blue3 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
                     {% if attr.is_active %} checked {% endif %}
                        hx-post="{% url "cart_edit" %}"
-                       hx-target="#cart-total-price"
                 />
                 <!--<label for="is_active{{ variant.id }}">Attivo</label>-->
               </div>
@@ -69,29 +68,4 @@
   {% endfor %}
 </div>
 
-{% if cart.items %}
-  <div
-      class="flex justify-between items-center p-10 border-solid border-0 border-t border-grey-200">
-    <div>
-      <p>* Continuando, dichiaro di aver letto e accettato i Termini e le Condizioni di Acquisto e
-        di aver compreso la Privacy e la Cookie Policy di Wardrobe.</p>
-    </div>
-    <div class="inline-flex justify-center items-center gap-4">
-      <div class="text-left">
-        {% include "cart/total_price.html" %}
-      </div>
-      <div>
-        <a href="{% url 'place_order' %}" hx-boost="true"
-           class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none
-                    focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5
-                    text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800
-                    disabled:bg-gray-300"
-        >Procedi all'ordine
-        </a>
-      </div>
-    </div>
-
-  </div>
-
-
-{% endif %}
+{% include "cart/place_order.html" %}

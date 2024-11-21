@@ -243,7 +243,7 @@ def cart_edit(request):
 
     return render(
         request,
-        "cart/total_price.html",
+        "cart/edit.html",
         {'cart':cart}
     )
 
@@ -266,13 +266,11 @@ def cart_delete(request):
     except Exception as e:
         return HttpResponseBadRequest(e)
 
-    if len(cart) == 0:
-        return render(
-            request,
-            "cart/empty_cart.html"
-        )
-    else:
-        return HttpResponse("")
+    return render(
+        request,
+        "cart/edit.html",
+        {'cart': cart}
+    )
 
 
 def cart_add(request):
@@ -299,5 +297,5 @@ def cart_add(request):
 
     return render(
         request,
-        "cart/cart_add.html"
+        "cart/add.html"
     )
