@@ -182,7 +182,7 @@ class Review(models.Model):
     customer = models.ForeignKey('accounts.User', on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     description = models.TextField(max_length=2000)
-    vote = models.PositiveSmallIntegerField(validators=[MaxValueValidator(10)])
+    vote = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
 
     class Meta:
         unique_together = [['product', 'customer']]

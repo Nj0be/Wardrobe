@@ -1,8 +1,11 @@
 from django.contrib.postgres.aggregates import ArrayAgg
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
-from django.http import HttpResponseNotFound, Http404
+from django.http import HttpResponseNotFound, Http404, HttpResponse
 from django.views import generic
 from django.shortcuts import render, get_object_or_404, redirect
+
+from orders.models import OrderProduct
+from .forms import AddReviewForm
 from .models import Product, ProductVariant, ProductColor, Category, Color, Size, Review, \
     ProductImage, Brand
 
@@ -21,23 +24,24 @@ def search(request, category_id=None):  # da implementare anche la logica per i 
     if request.method != "GET":
         return HttpResponseNotFound('<h1>Page not found</h1>')
 
-
     """ Selezione prodotti """
     # selezioniamo solo i prodotto che hanno almeno una product variant
     selected_category = Category.objects.filter(id=category_id).first()
-    products = Product.objects.filter(is_active=True ,productcolor__productvariant__isnull=False).distinct()
+    products = Product.objects.filter(is_active=True,
+                                      productcolor__productvariant__isnull=False).distinct()
     if selected_category:
         categories = [selected_category.parent] + list(selected_category.children.all())
         products = products.filter(categories__in=selected_category.descendants(include_self=True))
     else:
         # get 'root' categories (first layer)
-        categories = Category.objects.with_tree_fields().extra(where=["__tree.tree_depth <= %s"], params=[0])
+        categories = Category.objects.with_tree_fields().extra(where=["__tree.tree_depth <= %s"],
+                                                               params=[0])
 
     """ Filtraggio per ricerca testuale """
     search_terms = request.GET.get('search_terms', None)
     if search_terms and len(search_terms) > 2:
         # get words with len > 2 and create query for postgres search ( word1:* & word2:* & etc...)
-        query_str = ' & '.join([w+':*' for w in search_terms.split() if len(w) > 2])
+        query_str = ' & '.join([w + ':*' for w in search_terms.split() if len(w) > 2])
         vector = (SearchVector('name', weight='A', config='italian') +
                   SearchVector('description', weight='B', config='italian') +
                   SearchVector('brand__name', weight='B', config='italian') +
@@ -58,18 +62,20 @@ def search(request, category_id=None):  # da implementare anche la logica per i 
         products = products.filter(brand__in=selected_brands)
 
     """ Filtraggio per colori """
-    colors = Color.objects.filter(productcolor__product__in=list(products)).distinct().order_by('-hex')
+    colors = Color.objects.filter(productcolor__product__in=list(products)).distinct().order_by(
+        '-hex')
     selected_colors = colors.filter(pk__in=request.GET.getlist('color', None))
     if selected_colors:
         products = products.filter(productcolor__color__in=selected_colors)
 
     """ Filtraggio per taglie """
-    sizes = Size.objects.filter(productvariant__product_color__product__in=list(products)).distinct().order_by('position')
+    sizes = Size.objects.filter(
+        productvariant__product_color__product__in=list(products)).distinct().order_by('position')
     selected_sizes = sizes.filter(pk__in=request.GET.getlist('size', None))
     if selected_sizes:
         products = products.filter(productcolor__productvariant__size__id__in=selected_sizes)
 
-    if request.htmx:
+    if request.htmx and not request.htmx.boosted:
         template_name = "products/search.html",
     else:
         template_name = "products/search_full.html",
@@ -99,6 +105,14 @@ def product_page(request, product_id, color_id=None, size_id=None):
     product = get_object_or_404(Product, pk=product_id, is_active=True)
     price = product.price
     stock = 0
+
+    user_has_review = False
+    user_has_purchased = False
+    if request.user.is_authenticated:
+        user_has_review = Review.objects.filter(product=product,
+                                                customer=request.user).first() is not None
+        user_has_purchased = OrderProduct.objects.filter(variant__product_color__product=product,
+                                                         order__user_id=request.user).first() is not None
 
     # if product doesn't have variants, it can't be displayed
     if not product.has_variants():
@@ -163,6 +177,7 @@ def product_page(request, product_id, color_id=None, size_id=None):
                 error_message = "Devi aver eseguito il login per lasciare una recensione."
 
     reviews = Review.objects.filter(product=product_id)
+    review_form = AddReviewForm()
 
     # if request come from htmx-boost, send full page
     if request.htmx and not request.htmx.boosted:
@@ -184,5 +199,41 @@ def product_page(request, product_id, color_id=None, size_id=None):
             "reviews": reviews,
             "error_message": error_message,
             "stock": stock,
+            "form": review_form,
+            "user_has_review": user_has_review,
+            "user_has_purchased": user_has_purchased,
         }
     )
+
+
+def add_review(request, product_id):
+    if request.method != "POST":
+        raise Http404()
+
+    product = get_object_or_404(Product, pk=product_id, is_active=True)
+    user_has_review = False
+    user_has_purchased = False
+    if request.user.is_authenticated:
+        user_has_review = Review.objects.filter(product=product,
+                                                customer=request.user).first() is not None
+        user_has_purchased = OrderProduct.objects.filter(variant__product_color__product=product,
+                                                         order__user_id=request.user).first() is not None
+    form = AddReviewForm(request.POST)
+    review = None
+
+    # check whether it's valid:
+    if not user_has_review and user_has_purchased and form.is_valid():
+        review = Review.objects.create(customer=request.user, product=product,
+                                       title=form.cleaned_data['title'],
+                                       description=form.cleaned_data['description'],
+                                       vote=form.cleaned_data['vote'])
+        user_has_review = True
+
+    return render(
+        request,
+        'products/add_review.html',
+        {
+            'review': review,
+            'user_has_review': user_has_review,
+            'user_has_purchased': user_has_purchased
+        })

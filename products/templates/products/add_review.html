@@ -1,0 +1,60 @@
+{% include "products/review.html" %}
+
+<div id="add-review" hx-swap-oob="true">
+  <h3 class="text-5xl mt-10">Lascia una recensione</h3>
+  {% if not user.is_authenticated %}
+    <p class="text-2xl mt-2"><a href="{% url 'login' %}">Accedi</a> per pubblicare una
+      recensione.</p>
+  {% elif not user_has_purchased %}
+    <p class="text-2xl mt-2">Non hai acquistato l'articolo.</p>
+  {% elif user_has_review %}
+    <p class="text-2xl mt-2">Hai già pubblicato una recensione per questo articolo.</p>
+  {% else %}
+    <form hx-post="{% url "add_review" product.id %}" hx-swap="delete" hx-target="#no-reviews">
+      {% load widget_tweaks %}
+      {% csrf_token %}
+      <div class="fieldWrapper">
+        {{ form.title|add_label_class:"block text-sm/6 font-medium text-gray-900" }}
+        {% render_field form.title class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" %}
+        <ol>{% for error in form.title.errors %}
+          <li>{{ error|escape }}</li>
+        {% endfor %}</ol>
+      </div>
+      <div class="fieldWrapper grid grid-cols-1">
+        {{ form.description|add_label_class:"block text-sm/6 font-medium text-gray-900" }}
+        {% render_field form.description class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" %}
+        <ol>{% for error in form.description.errors %}
+          <li>{{ error|escape }}</li>
+        {% endfor %}</ol>
+      </div>
+      <div class="fieldWrapper">
+        {{ form.vote|add_label_class:"block text-sm/6 font-medium text-gray-900" }}
+        <div class="grid w-full gap-4 md:grid-cols-5">
+          {% for radio in form.vote %}
+            <div>
+              {% render_field radio.tag %}
+              <label for="{{ radio.id_for_label }}"
+                     class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue3 peer-checked:text-blue3 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
+                {{ radio.choice_label }}
+              </label>
+            </div>
+          {% endfor %}
+        </div>
+        <ol>{% for error in form.vote.errors %}
+          <li>{{ error|escape }}</li>
+        {% endfor %}</ol>
+      </div>
+      <ol>{% for error in form.non_field_errors %}
+        <li>{{ error|escape }}</li>
+      {% endfor %}</ol>
+      <div class="fieldWrapper grid grid-cols-1 justify-center items-center mt-4">
+        <button type="submit" class="grid grid-col-1 justify-center items-center text-white bg-blue2 hover:bg-blue-800 focus:ring-4 focus:outline-none
+                                    focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5
+                                    text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800
+                                    disabled:bg-gray-300">
+          Invia Recensione
+        </button>
+      </div>
+    </form>
+  {% endif %}
+</div>

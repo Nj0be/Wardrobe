@@ -100,68 +100,19 @@
   </div>
   <div class="w-3/5">
     <!-- Sezione delle recensioni -->
-    <div class="mt-14">
+    <div id="reviews" class="mt-14">
       <hr class="mb-10">
       <h2 class="text-5xl">Recensioni</h2>
       {% if reviews %}
         {% for review in reviews %}
-          <p><strong>Recensione
-            di </strong>{{ review.customer.first_name }} {{ review.customer.last_name }}.</p>
-          <h4 class="text-2xl">{{ review.vote }}/5 {{ review.title }}</h4>
-          <p>{{ review.description }}</p>
-          <!-- <p class="review-date">Pubblicata il: {# review.date|date:"d M Y" #}</p>-->
+          {% include "products/review.html" %}
         {% endfor %}
       {% else %}
-        <p class="text-2xl mt-2">Non ci sono recensioni per questo prodotto.</p>
+        <p id="no-reviews" class="text-2xl mt-2">Non ci sono recensioni per questo prodotto.</p>
       {% endif %}
     </div>
 
     <!-- Sezione aggiungi recensione -->
-    <h3 class="text-5xl mt-10">Lascia una recensione</h3>
-
-    {% if user.is_authenticated %}
-      <form action="{% url 'product' product.id %}" method="post">{% csrf_token %}
-        <div class="grid grid-cols-1">
-          <label for="review_description">Descrizione:</label>
-          <textarea name="review_description" id="review_description" rows="4"
-                    placeholder="Scrivi qui la tua recensione"></textarea>
-        </div>
-
-        <label for="review_vote">Voto:</label>
-        <div class="grid w-full gap-4 md:grid-cols-5">
-          {% for _ in ""|ljust:5 %}
-            <input type="radio" name="review_vote" id="vote_{{ forloop.counter }}"
-                   value="{{ forloop.counter }}"
-                   class="hidden peer">
-            <label for="vote_{{ forloop.counter }}"
-                   class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue3 peer-checked:text-blue3 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
-              <div class="w-full">
-                {% for x in ""|ljust:forloop.counter %}
-                  &#9733;
-                {% endfor %}
-              </div>
-            </label>
-          {% endfor %}
-        </div>
-        <div class="grid grid-cols-1 justify-center items-center mt-4">
-          <input type="submit" value="Invia Recensione" class="grid grid-col-1 justify-center items-center text-white bg-blue2 hover:bg-blue-800 focus:ring-4 focus:outline-none
-                                    focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5
-                                    text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800
-                                    disabled:bg-gray-300">
-        </div>
-      </form>
-
-    {% else %}
-      <p class="text-2xl mt-2"><a href="{% url 'login' %}">Accedi</a> per pubblicare una
-        recensione.</p>
-    {% endif %}
-
-    {% if error_message %}
-      <div class="error-message">
-        <p>{{ error_message }}</p>
-      </div>
-    {% endif %}
+    {% include "products/add_review.html" %}
   </div>
-
-
 </div>

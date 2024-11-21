@@ -195,7 +195,7 @@ def login_handler(sender, user, request, **kwargs):
 def cart_page(request):
     cart = Cart(request)
 
-    if request.htmx:
+    if request.htmx and not request.htmx.boosted:
         template_name = "cart/cart.html",
     else:
         template_name = "cart/cart_full.html",

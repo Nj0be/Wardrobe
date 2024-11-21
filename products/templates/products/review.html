@@ -1,0 +1,9 @@
+{% if review %}
+<div hx-swap-oob="beforeend:#reviews">
+  <p><strong>Recensione
+    di </strong>{{ review.customer.first_name }} {{ review.customer.last_name }}.</p>
+  <h4 class="text-2xl">{{ review.vote }}/5 {{ review.title }}</h4>
+  <p>{{ review.description }}</p>
+</div>
+{% endif %}
+<!-- <p class="review-date">Pubblicata il: {# review.date|date:"d M Y" #}</p>-->

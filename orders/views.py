@@ -28,9 +28,9 @@ def place(request):
     # if this is a POST request we need to process the form data
     if request.method == "POST":
         try:
-            product_ids = list(map(int, request.POST.getlist('product_ids')))
-            product_prices = list(map(float, request.POST.getlist('product_prices')))
-            product_quantities = list(map(int, request.POST.getlist('product_quantities')))
+            product_ids = [int(product_id) for product_id in request.POST.getlist('product_ids')]
+            product_prices = [float(price.replace(',', '.')) for price in request.POST.getlist('product_prices')]
+            product_quantities = [int(quantity) for quantity in request.POST.getlist('product_quantities')]
 
             products = []
             for (product_id, price, quantity) in zip(product_ids, product_prices, product_quantities):
@@ -65,9 +65,6 @@ def place(request):
                                             quantity=product['quantity'], price=product['price'])
 
             return redirect('view_order', order_id=order.id)
-        import sys
-        print(form.errors, file=sys.stderr)
-
     # if a GET (or any other method) we'll create a blank form
     else:
         form = PlaceOrderForm()
@@ -78,7 +75,7 @@ def place(request):
         for item in cart_items:
             variant = item.variant
             products.append({'variant': variant, 'quantity': item.quantity,
-                             'subtotal_price': variant.real_price*item.quantity})
+                             'price': variant.real_price, 'subtotal_price': variant.real_price*item.quantity})
 
         if len(products) == 0:
             return redirect('homepage')
