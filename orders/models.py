@@ -30,7 +30,7 @@ class Order(models.Model):
     name = models.CharField("Nome completo (nome e cognome)", max_length=40)
     phone_number = PhoneNumberField("Numero di telefono", region="IT")
     address_line_one = models.CharField("Riga Indirizzo 1", max_length=40)
-    address_line_two = models.CharField("Riga Indirizzo 2", max_length=40)
+    address_line_two = models.CharField("Riga Indirizzo 2", max_length=40, null=True, blank=True)
     province = models.ForeignKey(Province, on_delete=models.PROTECT)
     postal_code = models.CharField("CAP", max_length=5, validators = [RegexValidator('^[0-9]{5}$', _('CAP non valido, inserisci 5 numeri'))])
     city = models.CharField("city", max_length=40)
