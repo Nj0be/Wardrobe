@@ -3,6 +3,20 @@
 {% block title %}Wardrobe{% endblock %}
 
 {% block content %}
+    <div class="flex flex-col justify-center items-center lg:mx-96 md:mx-auto sm:mx-auto">
+        {% for category in main_categories_list %}
+            <div>
+                <a href="{% url 'search_category' category.id %}">
+                    <div class="inline-flex">
+                        <img src="{{ category.image.url }}" alt="{{ category.name }}" class="w-120 h-full">
+                        <h2 class="text-xl p-10 -ml-[8rem]">{{ category.name }}</h2>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+
+
   <!-- Start Master Categories Choice -->
   <div class="flex flex-col justify-center items-center mb-14">
     <p class="text-4xl p-10 text-blue3">Esplora le nostre categorie</p>

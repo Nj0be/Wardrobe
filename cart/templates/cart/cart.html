@@ -1,5 +1,5 @@
 {% include "cart/empty.html" %}
-<div class="grid lg:grid-cols-5 md:grid-cols-3 sm:grid-cols-1">
+<div class="inline-flex">
   {% for variant, attr in cart.items %}
     <form id="form{{ variant.id }}"
           class="border-solid border-0 border-r border-grey-200">{% csrf_token %}
@@ -11,7 +11,7 @@
       <input type="hidden" name="is_active">
       <div>
         <div>
-          <img class="w-[30rem]" src="{{ variant.get_images.0.url }}" alt="{{ variant.name }}">
+          <img class="w-[24rem]" src="{{ variant.get_images.0.url }}" alt="{{ variant.name }}">
         </div>
         <div class="grid grid-cols-2 justify-between items-center my-2">
           <div class="mx-auto">
