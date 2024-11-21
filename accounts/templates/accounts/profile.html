@@ -4,19 +4,24 @@
 
 {% block content %}
 
-  <div>
+  <div class="grid grid-cols-2 lg:gap-20 md:gap-10 sm:gap-10">
     <div>
-      <h2>Informazioni Account</h2>
-      <p><strong>Nome:</strong> {{ user.first_name }}</p>
-      <p><strong>Cognome:</strong> {{ user.last_name }}</p>
-      <p><strong>Email:</strong> {{ user.email }}</p>
-      <a href="{% url 'edit_profile' %}" hx-boost="true" preload="mouseover" preload-images="true">Modifica il profilo</a><br>
-      <a href="{% url 'change_password' %}" hx-boost="true" preload="mouseover" preload-images="true">Cambia Password</a>
-      <form action="{% url 'logout' %}" method="post">{% csrf_token %}
-        <button type="submit">Logout</button>
-      </form>
+        <div class="grid grid-cols-1 grid-rows-3 gap-6 p-10 border border-gray-200 lg:ml-96 md:ml-auto sm:ml-auto">
+            <h2 class="text-xl">Informazioni personali</h2>
+            <p>{{ user.first_name }} {{ user.last_name }}</p>
+            <p>{{ user.email }}</p>
+        </div>
+        <div class="grid grid-cols-1 grid-rows-3 gap-6 p-10 lg:ml-96 md:ml-auto sm:ml-auto">
+            <a href="{% url 'edit_profile' %}" hx-boost="true" preload="mouseover" preload-images="true">Modifica il profilo</a>
+            <a href="{% url 'change_password' %}" hx-boost="true" preload="mouseover" preload-images="true">Cambia Password</a>
+            <form action="{% url 'logout' %}" method="post">{% csrf_token %}
+                <button type="submit">Logout</button>
+            </form>
+        </div>
     </div>
 
-    {% include "orders/orders.html" %}
+    <div class="p-10">
+        {% include "orders/orders.html" %}
+    </div>
   </div>
 {% endblock %}
