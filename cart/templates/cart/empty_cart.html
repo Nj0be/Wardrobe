@@ -1,3 +1,6 @@
 {% if cart.items|length == 0 %}
-  <p>Nessun prodotto nel carrello!</p>
+    <div class="flex flex-col justify-center items-center gap-2">
+        <p class="text-xl">Ops, sembra che il tuo carrello sia ancora vuoto</p>
+        <a href="{% url 'search' %}" class="text-blue2">Inizia a riempire il tuo armadio!</a>
+    </div>
 {% endif %}
