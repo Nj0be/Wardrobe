@@ -35,7 +35,7 @@
       <div class="flex flex-col justify-center items-center gap-2 sm:mx-auto">
         <h1 class="text-5xl"><a href="{% url 'homepage' %}">WARDROBE©</a></h1>
         <div class="inline-flex gap-6">
-          {% for category in main_categories_list %}
+          {% for category in MAIN_CATEGORIES %}
             <a href="{% url 'search_category' category.id %}">{{ category.name|upper }}</a>
           {% endfor %}
         </div>

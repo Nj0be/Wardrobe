@@ -10,15 +10,6 @@ from .models import Product, ProductVariant, ProductColor, Category, Color, Size
     ProductImage, Brand
 
 
-class HomepageView(generic.ListView):
-    template_name = "products/homepage.html"
-    context_object_name = "main_categories_list"
-
-    def get_queryset(self):
-        """Return all the products"""
-        return Category.objects.filter(parent=None)  # oppure null BOH
-
-
 def search(request, category_id=None):  # da implementare anche la logica per i filtri
     """ Filtraggio per categoria """
     if request.method != "GET":
