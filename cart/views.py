@@ -181,9 +181,15 @@ class Cart:
 
             total_price += variant.real_price * attr['quantity']
 
-        import sys
-        print(total_price, file=sys.stderr)
         return total_price
+
+    def get_total_quantity(self):
+        quantity = 0
+
+        for variant, attr in self.items():
+            quantity += attr['quantity']
+
+        return quantity
 
 
 # create cart on login to transfer cartitems from session to db
@@ -297,5 +303,6 @@ def cart_add(request):
 
     return render(
         request,
-        "cart/add.html"
+        "cart/edit.html",
+        {'cart': cart}
     )

@@ -42,7 +42,7 @@
       </div>
       {% block header_links %}{% endblock %}
       <div class="inline-flex justify-center items-center gap-6 sm:mx-auto">
-        <a href="{% url 'cart' %}">CARRELLO</a>
+        <a id='cart-link' href="{% url 'cart' %}">CARRELLO ({{ CART_TOTAL_QUANTITY }})</a>
         {% if user.is_authenticated %}
           <a href="{% url 'profile' %}">CIAO, {{ user.first_name|upper }}</a>
         {% else %}
