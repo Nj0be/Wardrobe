@@ -1,7 +1,7 @@
 {% include "cart/empty.html" %}
 <div class="inline-flex">
   {% for variant, attr in cart.items %}
-    <form id="form{{ variant.id }}"
+    <form id="form{{ variant.id }}" method="post"
           class="border-solid border-0 border-r border-grey-200">{% csrf_token %}
       <input type="hidden" name="variant_id" value="{{ variant.id }}">
       <!--
