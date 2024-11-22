@@ -4,7 +4,7 @@
   </div>
 
   <div class="my-10 sm:mx-auto sm:w-full sm:max-w-sm">
-    <form class="space-y-6" action="{{ form_action }}" method="POST">
+    <form class="space-y-6" {% if form_action %}action="{{ form_action }}"{% endif %} method="POST">
       {% csrf_token %}
       {% load widget_tweaks %}
 
@@ -38,7 +38,8 @@
         Non hai un account?
         <a href="{% url 'signup' %}" class="font-semibold text-indigo-600 hover:text-indigo-500">Registrati</a>
       </p>
-    {% elif login_link %}
+    {% endif %}
+    {% if login_link %}
       <p class="mt-10 text-center text-sm/6 text-gray-500">
         Hai già un account?
         <a href="{% url 'login' %}" class="font-semibold text-indigo-600 hover:text-indigo-500">Accedi</a>

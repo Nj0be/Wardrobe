@@ -3,6 +3,6 @@
 {% block title %}Registrazione Cliente{% endblock %}
 
 {% block content %}
-  {% url 'signup' as register_url %}
-  {% include "accounts/form.html" with form_title="Crea il tuo account" form_action=register_url submit_text="Registrati" login_link="true" %}
+  {% url 'signup' as form_action %}
+  {% include "accounts/form.html" with form_title="Crea il tuo account" submit_text="Registrati" login_link="true" %}
 {% endblock %}

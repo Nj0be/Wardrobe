@@ -2,6 +2,6 @@
 
 {% block title %}Registrazione Cliente{% endblock %}
 {% block content %}
-  {% url 'login' as login_url %}
-  {% include "accounts/form.html" with form_title="Accedi al tuo account" form_action=login_url password_reset="true" submit_text="Accedi" register_link="true" %}
+  {% url 'login' as form_action %}
+  {% include "accounts/form.html" with form_title="Accedi al tuo account" password_reset="true" submit_text="Accedi" register_link="true" %}
 {% endblock %}

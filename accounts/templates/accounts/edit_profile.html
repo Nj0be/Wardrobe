@@ -3,6 +3,6 @@
 {% block title %}Modifica Profilo{% endblock %}
 
 {% block content %}
-  {% url 'edit_profile' as edit_profile_url %}
-  {% include "accounts/form.html" with form_title="Modifica il tuo profilo" form_action=edit_profile_url submit_text="Modifica iil tuo profilo" %}
+  {% url 'edit_profile' as form_action %}
+  {% include "accounts/form.html" with form_title="Modifica il tuo profilo" submit_text="Modifica iil tuo profilo" %}
 {% endblock %}
