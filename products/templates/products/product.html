@@ -1,132 +1,141 @@
 <div>
-    <!--<div class="mb-16">
-        <h2 class="w-full text-center text-gray-900 text-4xl font-bold font-manrope leading-normal pb-2.5">The Product</h2>
-        <p class="w-full text-center text-gray-600 text-lg font-normal leading-8">Explore the essence of beauty in our gallery's intimate space.</p>
-    </div>-->
-    <div class="flex flex-row justify-between">
-        <div class="relative h-[400rem] w-1/4 mx-auto">
-            <div class="sticky lg:top-[30rem] md:top-48 top-0 border">
-                <div class="flex flex-col justify-center items-center px-10 py-7 gap-2 border border-black">
-                    <p>ORIGINE</p>
-                    <p class="text-sm text-justify">Facciamo affidamento su requisiti di tracciabilità per conoscere la catena di approvvigionamento dei nostri prodotti. Chiediamo ai nostri fornitori di essere informati in merito a tutti gli stabilimenti coinvolti nei processi di produzione, dal filato o dalla fibra, a seconda dei casi, fino al capo finale di ogni ordine. Ciò include sia le fabbriche di proprietà che quelle esterne, nonché gli intermediari coinvolti in ogni processo.</p>
-                </div>
-            </div>
+  <!--<div class="mb-16">
+      <h2 class="w-full text-center text-gray-900 text-4xl font-bold font-manrope leading-normal pb-2.5">The Product</h2>
+      <p class="w-full text-center text-gray-600 text-lg font-normal leading-8">Explore the essence of beauty in our gallery's intimate space.</p>
+  </div>-->
+  <div class="flex flex-row justify-between">
+    <div class="relative h-[400rem] w-1/4 mx-auto">
+      <div class="sticky lg:top-48 md:top-48 top-0 border">
+        <div class="flex flex-col justify-center items-center px-10 py-7 gap-2 border border-black">
+          <p>ORIGINE</p>
+          <p class="text-sm text-justify">Facciamo affidamento su requisiti di tracciabilità per conoscere la catena di
+            approvvigionamento dei nostri prodotti. Chiediamo ai nostri fornitori di essere informati in merito a tutti
+            gli stabilimenti coinvolti nei processi di produzione, dal filato o dalla fibra, a seconda dei casi, fino al
+            capo finale di ogni ordine. Ciò include sia le fabbriche di proprietà che quelle esterne, nonché gli
+            intermediari coinvolti in ogni processo.</p>
         </div>
+      </div>
+    </div>
+    <div>
+      {% for image in images %}
         <div>
-            {% for image in images %}
-                <div>
-                  <div class="xl:w-[30rem] rounded-3xl">
-                    <img src="{{ image.url }}" alt="{{ product.name }}" class="gallery-image w-full h-full mx-auto object-cover {% if forloop.first %} rounded-t-3xl {% elif forloop.last %} rounded-b-3xl {% endif %}"/>
-                  </div>
-                </div>
-            {% endfor %}
+          <div class="xl:w-[30rem] rounded-3xl">
+            <img src="{{ image.url }}" alt="{{ product.name }}"
+                 class="gallery-image w-full h-full mx-auto object-cover {% if forloop.first %} rounded-t-3xl {% elif forloop.last %} rounded-b-3xl {% endif %}"/>
+          </div>
         </div>
-        <div class="relative h-[400rem] w-1/4 mx-auto">
-            <div class="sticky lg:top-96 md:top-48 top-0 border border-black">
-                <div class="flex flex-col justify-center">
-                    <!-- Informazioni prodotto -->
-                    <div class="flex flex-col justify-center items-center px-10 py-7 gap-7">
-                        <div>
-                            <h2 class="text-gray-900 text-2xl font-bold font-manrope text-center">{{ product.name }}</h2>
-                        </div>
-                        <div class="inline-flex items-center gap-4">
-                            <p class="text-lg font-manrope">{{ product.price }} EUR</p>
-                            <p class="text-2xl">|</p>
-                            <p>{{ selected_color.name|upper }}</p>
-                        </div>
-                        <div>
-                            <p>DESCRIZIONE</p>
-                            <p class="text-sm text-justify">{{ product.description }}</p>
-                        </div>
-                    </div>
+      {% endfor %}
+    </div>
+    <div class="relative h-[400rem] w-1/4 mx-auto">
+      <div class="sticky lg:top-48 md:top-48 top-0 border border-black">
+        <div class="flex flex-col justify-center">
+          <!-- Informazioni prodotto -->
+          <div class="flex flex-col justify-center items-center px-10 py-7 gap-7">
+            <div>
+              <h2 class="text-gray-900 text-2xl font-bold font-manrope text-center">{{ product.name }}</h2>
+            </div>
+            <div class="inline-flex items-center gap-4">
+              <p class="text-lg font-manrope">{{ product.price }} EUR</p>
+              <p class="text-2xl">|</p>
+              <p>{{ selected_color.name|upper }}</p>
+            </div>
+            <div>
+              <p>DESCRIZIONE</p>
+              <p class="text-sm text-justify">{{ product.description }}</p>
+            </div>
+          </div>
 
-                    <!-- Varianti Colori -->
-                    <div class="flex flex-col justify-center border-t border-black">
-                        <div class="flex flex-col justify-center px-10 py-7">
-                            <div>
-                                <p>COLORI</p>
-                            </div>
-                            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 items-center justify-center gap-2 py-2">
-                                {% for color in colors %}
-                                    <div>
-                                        <input type="radio" name="color" id="color_{{ color.id }}" class="hidden peer"
-                                            {% if color == selected_color %} checked {% endif %}
-                                            {% if forloop.first %} required {% endif %}
-                                               hx-get="{% url 'product_color' product.id color.id %}"
-                                               hx-target="#content"
-                                               hx-push-url="true"
-                                               hx-params="none"
-                                               preload="mouseover" preload-images="true"
-                                        >
-                                        <label for="color_{{ color.id }}" style="{% if color == selected_color %} outline:2px solid black; outline-offset: 3px; {% endif %} background-color:#{{ color.hex }};"
-                                               class="inline-flex items-center justify-between w-full py-2
+          <!-- Varianti Colori -->
+          <div class="flex flex-col justify-center border-t border-black">
+            <div class="flex flex-col justify-center px-10 py-7">
+              <div>
+                <p>COLORI</p>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 items-center justify-center gap-2 py-2">
+                {% for color in colors %}
+                  <div>
+                    <input type="radio" name="color" id="color_{{ color.id }}" class="hidden peer"
+                        {% if color == selected_color %} checked {% endif %}
+                        {% if forloop.first %} required {% endif %}
+                           hx-get="{% url 'product_color' product.id color.id %}"
+                           hx-target="#content"
+                           hx-push-url="true"
+                           hx-params="none"
+                           preload="mouseover" preload-images="true"
+                    >
+                    <label for="color_{{ color.id }}"
+                           style="{% if color == selected_color %} outline:2px solid black; outline-offset: 3px; {% endif %} background-color:#{{ color.hex }};"
+                           class="inline-flex items-center justify-between w-full py-2
                                                cursor-pointer border border-black
                                                backdrop-opacity-90">
-                                        </label>
-                                    </div>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    </label>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
 
-                    <form id="cart-add-form" method="post">{% csrf_token %}
-                         <!-- Varianti Taglie -->
+        <form id="cart-add-form" method="post">{% csrf_token %}
+          <!-- Varianti Taglie -->
 
-                        <div class="flex flex-col justify-center border-t border-black">
-                            <div class="flex flex-col justify-center px-10 py-7">
-                                <div>
-                                    <p>TAGLIE</p>
-                                </div>
-                                <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 items-center justify-center gap-2 py-2">
-                                    {% for size, variant in size_variants.items %}
-                                          <input type="radio" name="variant_id" id="size_{{ size.id }}" value="{{ variant.id }}"
-                                                 class="hidden peer" required
-                                                 hx-get="{% url 'product_color_size' product.id selected_color.id size.id %}"
-                                                 hx-target="#content"
-                                                 hx-push-url="true"
-                                                 hx-params="none"
-                                              {% if size == selected_size %} checked {% endif %}
-                                              {% if not variant %} disabled {% endif %}
-                                          >
-                                          <label for="size_{{ size.id }}" style="{% if size == selected_size %} outline:2px solid black; outline-offset: 3px; {% endif %}"
-                                                   class="items-center justify-between
+          <div class="flex flex-col justify-center border-t border-black">
+            <div class="flex flex-col justify-center px-10 py-7">
+              <div>
+                <p>TAGLIE</p>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 items-center justify-center gap-2 py-2">
+                {% for size, variant in size_variants.items %}
+                  <input type="radio" name="variant_id" id="size_{{ size.id }}" value="{{ variant.id }}"
+                         class="hidden peer" required
+                         hx-get="{% url 'product_color_size' product.id selected_color.id size.id %}"
+                         hx-target="#content"
+                         hx-push-url="true"
+                         hx-params="none"
+                      {% if size == selected_size %} checked {% endif %}
+                      {% if not variant %} disabled {% endif %}
+                  >
+                  <label for="size_{{ size.id }}"
+                         style="{% if size == selected_size %} outline:2px solid black; outline-offset: 3px; {% endif %}"
+                         class="items-center justify-between
                                                    cursor-pointer border border-black px-4
                                                    {% if not variant %} backdrop-opacity-50 {% endif %}">
-                                                    <div class="flex flex-col justify-center items-center">
-                                                      <p>{{ size.name }}</p>
-                                                    </div>
-                                          </label>
-                                      {% endfor %}
-                                    </div>
-                            </div>
-                        </div>
-
-                        <!-- Aggiungi al carrello -->
-                        <div class="flex flex-col justify-center border-t border-black">
-                            <div class="flex flex-col justify-center items-center px-10 py-7">
-                              <div class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 justify-center items-center text-center w-full">
-                                    <label for="quantity" class="w-full mx-auto"> QUANTITÀ </label>
-                                    <input type="number" id="quantity" name="quantity" min="1" max="{{ stock }}" value="1" class="w-full mx-auto border border-solid border-black"
-                                    {% if selected_size == None %} disabled {% endif %}>
-                              </div>
-                              <div class="mt-2 w-full">
-                                  <button type="submit" {% if selected_size == None %} disabled {% endif %}
-                                          class="border border-solid border-black w-full py-2 mx-auto text-sm md:text-normal lg:text-normal hover:bg-gray-100 disabled:bg-gray-200 focus:ring-2 ring-offset-2 ring-black"
-                                          id="add-to-cart-btn"
-                                          hx-post="{% url "cart_add" %}"
-                                          hx-target="#modal"
-                                  >Aggiungi
-                                  </button>
-                              </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-
+                    <div class="flex flex-col justify-center items-center">
+                      <p>{{ size.name }}</p>
+                    </div>
+                  </label>
+                {% endfor %}
+              </div>
             </div>
-        </div>
+          </div>
+
+          <!-- Aggiungi al carrello -->
+          <div class="flex flex-col justify-center border-t border-black">
+            <div class="flex flex-col justify-center items-center px-10 py-7">
+              <div
+                  class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 justify-center items-center text-center w-full">
+                <label for="quantity" class="w-full mx-auto"> QUANTITÀ </label>
+                <input type="number" id="quantity" name="quantity" min="1" max="{{ stock }}" value="1"
+                       class="w-full mx-auto border border-solid border-black"
+                    {% if selected_size == None %} disabled {% endif %}>
+              </div>
+              <div class="mt-2 w-full">
+                <button type="submit" {% if selected_size == None %} disabled {% endif %}
+                        class="border border-solid border-black w-full py-2 mx-auto text-sm md:text-normal lg:text-normal hover:bg-gray-100 disabled:bg-gray-200 focus:ring-2 ring-offset-2 ring-black"
+                        id="add-to-cart-btn"
+                        hx-post="{% url "cart_add" %}"
+                        hx-swap="none"
+                >Aggiungi
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+
     </div>
+  </div>
+</div>
 
 <div class="flex flex-col justify-center items-center my-16">
   <div class="w-3/5">
