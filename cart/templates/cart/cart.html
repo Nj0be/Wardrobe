@@ -1,68 +1,69 @@
 {% include "cart/empty.html" %}
 {% include "cart/place_order.html" %}
-<div class="grid lg:grid-cols-5 md:grid-cols-3 grid-cols-1 mb-auto">
+<div class="inline-flex flex-wrap justify-center">
   {% for variant, attr in cart.items %}
-    <form id="form{{ variant.id }}" method="post"
-          class="border-solid border-0 border-r border-b border-grey-200">{% csrf_token %}
-      <input type="hidden" name="variant_id" value="{{ variant.id }}">
-      <!--
-        When the checkbox is not checked the input will not be sent.
-        We use a hidden input to always send the false value
-      -->
-      <input type="hidden" name="is_active">
-      <div>
+    <div class="border border-solid border-grey-200 -mt-[1px] -ml-[1px]">
+      <form id="form{{ variant.id }}" method="post">{% csrf_token %}
+        <input type="hidden" name="variant_id" value="{{ variant.id }}">
+        <!--
+          When the checkbox is not checked the input will not be sent.
+          We use a hidden input to always send the false value
+        -->
+        <input type="hidden" name="is_active">
         <div>
-          <a href="{% url 'product_color_size' variant.product.id variant.color.id variant.size.id %}">
-            <img class="w-full" src="{{ variant.get_images.0.url }}" alt="{{ variant.name }}">
-          </a>
-        </div>
-        <div class="grid grid-cols-2 justify-between items-center my-2">
-          <div class="mx-auto">
-            <p>{{ variant.product.name }}</p>
-            <p>{{ variant.real_price }} €</p>
+          <div>
+            <a href="{% url 'product_color_size' variant.product.id variant.color.id variant.size.id %}">
+              <img class="w-[28rem]" src="{{ variant.get_images.0.url }}" alt="{{ variant.name }}">
+            </a>
           </div>
-          <div class="mx-auto">
-            <p>{{ variant.product.brand.name }}</p>
-            <p>{{ variant.size.name }} | {{ variant.color.name }}</p>
-          </div>
-        </div>
-        <div class="grid justify-center items-center my-2">
-          <div class="inline-flex justify-center items-center gap-4">
+          <div class="grid grid-cols-2 justify-between items-center my-2">
             <div class="mx-auto">
-              <input type="checkbox" id="is_active{{ variant.id }}" name="is_active"
-                     autocomplete="off"
-                     class="inline-flex justify-center items-center p-3 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue3 peer-checked:text-blue3 hover:text-gray-600 hover:bg-gray-100"
-                  {% if attr.is_active %} checked {% endif %}
-                     hx-post="{% url "cart_edit" %}"
-              />
+              <p>{{ variant.product.name }}</p>
+              <p>{{ variant.real_price }} €</p>
             </div>
             <div class="mx-auto">
-              <select name="quantity" id="quantity{{ variant.id }}"
-                      autocomplete="off"
-                      hx-post="{% url "cart_edit" %}"
-                      hx-target="#cart-total-price">
-                {% with ''|center:variant.stock as range %}
-                  {% for _ in range %}
-                    <option value="{{ forloop.counter }}"
-                            {% if attr.quantity == forloop.counter %}selected{% endif %}
-                    >{{ forloop.counter }}</option>
-                  {% endfor %}
-                {% endwith %}
-              </select>
+              <p>{{ variant.product.brand.name }}</p>
+              <p>{{ variant.size.name }} | {{ variant.color.name }}</p>
             </div>
-            <div class="mx-auto">
-              <button type="submit" id="delete{{ variant.id }}"
-                      class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none
-                                        focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5
-                                        text-center disabled:bg-gray-300"
-                      hx-post="{% url "cart_delete" %}"
-                      hx-target="#form{{ variant.id }}"
-              >Rimuovi dal carrello
-              </button>
+          </div>
+          <div class="grid justify-center items-center my-2">
+            <div class="inline-flex justify-center items-center gap-4">
+              <div class="mx-auto">
+                <input type="checkbox" id="is_active{{ variant.id }}" name="is_active"
+                       autocomplete="off"
+                       class="inline-flex justify-center items-center p-3 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue3 peer-checked:text-blue3 hover:text-gray-600 hover:bg-gray-100"
+                    {% if attr.is_active %} checked {% endif %}
+                       hx-post="{% url "cart_edit" %}"
+                />
+              </div>
+              <div class="mx-auto">
+                <select name="quantity" id="quantity{{ variant.id }}"
+                        autocomplete="off"
+                        hx-post="{% url "cart_edit" %}"
+                        hx-target="#cart-total-price">
+                  {% with ''|center:variant.stock as range %}
+                    {% for _ in range %}
+                      <option value="{{ forloop.counter }}"
+                              {% if attr.quantity == forloop.counter %}selected{% endif %}
+                      >{{ forloop.counter }}</option>
+                    {% endfor %}
+                  {% endwith %}
+                </select>
+              </div>
+              <div class="mx-auto">
+                <button type="submit" id="delete{{ variant.id }}"
+                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none
+                                          focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5
+                                          text-center disabled:bg-gray-300"
+                        hx-post="{% url "cart_delete" %}"
+                        hx-target="#form{{ variant.id }}"
+                >Rimuovi dal carrello
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </form>
+      </form>
+    </div>
   {% endfor %}
 </div>
