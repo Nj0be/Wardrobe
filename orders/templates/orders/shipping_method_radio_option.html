@@ -1,11 +1,16 @@
 {% load static %}
 {% if widget.wrap_label %}<label{% if widget.attrs.id %} for="{{ widget.attrs.id }}"{% endif %}>{% endif %}
-  <input type="{{ widget.type }}" name="{{ widget.name }}"
-      {% if widget.value != None %} value="{{ widget.value|stringformat:'s' }}"{% endif %}
-      {% include "django/forms/widgets/attrs.html" %}
-      {% if widget.label == "Paypal" or widget.label == "Stripe" %}disabled{% endif %}
-  >
-{% if widget.wrap_label %} {{ widget.label }}</label>{% endif %}
-{% if widget.label == "Contrassegno" %}<img src="{% static 'img/contrassegno.jpg' %}" alt="Contrassegno">
-{% elif widget.label == "Paypal" %}<img src="{% static 'img/Paypal_logo.webp' %}" alt="Paypal">
-{% elif widget.label == "Stripe" %}<img src="{% static 'img/Stripe_logo.png' %}" alt="Stripe">{% endif %}
+<input type="{{ widget.type }}" name="{{ widget.name }}" class="hidden peer"
+    {% if widget.value != None %} value="{{ widget.value|stringformat:'s' }}"{% endif %}
+    {% include "django/forms/widgets/attrs.html" %}
+    {% if widget.label == "Paypal" or widget.label == "Stripe" %}disabled{% endif %}
+>
+{% if widget.wrap_label %}
+      {% if widget.label == "Contrassegno" %}
+        <img src="{% static 'img/contrassegno.jpg' %}" alt="Contrassegno" class="w-full p-2" style="outline:2px solid black; outline-offset: 3px;">
+      {% elif widget.label == "Paypal" %}
+        <img src="{% static 'img/Paypal_logo.webp' %}" class="w-full px-2" alt="Paypal">
+      {% elif widget.label == "Stripe" %}
+        <img src="{% static 'img/Stripe_logo.png' %}" class="w-full px-2" alt="Stripe">
+      {% endif %}
+  </label>{% endif %}

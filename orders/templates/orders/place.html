@@ -18,8 +18,8 @@
             {% if field.name == "payment_method" %}
               <div class="fieldWrapper">
                 {{ form.payment_method|add_label_class:"" }}
-                <div class="columns-3">
-                  {% render_field form.payment_method class="" %}
+                <div class="columns-3 w-full justify-center items-center gap-4 p-2">
+                  {% render_field form.payment_method %}
                 </div>
                 <ol>{% for error in form.payment_method.errors %}
                   <li>{{ error|escape }}</li>
