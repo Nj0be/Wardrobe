@@ -21,7 +21,7 @@
         <div>
           <div class="xl:w-[30rem] rounded-3xl">
             <img src="{{ image.url }}" alt="{{ product.name }}"
-                 class="gallery-image w-full h-full mx-auto object-cover {% if forloop.first %} rounded-t-3xl {% elif forloop.last %} rounded-b-3xl {% endif %}"/>
+                 class="gallery-image w-full h-full mx-auto object-cover {% if forloop.first %} rounded-t-3xl {% endif %}{% if forloop.last %} rounded-b-3xl {% endif %}"/>
           </div>
         </div>
       {% endfor %}

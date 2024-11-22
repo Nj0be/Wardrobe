@@ -12,7 +12,9 @@
       <input type="hidden" name="is_active">
       <div>
         <div>
-          <img class="w-[24rem]" src="{{ variant.get_images.0.url }}" alt="{{ variant.name }}">
+          <a href="{% url 'product_color_size' variant.product.id variant.color.id variant.size.id %}">
+            <img class="w-[24rem]" src="{{ variant.get_images.0.url }}" alt="{{ variant.name }}">
+          </a>
         </div>
         <div class="grid grid-cols-2 justify-between items-center my-2">
           <div class="mx-auto">
