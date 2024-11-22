@@ -41,7 +41,7 @@ class PlaceOrderForm(forms.Form):
     province = forms.ModelChoiceField(
         label = "Provincia *",
         queryset = Province.objects,
-        initial = Province.objects.first(),
+        initial = '0',
         required = True,
     )
 
@@ -64,6 +64,6 @@ class PlaceOrderForm(forms.Form):
         queryset = PaymentMethod.objects,
         # coerce = lambda x: bool(int(x)),
         widget = ShippingMethodWidget(),
-        initial = PaymentMethod.objects.first(),
+        initial = '0',
         required = True,
     )
