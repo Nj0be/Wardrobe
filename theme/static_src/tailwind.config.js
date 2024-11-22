@@ -49,12 +49,15 @@ module.exports = {
                 'blue2': '#3730a3',
                 'blue3': '#010922',
                 'orange': '#F17300',
+                'retroblack': '#212121',
             },
             fontFamily: {
                 'robo': ["Roboto", "sans-serif"],
                 'kani': ["Kanit", "sans-serif"],
                 'rhat': ["Red Hat Display", "sans-serif"],
-                'right': ["Righteous", "sans-serif"]
+                'right': ["Righteous", "sans-serif"],
+                'noto': ["Noto Serif Ahom", "serif"],
+                'art': ["Lacquer", "system-ui"]
             },
         },
     },
@@ -68,4 +71,9 @@ module.exports = {
         require('@tailwindcss/typography'),
         require('@tailwindcss/aspect-ratio'),
     ],
+    variants: {
+        extend: {
+            display: ["group-hover"],
+        },
+    },
 }

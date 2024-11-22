@@ -1,41 +1,108 @@
-{% extends "products/base.html" %}
+{% load static tailwind_tags %}
+{% load django_htmx %}
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-white">
+<head>
+    <title>{% block title %}Ecommerce Rossi{% endblock %}</title>
+    {% tailwind_css %}
+    <script src="{% static "js/htmx.min.js" %}" defer></script>
+    <script src="{% static "js/preload.js" %}" defer></script>
+    {% django_htmx_script %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Ahom&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lacquer&display=swap" rel="stylesheet">
+</head>
+<body hx-ext="preload" class="font-kani h-full">
+<div class="flex flex-col h-screen justify-between">
+    <header class="flex flex-row justify-between p-4">
+        <div class="flex flex-col justify-center items-center gap-2 sm:mx-auto">
+            <h1 class="text-5xl"><a href="{% url 'homepage' %}">WARDROBE©</a></h1>
+            <div class="inline-flex gap-6">
+                {% for category in main_categories_list %}
+                    <a href="{% url 'search_category' category.id %}">{{ category.name|upper }}</a>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="inline-flex justify-center items-center gap-6 sm:mx-auto">
+            <a href="{% url 'cart' %}">CARRELLO</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'profile' %}">CIAO, {{ user.first_name|upper }}</a>
+            {% else %}
+                <a href="{% url 'login' %}">ACCEDI</a>
+            {% endif %}
+        </div>
+    </header>
 
-{% block title %}Wardrobe{% endblock %}
-
-{% block content %}
-    <div class="flex flex-col justify-center items-center lg:mx-96 md:mx-auto sm:mx-auto">
-        {% for category in main_categories_list %}
-            <div>
+    <main class="mb-auto font-rhd px-10"> <!-- border-4 border-sky-500h -->
+      {% block content %}
+          <div class="inline-flex">
+            {% for category in main_categories_list %}
                 <a href="{% url 'search_category' category.id %}">
-                    <div class="inline-flex">
-                        <img src="{{ category.image.url }}" alt="{{ category.name }}" class="w-120 h-full">
-                        <h2 class="text-xl p-10 -ml-[8rem]">{{ category.name }}</h2>
+                    <div class="flex flex-col justify-center items-center">
+                        <img src="{{ category.image.url }}" title="{{ category.name }}" alt="{{ category.name }}" class="w-full h-auto hover:opacity-90 group">
                     </div>
                 </a>
+            {% endfor %}
+          </div>
+
+          <div class="flex flex-col items-center my-10">
+                <a href="{% url 'search' %}" class="border-2 border-black mx-auto py-3 px-6 rounded-lg hover:bg-gray-100">VISUALIZZA TUTTI I PRODOTTI</a>
+          </div>
+
+      {% endblock %}
+    </main>
+
+    <div id="modal"></div>
+
+    {% block footer %}
+        <footer class="border-t border-black mt-2">
+            <!-- Links -->
+            <div class="flex flex-row justify-between items-center py-10">
+
+                <div class="flex flex-col justify-center items-center mx-auto">
+                    <p class="text-3xl">Seguici</p>
+                    <div class="inline-flex gap-2 justify-center items-center ">
+                        <a href="#" class="text-gray-500 hover:underline">Facebook</a>
+                        <a href="#" class="text-gray-500 hover:underline">Twitter</a>
+                        <a href="#" class="text-gray-500 hover:underline">Instagram</a>
+                    </div>
+                </div>
+
+                <div class="flex flex-col justify-center items-center mx-auto">
+                    <p class="text-3xl">Legale</p>
+                    <div class="inline-flex gap-4 justify-center items-center">
+                        <a href="#" class="text-gray-500 hover:underline">Privacy Policy</a>
+                        <a href="#" class="text-gray-500 hover:underline">Termini di servizio</a>
+                        <a href="#" class="text-gray-500 hover:underline">Cookie Policy</a>
+                    </div>
+                </div>
+
+                <div class="flex flex-col justify-center items-center mx-auto">
+                    <p class="text-3xl">Supporto</p>
+                    <div class="inline-flex gap-4 justify-center items-center">
+                        <a href="#" class="text-gray-500 hover:underline">Contatti</a>
+                        <a href="#" class="text-gray-500 hover:underline">FAQ</a>
+                        <a href="#" class="text-gray-500 hover:underline">Support tecnico</a>
+                    </div>
+                </div>
             </div>
-        {% endfor %}
-    </div>
+
+            <!-- copyright -->
+            <div class="bg-gray-200 flex justify-center items-center py-3">
+                <p>&copy; 2024 WARDROBE. Tutti i diritti riservati.</p>
+            </div>
+        </footer>
+    {% endblock %}
+</div>
+</body>
+</html>
 
 
-  <!-- Start Master Categories Choice -->
-  <div class="flex flex-col justify-center items-center mb-14">
-    <p class="text-4xl p-10 text-blue3">Esplora le nostre categorie</p>
-    <div class="grid grid-cols-3 grid-rows-1 gap-4 w-3/5">
-      {% for category in main_categories_list %}
-        <div class="mt-4">
-          <a href="{% url 'search_category' category.id %}">
-            <div
-                class="flex flex-col justify-center items-center text-blue3 hover:text-blue2 rounded shadow-lg hover:shadow-xl">
-              <div>
-                <img src="{{ category.image.url }}" alt="{{ category.name }}" class="w-120 h-full">
-              </div>
-              <div class="-mt-16">
-                <p class="text-5xl">{{ category.name }}</p>
-              </div>
-            </div>
-          </a>
-        </div>
-      {% endfor %}
-    </div>
-  </div>
-{% endblock %}
+
+
+
