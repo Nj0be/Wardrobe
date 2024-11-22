@@ -99,9 +99,9 @@
                          style="{% if size == selected_size %} outline:2px solid black; outline-offset: 3px; {% endif %}"
                          class="items-center justify-between
                                                    cursor-pointer border border-black px-4
-                                                   {% if not variant %} backdrop-opacity-50 {% endif %}">
+                                                   {% if not variant %} bg-gray-200 {% endif %}">
                     <div class="flex flex-col justify-center items-center">
-                      <p>{{ size.name }}</p>
+                      <p class="{% if not variant %}line-through{% endif %}">{{ size.name }}</p>
                     </div>
                   </label>
                 {% endfor %}
