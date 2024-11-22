@@ -1,14 +1,14 @@
 {% include "products/review.html" %}
 
 <div id="add-review" hx-swap-oob="true">
-  <h3 class="text-5xl mt-10">Lascia una recensione</h3>
+  <h3 class="text-gray-900 text-5xl font-manrope mt-10">Lascia una recensione</h3>
   {% if not user.is_authenticated %}
-    <p class="text-2xl mt-2"><a href="{% url 'login' %}">Accedi</a> per pubblicare una
+    <p class="text-normal text-justify mt-2"><a href="{% url 'login' %}">Accedi</a> per pubblicare una
       recensione.</p>
   {% elif not user_has_purchased %}
-    <p class="text-2xl mt-2">Non hai acquistato l'articolo.</p>
+    <p class="text-normal text-justify mt-2">Non hai acquistato l'articolo.</p>
   {% elif user_has_review %}
-    <p class="text-2xl mt-2">Hai già pubblicato una recensione per questo articolo.</p>
+    <p class="text-normal text-justify mt-2">Hai già pubblicato una recensione per questo articolo.</p>
   {% else %}
     <form hx-post="{% url "add_review" product.id %}" hx-swap="delete" hx-target="#no-reviews">
       {% load widget_tweaks %}
@@ -48,10 +48,7 @@
         <li>{{ error|escape }}</li>
       {% endfor %}</ol>
       <div class="fieldWrapper grid grid-cols-1 justify-center items-center mt-4">
-        <button type="submit" class="grid grid-col-1 justify-center items-center text-white bg-blue2 hover:bg-blue-800 focus:ring-4 focus:outline-none
-                                    focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5
-                                    text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800
-                                    disabled:bg-gray-300">
+        <button type="submit" class="border-2 border-black w-full py-2 mx-auto text-sm md:text-normal lg:text-normal hover:bg-gray-100 disabled:bg-gray-200 focus:ring-2 ring-offset-2 ring-black">
           Invia Recensione
         </button>
       </div>
