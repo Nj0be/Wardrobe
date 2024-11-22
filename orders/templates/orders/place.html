@@ -3,75 +3,54 @@
 {% block title %}Effettua un ordine{% endblock %}
 
 {% block content %}
-  <div class="flex min-h-full flex-col align-middle justify-center px-6 py-12 lg:px-8">
-    <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-      <h2 class="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">Effettua l'ordine</h2>
-    </div>
+  <div class="grid grid-cols-2 gap-4 my-4">
+    <div class="flex flex-col p-10 border border-gray-200 lg:ml-32 md:ml-auto sm:ml-auto">
+      <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+        <h2 class="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">Effettua
+          l'ordine</h2>
+      </div>
 
-    <div class="my-10 sm:mx-auto sm:w-full sm:max-w-sm">
-      <form action="{% url "place_order" %}" method="post">
-        {% load widget_tweaks %}
-        {% csrf_token %}
-        <div class="fieldWrapper">
-          {{ form.name|add_label_class:"block text-sm/6 font-medium text-gray-900" }}
-          {% render_field form.name class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" %}
-          <ol>{% for error in form.name.errors %}
+      <div class="my-10 sm:mx-auto sm:w-full">
+        <form action="{% url "place_order" %}" method="post">
+          {% load widget_tweaks %}
+          {% csrf_token %}
+          {% for field in form %}
+            {% if field.name == "payment_method" %}
+              <div class="fieldWrapper">
+                {{ form.payment_method|add_label_class:"" }}
+                <div class="columns-3">
+                  {% render_field form.payment_method class="" %}
+                </div>
+                <ol>{% for error in form.payment_method.errors %}
+                  <li>{{ error|escape }}</li>
+                {% endfor %}</ol>
+              </div>
+            {% else %}
+              <div class="fieldWrapper">
+                {{ field|add_label_class:"block text-sm/6 font-medium text-gray-900" }}
+                {% render_field field class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" %}
+                <ol>{% for error in field.errors %}
+                  <li>{{ error|escape }}</li>
+                {% endfor %}</ol>
+              </div>
+            {% endif %}
+          {% endfor %}
+          <!-- Signup form errors -->
+          <ol>{% for error in form.non_field_errors %}
             <li>{{ error|escape }}</li>
           {% endfor %}</ol>
-        </div>
-        <div class="fieldWrapper">
-          {{ form.phone_number|add_label_class:"block text-sm/6 font-medium text-gray-900" }}
-          {% render_field form.phone_number class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" %}
-          <ol>{% for error in form.phone_number.errors %}
-            <li>{{ error|escape }}</li>
-          {% endfor %}</ol>
-        </div>
-        <div class="fieldWrapper">
-          {{ form.address_line_one|add_label_class:"block text-sm/6 font-medium text-gray-900" }}
-          {% render_field form.address_line_one class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" %}
-          <ol>{% for error in form.address_line_one.errors %}
-            <li>{{ error|escape }}</li>
-          {% endfor %}</ol>
-        </div>
-        <div class="fieldWrapper">
-          {{ form.address_line_two|add_label_class:"block text-sm/6 font-medium text-gray-900" }}
-          {% render_field form.address_line_two class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" %}
-          <ol>{% for error in form.address_line_two.errors %}
-            <li>{{ error|escape }}</li>
-          {% endfor %}</ol>
-        </div>
-        <div class="fieldWrapper">
-          {{ form.province|add_label_class:"block text-sm/6 font-medium text-gray-900" }}
-          {% render_field form.province class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" %}
-          <ol>{% for error in form.province.errors %}
-            <li>{{ error|escape }}</li>
-          {% endfor %}</ol>
-        </div>
-        <div class="fieldWrapper">
-          {{ form.postal_code|add_label_class:"block text-sm/6 font-medium text-gray-900" }}
-          {% render_field form.postal_code class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" %}
-          <ol>{% for error in form.postal_code.errors %}
-            <li>{{ error|escape }}</li>
-          {% endfor %}</ol>
-        </div>
-        <div class="fieldWrapper">
-          {{ form.city|add_label_class:"block text-sm/6 font-medium text-gray-900" }}
-          {% render_field form.city class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" %}
-          <ol>{% for error in form.city.errors %}
-            <li>{{ error|escape }}</li>
-          {% endfor %}</ol>
-        </div>
-        <div class="fieldWrapper">
-          {{ form.payment_method|add_label_class:"" }}
-          {% render_field form.payment_method class="" %}
-          <ol>{% for error in form.payment_method.errors %}
-            <li>{{ error|escape }}</li>
-          {% endfor %}</ol>
-        </div>
-        <!-- Signup form errors -->
-        <ol>{% for error in form.non_field_errors %}
-          <li>{{ error|escape }}</li>
-        {% endfor %}</ol>
+          <div class="fieldWrapper">
+            <button type="submit"
+                    class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+              Ordina
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="p-10">
+      <p class="text-xl">Hai acquistato i seguenti prodotti:</p>
+      <div class="grid grid-cols-1 justify-center items-center gap-2 mt-2">
         {% for product in products %}
           <div>
             <p><strong>Nome:</strong>{{ product.variant.product.name }}</p>
@@ -87,13 +66,7 @@
           </div>
         {% endfor %}
         <p><strong>Totale:</strong> {{ total_price }}</p>
-        <div class="fieldWrapper">
-          <button type="submit"
-                  class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-            Ordina
-          </button>
-        </div>
-      </form>
+      </div>
     </div>
   </div>
-{% endblock %}
+{% endblock content %}
