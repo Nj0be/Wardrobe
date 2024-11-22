@@ -25,6 +25,14 @@
 },
 {
     "model": "sessions.session",
+    "pk": "9ogygtxckjsuq0dbzho22rkvh441tyn2",
+    "fields": {
+        "session_data": ".eJxVjEEOwiAQRe_C2pAiA0iX7j1DM8yArRpIoF01vbtt0oVu_3v_rWLAZR6HpcU6TCx6ocTldwtI75gPwC_MzyKp5LlOQR6KPGmTj8Lxcz_dv8CIbdzfZMCitQmVTuDZOBOJXQi6I2tVgNipToMlzQmMoqR8iHgF5xyzu4Hfo4R1Fv26bV8kxjsi:1tEHb2:dYnLsBRmpL1qzFGbBne4csiY2v9by8BQQWg8YV8erAc",
+        "expire_date": "2024-12-06T00:32:28.488Z"
+    }
+},
+{
+    "model": "sessions.session",
     "pk": "ajs0jyl64hbvtsz0pqvzbdmkzdw4qy9s",
     "fields": {
         "session_data": ".eJxVjDsOwjAQBe_iGlm7If5R0ucM1tq7wQHkSHFSIe4OkVJA-2bmvVSkbS1xa7LEidVFoTr9bonyQ-oO-E71Nus813WZkt4VfdCmh5nleT3cv4NCrXxrksDAHgUMGSZAO0IfBJOELNj1znuywEbkLA46DikkR5iYrHOGRvX-APgWOI0:1sxOiT:oq93HBKh-YCXFbeSGIldGPWXh7bF94xZWE4aPPycZq0",
@@ -67,7 +75,7 @@
     "model": "accounts.user",
     "fields": {
         "password": "pbkdf2_sha256$870000$rwbJ46Kw1n6piuQ5enK64V$9H7No6hrZhrHqUou59q357aVYYBF7tOm5I/eGrTKZyM=",
-        "last_login": "2024-11-18T20:35:25.214Z",
+        "last_login": "2024-11-22T00:09:13.980Z",
         "is_superuser": true,
         "first_name": "Alessio",
         "last_name": "Pelusi",
@@ -149,7 +157,7 @@
     "fields": {
         "parent": null,
         "name": "Uomo",
-        "image": "categories/uomo.jpeg",
+        "image": "categories/uomoimage_I0hxes4.jpg",
         "position": 0
     }
 },
@@ -159,7 +167,7 @@
     "fields": {
         "parent": null,
         "name": "Donna",
-        "image": "categories/donna.jpeg",
+        "image": "categories/donnaimage_SjneaUV.jpg",
         "position": 0
     }
 },
@@ -169,7 +177,7 @@
     "fields": {
         "parent": null,
         "name": "Bambini",
-        "image": "categories/bambini.jpeg",
+        "image": "categories/bambiniimage_LMaEy4k.jpg",
         "position": 0
     }
 },
@@ -3118,7 +3126,7 @@
     "model": "admin.logentry",
     "pk": 70,
     "fields": {
-        "action_time": "2024-11-21T12:13:20.000Z",
+        "action_time": "2024-11-21T12:13:20Z",
         "user": [
             "root@root.it"
         ],
@@ -3173,6 +3181,114 @@
     "pk": 73,
     "fields": {
         "action_time": "2024-11-21T17:18:02.594Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "category"
+        ],
+        "object_id": "3",
+        "object_repr": "Bambini",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"fields\": [\"Image\"]}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 74,
+    "fields": {
+        "action_time": "2024-11-22T00:09:16.815Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "category"
+        ],
+        "object_id": "1",
+        "object_repr": "Uomo",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"fields\": [\"Image\"]}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 75,
+    "fields": {
+        "action_time": "2024-11-22T00:09:22.900Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "category"
+        ],
+        "object_id": "1",
+        "object_repr": "Uomo",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"fields\": [\"Image\"]}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 76,
+    "fields": {
+        "action_time": "2024-11-22T00:09:26.216Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "category"
+        ],
+        "object_id": "2",
+        "object_repr": "Donna",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"fields\": [\"Image\"]}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 77,
+    "fields": {
+        "action_time": "2024-11-22T00:09:33.404Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "category"
+        ],
+        "object_id": "2",
+        "object_repr": "Donna",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"fields\": [\"Image\"]}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 78,
+    "fields": {
+        "action_time": "2024-11-22T00:09:36.507Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "category"
+        ],
+        "object_id": "3",
+        "object_repr": "Bambini",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"fields\": [\"Image\"]}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 79,
+    "fields": {
+        "action_time": "2024-11-22T00:09:42.349Z",
         "user": [
             "root@root.it"
         ],
