@@ -3,76 +3,79 @@
 {% block title %}Effettua un ordine{% endblock %}
 
 {% block content %}
-  <div class="grid grid-cols-2 gap-20 my-4 p-10">
-    <div class="">
-      <p class="text-xl">Effettua l'ordine</p>
-
-      <div class="my-10 sm:mx-auto sm:w-full">
-        <form action="{% url "place_order" %}" method="post">
-          {% load widget_tweaks %}
-          {% csrf_token %}
-          {% for field in form %}
-            {% if field.name == "payment_method" %}
-              <div class="fieldWrapper">
-                {{ form.payment_method|add_label_class:"" }}
-                <div class="">
-                  {% render_field form.payment_method class="inline-flex justify-center gap-3 items-center p-2" %}
-                </div>
-                <ol>{% for error in form.payment_method.errors %}
-                  <li>{{ error|escape }}</li>
-                {% endfor %}</ol>
+  <div class="grid grid-cols-2 gap-4 my-4">
+    <div class="relative">
+      <div class="sticky top-0 p-10 border border-gray-200 lg:ml-96 md:ml-auto sm:ml-auto">
+        <p class="text-xl">Effettua l'ordine</p>
+        <div>
+          <form action="{% url "place_order" %}" method="post">
+            {% load widget_tweaks %}
+            {% csrf_token %}
+            {% for field in form %}
+              <div class="py-2">
+                {% if field.name == "payment_method" %}
+                  <div class="fieldWrapper">
+                    {{ form.payment_method|add_label_class:"" }}
+                    <div class="">
+                      {% render_field form.payment_method class="inline-flex justify-center gap-3 items-center p-2" %}
+                    </div>
+                    <ol>{% for error in form.payment_method.errors %}
+                      <li>{{ error|escape }}</li>
+                    {% endfor %}</ol>
+                  </div>
+                {% else %}
+                  <div class="fieldWrapper">
+                    {{ field|add_label_class:"block text-sm/6 font-medium text-gray-900" }}
+                    {% render_field field class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" %}
+                    <ol>{% for error in field.errors %}
+                      <li>{{ error|escape }}</li>
+                    {% endfor %}</ol>
+                  </div>
+                {% endif %}
               </div>
-            {% else %}
-              <div class="fieldWrapper">
-                {{ field|add_label_class:"block text-sm/6 font-medium text-gray-900" }}
-                {% render_field field class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" %}
-                <ol>{% for error in field.errors %}
-                  <li>{{ error|escape }}</li>
-                {% endfor %}</ol>
-              </div>
-            {% endif %}
-          {% endfor %}
-          <!-- Hidden inputs to send products data -->
-          {% for product in products %}
-            <input type="hidden" name="product_ids" value="{{ product.variant.id }}">
-            <input type="hidden" name="product_prices" value="{{ product.price }}">
-            <input type="hidden" name="product_quantities" value="{{ product.quantity }}">
-          {% endfor %}
-          <!-- Signup form errors -->
-          <ol>{% for error in form.non_field_errors %}
-            <li>{{ error|escape }}</li>
-          {% endfor %}</ol>
-          <div class="fieldWrapper">
-            <button type="submit"
-                    class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-              Ordina
-            </button>
-          </div>
-        </form>
+            {% endfor %}
+            <!-- Hidden inputs to send products data -->
+            {% for product in products %}
+              <input type="hidden" name="product_ids" value="{{ product.variant.id }}">
+              <input type="hidden" name="product_prices" value="{{ product.price }}">
+              <input type="hidden" name="product_quantities" value="{{ product.quantity }}">
+            {% endfor %}
+            <!-- Signup form errors -->
+            <ol>{% for error in form.non_field_errors %}
+              <li>{{ error|escape }}</li>
+            {% endfor %}</ol>
+            <div class="fieldWrapper">
+              <button type="submit"
+                      class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                Ordina
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
-    <div class="">
-      <p class="text-xl">I prodotti che stai per acquistare:</p>
+    <div class="flex flex-col p-10 lg:mr-96 md:mr-auto sm:mr-auto">
+      <p class="text-xl">Resoconto ordine: {{ total_price }} EUR</p>
       <div class="grid grid-cols-1 justify-center items-center gap-2 mt-2">
         {% for product in products %}
-          <div class="inline-flex gap-3 pt-2">
-            <a href="{% url 'product_color_size' product.variant.product.id product.variant.color.id product.variant.size.id %}">
-              <img src="{{ product.variant.get_images.0.url }}"
-                   alt="{{ variant.product }}" class="w-40">
-            </a>
-            <div class="w-1/2">
-              <p><strong>Nome: </strong>{{ product.variant.product.name }}</p>
-              <p><strong>Brand: </strong>{{ product.variant.product.brand.name }}</p>
-              <p><strong>Descrizione: </strong>{{ product.variant.product.description }}</p>
-              <p><strong>Colore: </strong>{{ product.variant.color }}</p>
-              <p><strong>Taglia: </strong>{{ product.variant.size }}</p>
-              <p><strong>Prezzo: </strong> {{ product.price }} X {{ product.quantity }}
-                = {{ product.subtotal_price }} €</p>
-            </div>
+          <div class="inline-flex items-center gap-3">
+              <a href="{% url 'product_color_size' product.variant.product.id product.variant.color.id product.variant.size.id %}">
+                <img src="{{ product.variant.get_images.0.url }}"
+                     alt="{{ variant.product }}" class="w-full">
+              </a>
+              <div class="grid grid-cols-1 gap-4">
+                <p><strong>Nome: </strong>{{ product.variant.product.name }}</p>
+                <p><strong>Brand: </strong>{{ product.variant.product.brand.name }}</p>
+                <p class="text-justify"><strong>Descrizione: </strong>{{ product.variant.product.description }}</p>
+                <p><strong>Colore: </strong>{{ product.variant.color }}</p>
+                <p><strong>Taglia: </strong>{{ product.variant.size }}</p>
+                <p><strong>Prezzo: </strong> {{ product.price }} X {{ product.quantity }}
+                  = {{ product.subtotal_price }} €</p>
+              </div>
           </div>
+          {% if not forloop.last %} <hr class="py-2"> {% endif %}
         {% endfor %}
-        <p><strong>Totale:</strong> {{ total_price }}</p>
       </div>
     </div>
   </div>
-{% endblock content %}
+{% endblock %}
