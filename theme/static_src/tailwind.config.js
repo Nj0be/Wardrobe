@@ -50,6 +50,12 @@ module.exports = {
                 'blue3': '#010922',
                 'orange': '#F17300',
                 'retroblack': '#212121',
+                'bgdark': '#181a1b',
+                'txwhite': '#e8e6e3',
+                'caffe': '#6f675b',
+                'grullo': '#a8a195',
+                'cinder': '#25282a',
+                'black-pearl': '#1e2021'
             },
             fontFamily: {
                 'robo': ["Roboto", "sans-serif"],
