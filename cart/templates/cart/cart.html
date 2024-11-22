@@ -1,8 +1,9 @@
 {% include "cart/empty.html" %}
-<div class="inline-flex">
+{% include "cart/place_order.html" %}
+<div class="inline-flex mb-auto">
   {% for variant, attr in cart.items %}
     <form id="form{{ variant.id }}" method="post"
-          class="border-solid border-0 border-r border-grey-200">{% csrf_token %}
+          class="border-solid border-0 border-r border-b border-grey-200">{% csrf_token %}
       <input type="hidden" name="variant_id" value="{{ variant.id }}">
       <!--
         When the checkbox is not checked the input will not be sent.
@@ -66,5 +67,3 @@
     </form>
   {% endfor %}
 </div>
-
-{% include "cart/place_order.html" %}
