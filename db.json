@@ -49,6 +49,14 @@
 },
 {
     "model": "sessions.session",
+    "pk": "pymmhlkfutqxnorv0u3vc7hcy15bz5k2",
+    "fields": {
+        "session_data": ".eJxVjEEOwiAQRe_C2pAiA0iX7j1DM8yArRpIoF01vbtt0oVu_3v_rWLAZR6HpcU6TCx6ocTldwtI75gPwC_MzyKp5LlOQR6KPGmTj8Lxcz_dv8CIbdzfZMCitQmVTuDZOBOJXQi6I2tVgNipToMlzQmMoqR8iHgF5xyzu4Hfo4R1Fv26bV8kxjsi:1tEPi2:mkiKQHDszbJTfnPciqQhQvxm5lhR7bgYkcLAbuY9wV4",
+        "expire_date": "2024-12-06T09:12:14.308Z"
+    }
+},
+{
+    "model": "sessions.session",
     "pk": "rii99rl3skwnioctlrqeiynnxt8hxwe3",
     "fields": {
         "session_data": ".eJxVjEEOwiAQRe_C2pAiA0iX7j1DM8yArRpIoF01vbtt0oVu_3v_rWLAZR6HpcU6TCx6ocTldwtI75gPwC_MzyKp5LlOQR6KPGmTj8Lxcz_dv8CIbdzfZMCitQmVTuDZOBOJXQi6I2tVgNipToMlzQmMoqR8iHgF5xyzu4Hfo4R1Fv26bV8kxjsi:1tEAoz:HT8owtHVI9Hnk02MJXFGkitRwTwoQkvDE03AvwLvzjU",
@@ -75,7 +83,7 @@
     "model": "accounts.user",
     "fields": {
         "password": "pbkdf2_sha256$870000$rwbJ46Kw1n6piuQ5enK64V$9H7No6hrZhrHqUou59q357aVYYBF7tOm5I/eGrTKZyM=",
-        "last_login": "2024-11-22T00:09:13.980Z",
+        "last_login": "2024-11-22T09:12:14.305Z",
         "is_superuser": true,
         "first_name": "Alessio",
         "last_name": "Pelusi",
@@ -304,6 +312,23 @@
     }
 },
 {
+    "model": "products.product",
+    "pk": 5,
+    "fields": {
+        "name": "Giubbotto in velluto",
+        "description": "Giubbotto regular fit realizzato in velluto elasticizzato. Collo a revers e maniche lunghe. Tasche anteriori a filetto. Chiusura frontale con cerniera.",
+        "price": "89.95",
+        "is_active": true,
+        "date_created": "2024-11-22T09:14:44.289Z",
+        "last_modification": "2024-11-22T09:16:35.005Z",
+        "discount": null,
+        "brand": 1,
+        "categories": [
+            4
+        ]
+    }
+},
+{
     "model": "products.color",
     "pk": 1,
     "fields": {
@@ -333,6 +358,14 @@
     "fields": {
         "name": "Lightweight",
         "hex": "AFBECB"
+    }
+},
+{
+    "model": "products.color",
+    "pk": 5,
+    "fields": {
+        "name": "Nero",
+        "hex": "000000"
     }
 },
 {
@@ -432,6 +465,14 @@
     }
 },
 {
+    "model": "products.productcolor",
+    "pk": 8,
+    "fields": {
+        "product": 5,
+        "color": 5
+    }
+},
+{
     "model": "products.productimage",
     "pk": 1,
     "fields": {
@@ -473,6 +514,87 @@
     "fields": {
         "product_color": 5,
         "image": "products/005013524-alt1-pdp-ld.jpg",
+        "position": 0
+    }
+},
+{
+    "model": "products.productimage",
+    "pk": 6,
+    "fields": {
+        "product_color": 8,
+        "image": "products/1.jpg",
+        "position": 0
+    }
+},
+{
+    "model": "products.productimage",
+    "pk": 7,
+    "fields": {
+        "product_color": 8,
+        "image": "products/2.jpg",
+        "position": 0
+    }
+},
+{
+    "model": "products.productimage",
+    "pk": 8,
+    "fields": {
+        "product_color": 8,
+        "image": "products/3.jpg",
+        "position": 0
+    }
+},
+{
+    "model": "products.productimage",
+    "pk": 9,
+    "fields": {
+        "product_color": 8,
+        "image": "products/4.jpg",
+        "position": 0
+    }
+},
+{
+    "model": "products.productimage",
+    "pk": 10,
+    "fields": {
+        "product_color": 8,
+        "image": "products/5.jpg",
+        "position": 0
+    }
+},
+{
+    "model": "products.productimage",
+    "pk": 11,
+    "fields": {
+        "product_color": 8,
+        "image": "products/6.jpg",
+        "position": 0
+    }
+},
+{
+    "model": "products.productimage",
+    "pk": 12,
+    "fields": {
+        "product_color": 8,
+        "image": "products/7.jpg",
+        "position": 0
+    }
+},
+{
+    "model": "products.productimage",
+    "pk": 13,
+    "fields": {
+        "product_color": 8,
+        "image": "products/8.jpg",
+        "position": 0
+    }
+},
+{
+    "model": "products.productimage",
+    "pk": 14,
+    "fields": {
+        "product_color": 8,
+        "image": "products/9.jpg",
         "position": 0
     }
 },
@@ -597,6 +719,46 @@
     }
 },
 {
+    "model": "products.productvariant",
+    "pk": 16,
+    "fields": {
+        "product_color": 8,
+        "size": 1,
+        "price": "0.00",
+        "stock": 12
+    }
+},
+{
+    "model": "products.productvariant",
+    "pk": 17,
+    "fields": {
+        "product_color": 8,
+        "size": 2,
+        "price": "0.00",
+        "stock": 8
+    }
+},
+{
+    "model": "products.productvariant",
+    "pk": 18,
+    "fields": {
+        "product_color": 8,
+        "size": 3,
+        "price": "0.00",
+        "stock": 7
+    }
+},
+{
+    "model": "products.productvariant",
+    "pk": 19,
+    "fields": {
+        "product_color": 8,
+        "size": 4,
+        "price": "0.00",
+        "stock": 14
+    }
+},
+{
     "model": "products.review",
     "pk": 1,
     "fields": {
@@ -607,6 +769,19 @@
         "title": "cipolla",
         "description": "dasflkjadsfkasdflkjasfkjlsdalfkjdsalflksfkjlsdklafkjlsdfkjlsdaklfdksafjkl",
         "vote": 2
+    }
+},
+{
+    "model": "products.review",
+    "pk": 16,
+    "fields": {
+        "product": 1,
+        "customer": [
+            "fsj@fajdsk.co"
+        ],
+        "title": "fdafdsaf",
+        "description": "fdsfsadfads",
+        "vote": 4
     }
 },
 {
@@ -1847,6 +2022,24 @@
     }
 },
 {
+    "model": "orders.order",
+    "pk": 21,
+    "fields": {
+        "user": [
+            "fsj@fajdsk.co"
+        ],
+        "date_created": "2024-11-21T22:41:34.440Z",
+        "name": "fdasfdsa",
+        "phone_number": "+390123456789",
+        "address_line_one": "fjdsa",
+        "address_line_two": "fdsa",
+        "province": 1,
+        "postal_code": "93293",
+        "city": "fdskfds",
+        "payment_method": 1
+    }
+},
+{
     "model": "orders.orderproduct",
     "pk": 1,
     "fields": {
@@ -1977,6 +2170,16 @@
     }
 },
 {
+    "model": "orders.orderproduct",
+    "pk": 14,
+    "fields": {
+        "order": 21,
+        "variant": 4,
+        "quantity": 1,
+        "price": "15.00"
+    }
+},
+{
     "model": "cart.cartitem",
     "pk": 1,
     "fields": {
@@ -2007,6 +2210,18 @@
         "variant": 4,
         "customer": [
             "123@gmail.com"
+        ],
+        "quantity": 1,
+        "is_active": true
+    }
+},
+{
+    "model": "cart.cartitem",
+    "pk": 5,
+    "fields": {
+        "variant": 4,
+        "customer": [
+            "fsj@fajdsk.co"
         ],
         "quantity": 1,
         "is_active": true
@@ -3300,6 +3515,204 @@
         "object_repr": "Bambini",
         "action_flag": 2,
         "change_message": "[{\"changed\": {\"fields\": [\"Image\"]}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 80,
+    "fields": {
+        "action_time": "2024-11-21T21:29:23.350Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "review"
+        ],
+        "object_id": "9",
+        "object_repr": "Review object (9)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 81,
+    "fields": {
+        "action_time": "2024-11-21T21:42:56.260Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "review"
+        ],
+        "object_id": "10",
+        "object_repr": "Review object (10)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 82,
+    "fields": {
+        "action_time": "2024-11-21T21:45:38.154Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "review"
+        ],
+        "object_id": "11",
+        "object_repr": "Review object (11)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 83,
+    "fields": {
+        "action_time": "2024-11-21T21:45:48.868Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "review"
+        ],
+        "object_id": "12",
+        "object_repr": "Review object (12)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 84,
+    "fields": {
+        "action_time": "2024-11-21T21:50:25.765Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "review"
+        ],
+        "object_id": "13",
+        "object_repr": "Review object (13)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 85,
+    "fields": {
+        "action_time": "2024-11-21T21:53:41.897Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "review"
+        ],
+        "object_id": "14",
+        "object_repr": "Review object (14)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 86,
+    "fields": {
+        "action_time": "2024-11-21T22:01:08.690Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "review"
+        ],
+        "object_id": "15",
+        "object_repr": "Review object (15)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 87,
+    "fields": {
+        "action_time": "2024-11-21T22:02:29.331Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "accounts",
+            "user"
+        ],
+        "object_id": "5",
+        "object_repr": "fsj@fajdsk.co",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"fields\": [\"Password\"]}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 88,
+    "fields": {
+        "action_time": "2024-11-22T09:13:55.580Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "color"
+        ],
+        "object_id": "5",
+        "object_repr": "Nero",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 89,
+    "fields": {
+        "action_time": "2024-11-22T09:14:44.306Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "product"
+        ],
+        "object_id": "5",
+        "object_repr": "5-Giubbotto in velluto",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}, {\"added\": {\"name\": \"product color\", \"object\": \"5-Giubbotto in velluto-Nero\"}}, {\"added\": {\"name\": \"product variant\", \"object\": \"5-Giubbotto in velluto-Nero-S\"}}, {\"added\": {\"name\": \"product variant\", \"object\": \"5-Giubbotto in velluto-Nero-M\"}}, {\"added\": {\"name\": \"product variant\", \"object\": \"5-Giubbotto in velluto-Nero-L\"}}, {\"added\": {\"name\": \"product variant\", \"object\": \"5-Giubbotto in velluto-Nero-XL\"}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 90,
+    "fields": {
+        "action_time": "2024-11-22T09:16:35.050Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "product"
+        ],
+        "object_id": "5",
+        "object_repr": "5-Giubbotto in velluto",
+        "action_flag": 2,
+        "change_message": "[{\"added\": {\"name\": \"product image\", \"object\": \"5-Giubbotto in velluto-Nero-products/1.jpg\"}}, {\"added\": {\"name\": \"product image\", \"object\": \"5-Giubbotto in velluto-Nero-products/2.jpg\"}}, {\"added\": {\"name\": \"product image\", \"object\": \"5-Giubbotto in velluto-Nero-products/3.jpg\"}}, {\"added\": {\"name\": \"product image\", \"object\": \"5-Giubbotto in velluto-Nero-products/4.jpg\"}}, {\"added\": {\"name\": \"product image\", \"object\": \"5-Giubbotto in velluto-Nero-products/5.jpg\"}}, {\"added\": {\"name\": \"product image\", \"object\": \"5-Giubbotto in velluto-Nero-products/6.jpg\"}}, {\"added\": {\"name\": \"product image\", \"object\": \"5-Giubbotto in velluto-Nero-products/7.jpg\"}}, {\"added\": {\"name\": \"product image\", \"object\": \"5-Giubbotto in velluto-Nero-products/8.jpg\"}}, {\"added\": {\"name\": \"product image\", \"object\": \"5-Giubbotto in velluto-Nero-products/9.jpg\"}}]"
     }
 }
 ]

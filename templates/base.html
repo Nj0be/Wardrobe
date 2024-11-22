@@ -21,59 +21,38 @@
       href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap"
       rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Ahom&display=swap"
+        rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lacquer&display=swap" rel="stylesheet">
 </head>
 <body hx-ext="preload" class="font-kani h-full">
-<div class="flex flex-col h-screen justify-between" hx-boost="true" preload="mouseover" preload-images="true">
+<div class="flex flex-col h-screen justify-between" hx-boost="true" preload="mouseover"
+     preload-images="true">
+
   {% block header %}
-    <header>
-      <nav class="bg-blue0 dark:bg-blue3">
-        <div class="grid grid-cols-3 justify-center items-center m-auto p-6">
-          <div class="text-2xl text-blue3 dark:text-blue0 flex justify-center items-center">
-            <ul class="grid grid-cols-1 justify-center items-center">
-              {% block left_header_links %}
-                <li class="hover:underline">
-                  <a href="{% url 'search' %}">
-                    Tutti i prodotti
-                  </a>
-                </li>
-              {% endblock %}
-            </ul>
-          </div>
-          <div class="flex justify-center items-center">
-            <a class="font-right text-5xl text-blue3 dark:text-blue0" href="{% url 'homepage' %}">
-              WARDROBE
-            </a>
-          </div>
-          <div class="text-2xl text-blue3 dark:text-blue0 flex justify-center items-center">
-            <ul class="grid grid-cols-2 justify-center items-center gap-6">
-              {% block right_header_links %}
-                <li class="hover:underline">
-                  <a href="{% url "cart" %}">
-                    Carrello
-                  </a>
-                </li>
-                {% if user.is_authenticated %}
-                  <li class="hover:underline">
-                    <a href="{% url 'profile' %}">
-                      Hi, {{ user.first_name }}
-                    </a>
-                  </li>
-                {% else %}
-                  <li class="hover:underline">
-                    <a href="{% url 'login' %}">
-                      Accedi
-                    </a>
-                  </li>
-                {% endif %}
-              {% endblock %}
-            </ul>
-          </div>
+    <div class="flex flex-col h-screen justify-between">
+    <header class="flex flex-row justify-between p-4">
+      <div class="flex flex-col justify-center items-center gap-2 sm:mx-auto">
+        <h1 class="text-5xl"><a href="{% url 'homepage' %}">WARDROBE©</a></h1>
+        <div class="inline-flex gap-6">
+          {% for category in main_categories_list %}
+            <a href="{% url 'search_category' category.id %}">{{ category.name|upper }}</a>
+          {% endfor %}
         </div>
-      </nav>
+      </div>
+      {% block header_links %}{% endblock %}
+      <div class="inline-flex justify-center items-center gap-6 sm:mx-auto">
+        <a href="{% url 'cart' %}">CARRELLO</a>
+        {% if user.is_authenticated %}
+          <a href="{% url 'profile' %}">CIAO, {{ user.first_name|upper }}</a>
+        {% else %}
+          <a href="{% url 'login' %}">ACCEDI</a>
+        {% endif %}
+      </div>
     </header>
   {% endblock %}
 
-  <main id="content" class="my-auto"> <!-- border-4 border-sky-500h -->
+  <main id="content" class="mb-auto font-rhd px-10"> <!-- border-4 border-sky-500h -->
     {% block content %}
     {% endblock %}
   </main>
@@ -81,43 +60,44 @@
   <div id="modal"></div>
 
   {% block footer %}
-    <footer class="bg-blue0 dark:bg-blue3">
+    <footer class="border-t border-black mt-2">
       <!-- Links -->
-      <div class="flex flex-row py-8">
-        <div class="basis-2/5 flex flex-col justify-center text-center">
-          <p class="text-5xl text-blue3 dark:text-blue0">WARDROBE</p>
-          <p class="text-blue2 dark:text-blue1">Il tuo armadio, online!</p>
+      <div class="flex flex-row justify-between items-center py-10">
+
+        <div class="flex flex-col justify-center items-center mx-auto">
+          <p class="text-3xl">Seguici</p>
+          <div class="inline-flex gap-2 justify-center items-center ">
+            <a href="#" class="text-gray-500 hover:underline">Facebook</a>
+            <a href="#" class="text-gray-500 hover:underline">Twitter</a>
+            <a href="#" class="text-gray-500 hover:underline">Instagram</a>
+          </div>
         </div>
 
-        <div class="basis-1/5 flex flex-col justify-center">
-          <p class="text-3xl text-blue3 dark:text-blue0">Supporto</p>
-          <a href="#" class="text-blue2 dark:text-blue1 hover:underline">Contatti</a>
-          <a href="#" class="text-blue2 dark:text-blue1 hover:underline">FAQ</a>
-          <a href="#" class="text-blue2 dark:text-blue1 hover:underline">Supporto tecnico</a>
+        <div class="flex flex-col justify-center items-center mx-auto">
+          <p class="text-3xl">Legale</p>
+          <div class="inline-flex gap-4 justify-center items-center">
+            <a href="#" class="text-gray-500 hover:underline">Privacy Policy</a>
+            <a href="#" class="text-gray-500 hover:underline">Termini di servizio</a>
+            <a href="#" class="text-gray-500 hover:underline">Cookie Policy</a>
+          </div>
         </div>
 
-        <div class="basis-1/5 flex flex-col justify-center">
-          <p class="text-3xl text-blue3 dark:text-blue0">Legale</p>
-          <a href="#" class="text-blue2 dark:text-blue1 hover:underline">Privacy Policy</a>
-          <a href="#" class="text-blue2 dark:text-blue1 hover:underline">Termini di servizio</a>
-          <a href="#" class="text-blue2 dark:text-blue1 hover:underline">Cookie Policy</a>
-        </div>
-
-        <div class="basis-1/5 flex flex-col justify-center">
-          <p class="text-3xl text-blue3 dark:text-blue0">Seguici</p>
-          <a href="#" class="text-blue2 dark:text-blue1 hover:underline">Facebook</a>
-          <a href="#" class="text-blue2 dark:text-blue1 hover:underline">Twitter</a>
-          <a href="#" class="text-blue2 dark:text-blue1 hover:underline">Instagram</a>
+        <div class="flex flex-col justify-center items-center mx-auto">
+          <p class="text-3xl">Supporto</p>
+          <div class="inline-flex gap-4 justify-center items-center">
+            <a href="#" class="text-gray-500 hover:underline">Contatti</a>
+            <a href="#" class="text-gray-500 hover:underline">FAQ</a>
+            <a href="#" class="text-gray-500 hover:underline">Support tecnico</a>
+          </div>
         </div>
       </div>
 
       <!-- copyright -->
-      <div
-          class="bg-blue2 dark:bg-blue1 text-blue0 dark:text-blue3 flex justify-center items-center py-3">
-        <p>&copy; 2024 Wardrobe. Tutti i diritti riservati.</p>
+      <div class="bg-gray-200 flex justify-center items-center py-3">
+        <p>&copy; 2024 WARDROBE. Tutti i diritti riservati.</p>
       </div>
     </footer>
   {% endblock %}
-</div>
+  </div>
 </body>
 </html>
