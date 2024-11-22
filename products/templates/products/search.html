@@ -62,7 +62,7 @@
                      hx-include="#filtersForm"
                      preload="mouseover" preload-images="true"
                     >
-                <label for="brand_{{ forloop.counter }}" class="inline-flex items-center justify-between px-2 py-1 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue3 peer-checked:text-blue3 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
+                <label for="brand_{{ forloop.counter }}" class="inline-flex items-center justify-between px-2 py-1 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue3 peer-checked:text-blue3 hover:text-gray-600 hover:bg-gray-100">
                     <div class="block justify-center items-center">
                         <div class="w-full">
                             {{ brand.name }}
@@ -92,7 +92,7 @@
                      hx-include="#filtersForm"
                      preload="mouseover" preload-images="true"
                 >
-                <label for="color_{{ forloop.counter }}" style="background-color:#{{ color.hex }};" class="inline-flex justify-center items-center w-12 h-6 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue3 peer-checked:text-blue3 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"></label>
+                <label for="color_{{ forloop.counter }}" style="background-color:#{{ color.hex }};" class="inline-flex justify-center items-center w-12 h-6 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue3 peer-checked:text-blue3 hover:text-gray-600 hover:bg-gray-100"></label>
             </li>
         {% endfor %}
         </ul>
@@ -115,7 +115,7 @@
                      hx-include="#filtersForm"
                      preload="mouseover" preload-images="true"
                 >
-              <label for="size_{{ forloop.counter }}" class="inline-flex justify-center items-center w-12 h-12 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue3 peer-checked:text-blue3 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
+              <label for="size_{{ forloop.counter }}" class="inline-flex justify-center items-center w-12 h-12 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue3 peer-checked:text-blue3 hover:text-gray-600 hover:bg-gray-100">
                   <div class="mx-auto">
                       {{ size.name }}
                   </div>
