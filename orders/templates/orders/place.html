@@ -5,7 +5,7 @@
 {% block content %}
   <div class="grid grid-cols-2 gap-4 my-4">
     <div class="relative">
-      <div class="sticky top-0 p-10 border border-gray-200 lg:ml-96 md:ml-auto sm:ml-auto">
+      <div class="sticky top-0 p-10 border border-gray-200 lg:ml-60 ml-auto">
         <p class="text-xl">Effettua l'ordine</p>
         <div>
           <form action="{% url "place_order" %}" method="post">
@@ -16,7 +16,7 @@
                 {% if field.name == "payment_method" %}
                   <div class="fieldWrapper">
                     {{ form.payment_method|add_label_class:"" }}
-                    <div class="">
+                    <div>
                       {% render_field form.payment_method class="inline-flex justify-center gap-3 items-center p-2" %}
                     </div>
                     <ol>{% for error in form.payment_method.errors %}
@@ -54,7 +54,7 @@
         </div>
       </div>
     </div>
-    <div class="flex flex-col p-10 lg:mr-96 md:mr-auto sm:mr-auto">
+    <div class="flex flex-col p-10">
       <p class="text-xl">Resoconto ordine: {{ total_price }} EUR</p>
       <div class="grid grid-cols-1 justify-center items-center gap-2 mt-2">
         {% for product in products %}
