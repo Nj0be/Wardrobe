@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect
 
 from cart.models import CartItem
 from products.models import ProductVariant
-from .forms import PlaceOrderForm
+from .forms import OrderForm
 from .models import Order, OrderProduct
 
 
@@ -44,17 +44,13 @@ def place(request):
         if len(products) == 0:
             return redirect('homepage')
         # create a form instance and populate it with data from the request:
-        form = PlaceOrderForm(request.POST)
+        form = OrderForm(request.POST)
         # check whether it's valid:
         if form.is_valid():
-            order = Order.objects.create(user=request.user, name=form.cleaned_data['name'],
-                                         phone_number=form.cleaned_data['phone_number'],
-                                         address_line_one=form.cleaned_data['address_line_one'],
-                                         address_line_two=form.cleaned_data['address_line_two'],
-                                         province=form.cleaned_data['province'],
-                                         postal_code=form.cleaned_data['postal_code'],
-                                         city=form.cleaned_data['city'],
-                                         payment_method=form.cleaned_data['payment_method'])
+            order = form.save(commit=False)
+            order.user = request.user
+            order.save()
+
             for product in products:
                 # delete objects from cart after order
                 CartItem.objects.get(customer=request.user, variant=product['variant']).delete()
@@ -67,7 +63,7 @@ def place(request):
             return redirect('view_order', order_id=order.id)
     # if a GET (or any other method) we'll create a blank form
     else:
-        form = PlaceOrderForm()
+        form = OrderForm()
         #variants = ProductVariant.objects.filter(cartitem__customer=request.user, cartitem__is_active=True)
         cart_items = CartItem.objects.filter(customer=request.user, is_active=True)
 

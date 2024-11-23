@@ -1,6 +1,7 @@
 from decimal import Decimal
 from django.core.validators import MinValueValidator
 from django.db import models
+from django.forms.models import ModelForm
 from phonenumber_field.modelfields import PhoneNumberField
 from products.models import Product, ProductVariant, ProductImage
 from django.core.validators import RegexValidator
@@ -72,3 +73,9 @@ class OrderProduct(models.Model):
             self.price = self.variant.price or self.variant.product.price
 
         super(OrderProduct, self).save(*args, **kwargs)
+
+
+class OrderForm(ModelForm):
+    class Meta:
+        model = Order
+        fields = ["user", "name", "phone_number", "address_line_one", "address_line_two", "province", "postal_code", "city", "payment_method"]
