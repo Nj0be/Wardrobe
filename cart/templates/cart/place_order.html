@@ -1,6 +1,6 @@
 {% if cart.get_total_price %}
   <div id="cart-place-order" hx-swap-oob="true"
-      class="flex justify-between items-center p-10 border-solid border-b border-t border-grey-200">
+      class="flex justify-between items-center p-10 mb-2 border-solid border-b border-t border-black dark:border-stone-500 ">
     <div>
       <p>* Continuando, dichiaro di aver letto e accettato i Termini e le Condizioni di Acquisto e
         di aver compreso la Privacy e la Cookie Policy di Wardrobe.</p>
@@ -11,7 +11,7 @@
       </div>
       <div>
         <a href="{% url 'place_order' %}"
-           class="block border-2 border-black mx-auto py-3 px-6 rounded-lg hover:bg-gray-100 text-center"
+           class="block border-2 border-black dark:border-stone-500 mx-auto py-3 px-6 rounded-lg hover:bg-gray-100 dark:hover:bg-stone-900 text-center"
         >Procedi all'ordine
         </a>
       </div>

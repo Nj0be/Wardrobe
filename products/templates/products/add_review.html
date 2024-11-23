@@ -1,7 +1,7 @@
 {% include "products/review.html" %}
 
 <div id="add-review" hx-swap-oob="true">
-  <h3 class="text-gray-900 text-5xl font-manrope mt-10">Lascia una recensione</h3>
+  <h3 class="text-gray-900 dark:text-stone-200 text-5xl font-manrope mt-10">Lascia una recensione</h3>
   {% if not user.is_authenticated %}
     <p class="text-normal text-justify mt-2"><a href="{% url 'login' %}">Accedi</a> per pubblicare una
       recensione.</p>
@@ -14,27 +14,27 @@
       {% load widget_tweaks %}
       {% csrf_token %}
       <div class="fieldWrapper">
-        {{ form.title|add_label_class:"block text-sm/6 font-medium text-gray-900" }}
-        {% render_field form.title class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" %}
+        {{ form.title|add_label_class:"block text-sm/6 font-medium text-gray-900 dark:text-stone-200" }}
+        {% render_field form.title class="block w-full rounded-md border-0 py-1.5 text-gray-900 dark:text-stone-200  dark:bg-neutral-900 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-zinc-700 placeholder:text-gray-400 dark:placeholder:text-stone-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" %}
         <ol>{% for error in form.title.errors %}
           <li>{{ error|escape }}</li>
         {% endfor %}</ol>
       </div>
       <div class="fieldWrapper grid grid-cols-1">
-        {{ form.description|add_label_class:"block text-sm/6 font-medium text-gray-900" }}
-        {% render_field form.description class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" %}
+        {{ form.description|add_label_class:"block text-sm/6 font-medium text-gray-900 dark:text-stone-200" }}
+        {% render_field form.description class="block w-full rounded-md border-0 py-1.5 text-gray-900 dark:text-stone-200  dark:bg-neutral-900 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-zinc-700 placeholder:text-gray-400 dark:placeholder:text-stone-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" %}
         <ol>{% for error in form.description.errors %}
           <li>{{ error|escape }}</li>
         {% endfor %}</ol>
       </div>
       <div class="fieldWrapper">
-        {{ form.vote|add_label_class:"block text-sm/6 font-medium text-gray-900" }}
+        {{ form.vote|add_label_class:"block text-sm/6 font-medium text-gray-900 dark:text-stone-200" }}
         <div class="grid w-full gap-4 md:grid-cols-5">
           {% for radio in form.vote %}
             <div>
               {% render_field radio.tag %}
               <label for="{{ radio.id_for_label }}"
-                     class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue3 peer-checked:text-blue3 hover:text-gray-600 hover:bg-gray-100">
+                     class="inline-flex items-center justify-between w-full p-5 text-gray-500 dark:text-stone-400 bg-white dark:bg-darkbg border border-gray-200 dark:border-stone-500 rounded-lg cursor-pointer peer-checked:border-blue3 dark:peer-checked:border-stone-300 peer-checked:text-blue3 dark:peer-checked:text-stone-300 hover:text-gray-600 dark:hover:text-stone-500 hover:bg-gray-100 dark:hover:bg-neutral-950">
                 {{ radio.choice_label }}
               </label>
             </div>
@@ -48,7 +48,7 @@
         <li>{{ error|escape }}</li>
       {% endfor %}</ol>
       <div class="fieldWrapper grid grid-cols-1 justify-center items-center mt-4">
-        <button type="submit" class="border-2 border-black w-full py-2 mx-auto text-sm md:text-normal lg:text-normal hover:bg-gray-100 disabled:bg-gray-200 focus:ring-2 ring-offset-2 ring-black">
+        <button type="submit" class="border-2 border-black dark:border-stone-500 w-full py-2 mx-auto text-sm md:text-normal lg:text-normal hover:bg-gray-100 dark:hover:bg-neutral-950 focus:ring-2 ring-offset-2 ring-black dark:ring-stone-500 dark:ring-offset-darkbg">
           Invia Recensione
         </button>
       </div>

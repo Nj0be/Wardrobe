@@ -1,7 +1,7 @@
 {% if cart.items|length == 0 %}
     <div id="empty-cart" class="flex flex-col justify-center items-center gap-2 lg:mt-48 md:mt-48 mt-24" hx-swap-oob="true">
         <p class="text-xl">Ops, sembra che il tuo carrello sia ancora vuoto</p>
-        <a href="{% url 'search' %}" class="text-blue2">Inizia a riempire il tuo armadio!</a>
+        <a href="{% url 'search' %}" class="font-semibold text-indigo-600 dark:text-sky-500 hover:text-indigo-600 dark:hover:text-sky-600">Inizia a riempire il tuo armadio!</a>
     </div>
 {% else %}
   <div id="empty-cart" hx-swap-oob="true"></div>

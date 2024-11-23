@@ -1,7 +1,7 @@
 {% load static tailwind_tags %}
 {% load django_htmx %}
 <!DOCTYPE html>
-<html lang="en" class="h-full bg-white text-black dark:bg-bgdark dark:text-txwhite">
+<html lang="en" class="h-full bg-white text-black dark:bg-darkbg dark:text-stone-200" style="color-scheme: light dark;">
 <head>
   <title>{% block title %}Ecommerce Rossi{% endblock %}</title>
   {% tailwind_css %}
@@ -60,40 +60,40 @@
   <div id="modal"></div>
 
   {% block footer %}
-    <footer class="border-t border-black dark:border-caffe mt-2">
+    <footer class="border-t border-black dark:border-stone-600 mt-2">
       <!-- Links -->
       <div class="flex flex-row justify-between items-center py-10">
 
         <div class="flex flex-col justify-center items-center mx-auto">
           <p class="text-3xl">Seguici</p>
           <div class="inline-flex gap-2 justify-center items-center ">
-            <a href="#" class="text-normal text-justify text-gray-500 dark:text-grullo hover:underline">Facebook</a>
-            <a href="#" class="text-normal text-justify text-gray-500 dark:text-grullo hover:underline">Twitter</a>
-            <a href="#" class="text-normal text-justify text-gray-500 dark:text-grullo hover:underline">Instagram</a>
+            <a href="#" class="text-normal text-justify text-gray-500 dark:text-stone-400 hover:underline">Facebook</a>
+            <a href="#" class="text-normal text-justify text-gray-500 dark:text-stone-400 hover:underline">Twitter</a>
+            <a href="#" class="text-normal text-justify text-gray-500 dark:text-stone-400 hover:underline">Instagram</a>
           </div>
         </div>
 
         <div class="flex flex-col justify-center items-center mx-auto">
           <p class="text-3xl">Legale</p>
           <div class="inline-flex gap-4 justify-center items-center">
-            <a href="#" class="text-normal text-justify text-gray-500 dark:text-grullo hover:underline">Privacy Policy</a>
-            <a href="#" class="text-normal text-justify text-gray-500 dark:text-grullo hover:underline">Termini di servizio</a>
-            <a href="#" class="text-normal text-justify text-gray-500 dark:text-grullo hover:underline">Cookie Policy</a>
+            <a href="#" class="text-normal text-justify text-gray-500 dark:text-stone-400 hover:underline">Privacy Policy</a>
+            <a href="#" class="text-normal text-justify text-gray-500 dark:text-stone-400 hover:underline">Termini di servizio</a>
+            <a href="#" class="text-normal text-justify text-gray-500 dark:text-stone-400 hover:underline">Cookie Policy</a>
           </div>
         </div>
 
         <div class="flex flex-col justify-center items-center mx-auto">
           <p class="text-3xl">Supporto</p>
           <div class="inline-flex gap-4 justify-center items-center">
-            <a href="#" class="text-normal text-justify text-gray-500 dark:text-grullo hover:underline">Contatti</a>
-            <a href="#" class="text-normal text-justify text-gray-500 dark:text-grullo hover:underline">FAQ</a>
-            <a href="#" class="text-normal text-justify text-gray-500 dark:text-grullo hover:underline">Support tecnico</a>
+            <a href="#" class="text-normal text-justify text-gray-500 dark:text-stone-400 hover:underline">Contatti</a>
+            <a href="#" class="text-normal text-justify text-gray-500 dark:text-stone-400 hover:underline">FAQ</a>
+            <a href="#" class="text-normal text-justify text-gray-500 dark:text-stone-400 hover:underline">Support tecnico</a>
           </div>
         </div>
       </div>
 
       <!-- copyright -->
-      <div class="bg-gray-200 dark:bg-cinder flex justify-center items-center py-3">
+      <div class="bg-gray-200 dark:bg-zinc-800 flex justify-center items-center py-3">
         <p>&copy; 2024 WARDROBE. Tutti i diritti riservati.</p>
       </div>
     </footer>

@@ -16,7 +16,7 @@ class AddReviewForm(forms.Form):
     description = forms.CharField(
         label = "Descrizione",
         max_length=2000,
-        widget=forms.Textarea(attrs={'placeholder': 'Scrivi qui la tua recension', 'rows': '4'}),
+        widget=forms.Textarea(attrs={'placeholder': 'Scrivi qui la tua recensione', 'rows': '4'}),
         required = True,
     )
 

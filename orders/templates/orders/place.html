@@ -5,7 +5,7 @@
 {% block content %}
   <div class="grid grid-cols-2 gap-4 my-4">
     <div class="relative">
-      <div class="sticky top-0 p-10 border border-gray-200 lg:ml-60 ml-auto">
+      <div class="sticky top-0 p-10 border border-gray-200 dark:border-stone-600 lg:ml-60 ml-auto">
         <p class="text-xl">Effettua l'ordine</p>
         <div>
           <form action="{% url "place_order" %}" method="post">
@@ -25,8 +25,8 @@
                   </div>
                 {% else %}
                   <div class="fieldWrapper">
-                    {{ field|add_label_class:"block text-sm/6 font-medium text-gray-900" }}
-                    {% render_field field class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" %}
+                    {{ field|add_label_class:"block text-sm/6 font-medium text-gray-900 dark:text-stone-300" }}
+                    {% render_field field class="block w-full rounded-md border-0 py-1.5 dark:bg-neutral-900 text-gray-900 dark:text-stone-200 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-zinc-700 placeholder:text-gray-400 dark:placeholder:text-stone-400 focus:ring-indigo-600 focus:ring-2 focus:ring-inset sm:text-sm/6" %}
                     <ol>{% for error in field.errors %}
                       <li>{{ error|escape }}</li>
                     {% endfor %}</ol>
@@ -55,15 +55,15 @@
       </div>
     </div>
     <div class="flex flex-col p-10">
-      <p class="text-xl">Resoconto ordine: {{ total_price }} EUR</p>
-      <div class="grid grid-cols-1 justify-center items-center gap-2 mt-2">
+      <p class="text-2xl"><strong>Resoconto ordine:</strong> {{ total_price }} EUR</p>
+      <div class="pt-2 grid grid-cols-1 justify-center items-center gap-2 mt-2">
         {% for product in products %}
-          <div class="inline-flex items-center gap-3">
+          <div class="inline-flex items-start gap-3">
               <a href="{% url 'product_color_size' product.variant.product.id product.variant.color.id product.variant.size.id %}">
                 <img src="{{ product.variant.get_images.0.url }}"
-                     alt="{{ variant.product }}" class="w-full">
+                     alt="{{ variant.product }}" class="w-40">
               </a>
-              <div class="grid grid-cols-1 gap-4">
+              <div class="grid grid-cols-1 gap-1 w-1/2">
                 <p><strong>Nome: </strong>{{ product.variant.product.name }}</p>
                 <p><strong>Brand: </strong>{{ product.variant.product.brand.name }}</p>
                 <p class="text-justify"><strong>Descrizione: </strong>{{ product.variant.product.description }}</p>
@@ -73,7 +73,7 @@
                   = {{ product.subtotal_price }} €</p>
               </div>
           </div>
-          {% if not forloop.last %} <hr class="py-2"> {% endif %}
+          {% if not forloop.last %} <hr class="py-2 dark:border-zinc-700"> {% endif %}
         {% endfor %}
       </div>
     </div>

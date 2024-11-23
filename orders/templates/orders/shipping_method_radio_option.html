@@ -6,7 +6,7 @@
     {% include "django/forms/widgets/attrs.html" %}>
 
 {% if widget.wrap_label %}
-  <div class="peer-checked:ring-2 peer-checked:ring-black">
+  <div class="peer-checked:ring-2 peer-checked:ring-black dark:peer-checked:ring-stone-500">
     {% if widget.label == "Contrassegno" %}
       <img src="{% static 'img/contrassegno.jpg' %}" alt="Contrassegno" class="w-40 p-3">
     {% elif widget.label == "Paypal" %}
