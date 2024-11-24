@@ -2,6 +2,7 @@ from decimal import Decimal
 
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.utils import timezone
 from django.utils.safestring import mark_safe
 from tree_queries.models import TreeNode
 from django.db import models
@@ -25,19 +26,23 @@ class Category(TreeNode):
         self.parent = parent
 
     def __str__(self):
-        parent_category = self.parent
-        parent_str = ''
-        while parent_category:
-            parent_str += f'{parent_category.name}-'
-            parent_category = parent_category.parent
-        return parent_str + f'{self.name}'
+        # parent_category = self.parent
+        # parent_str = ''
+        # while parent_category:
+        #     parent_str = f'{parent_category.name} - ' + parent_str
+        #     parent_category = parent_category.parent
+        # return parent_str + f'{self.name}'
+        return self.name
 
 
 class Discount(models.Model):
     name = models.CharField(max_length=100)
-    start_date = models.DateTimeField(auto_now_add=True)
+    start_date = models.DateTimeField(default=timezone.now)
     end_date = models.DateTimeField()
     percentage = models.DecimalField(max_digits=5, decimal_places=2, validators=[MinValueValidator(Decimal('0.01')), MaxValueValidator(Decimal(100))])
+
+    def is_active(self):
+        return self.start_date < timezone.now() < self.end_date
 
     def __str__(self):
         return f'{self.name}-{self.percentage}%'
@@ -61,6 +66,12 @@ class Product(models.Model):
     categories = models.ManyToManyField(Category)
     discount = models.ForeignKey(Discount, on_delete=models.SET_NULL, null=True, blank=True)
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
+
+    @property
+    def discounted_price(self):
+        if self.discount and self.discount.is_active():
+            return self.price - self.price * self.discount.percentage
+        return self.price
 
     def has_variants(self):
         return len(ProductVariant.objects.filter(product_color__product=self)) > 0
@@ -90,7 +101,7 @@ class Color(models.Model):
 
 
 class Size(models.Model):
-    name = models.CharField(max_length=10, unique=True)
+    name = models.CharField(max_length=30, unique=True)
     position = models.PositiveIntegerField(default=0, blank=False, null=False, db_index=True)
 
     class Meta:
@@ -103,6 +114,7 @@ class Size(models.Model):
 class ProductColor(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     color = models.ForeignKey(Color, on_delete=models.CASCADE)
+    discount = models.ForeignKey(Discount, on_delete=models.SET_NULL, null=True, blank=True)
 
     def get_images(self):
         return [prod_image.image for prod_image in ProductImage.objects.filter(product_color=self)]
@@ -156,6 +168,14 @@ class ProductVariant(models.Model):
     @property
     def real_price(self):
         return self.price or self.product.price
+
+    @property
+    def discounted_real_price(self):
+        if self.product_color.discount and self.product_color.discount.is_active():
+            return self.real_price - self.real_price * self.product_color.discount.percentage
+        if self.product.discount and self.product.discount.is_active():
+            return self.real_price * self.real_price * self.product.discount.percentage
+        return self.real_price
 
     class Meta:
         unique_together = [['product_color', 'size']]
