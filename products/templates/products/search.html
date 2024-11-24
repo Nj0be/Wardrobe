@@ -160,7 +160,7 @@
           {% for product in products %}
             <div class="bg-blue0 dark:bg-neutral-800">
               <a href="{% url 'product' product.id %}">
-                <img src="{{ product.get_first_image.url }}" alt="{{ product.name }}"
+                <img src="{{ product.default_image }}" alt="{{ product.name }}"
                      class="w-full">
                 <div class="grid grid-cols-2 justify-between my-2">
                   <div class="mx-auto">

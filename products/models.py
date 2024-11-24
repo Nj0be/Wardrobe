@@ -1,5 +1,6 @@
 from decimal import Decimal
 
+from django.core.exceptions import ObjectDoesNotExist
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils import timezone
@@ -76,9 +77,13 @@ class Product(models.Model):
     def has_variants(self):
         return len(ProductVariant.objects.filter(product_color__product=self)) > 0
 
-    # TODO fix
-    def get_first_image(self):
-        return ProductImage.objects.filter(product_color__product=self).first().image
+    @property
+    def default_image(self):
+        try:
+            return ProductColor.objects.get(product=self, default=True).default_image
+        except ObjectDoesNotExist:
+            return ProductColor.objects.filter(product=self).first().default_image
+
 
     def get_colors(self):
         return Color.objects.filter(productcolor__product=self)
@@ -115,12 +120,25 @@ class ProductColor(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     color = models.ForeignKey(Color, on_delete=models.CASCADE)
     discount = models.ForeignKey(Discount, on_delete=models.SET_NULL, null=True, blank=True)
+    default = models.BooleanField(default=False)
 
     def get_images(self):
-        return [prod_image.image for prod_image in ProductImage.objects.filter(product_color=self)]
+        return [prod_image.image.url for prod_image in ProductImage.objects.filter(product_color=self)]
+
+    @property
+    def default_image(self):
+        try:
+            return ProductImage.objects.get(product_color=self, default=True).image.url
+        except ObjectDoesNotExist:
+            return self.get_images()[0]
 
     class Meta:
         unique_together = [['product', 'color']]
+        constraints = [
+            # only one ProductImage per ProductColor has default=True
+            models.UniqueConstraint(fields=('product',), condition=models.Q(default=True),
+                                    name='one_default_product_color_for_product'),
+        ]
 
     def __str__(self):
         return f'{self.product}-{self.color}'
@@ -130,6 +148,7 @@ class ProductImage(models.Model):
     product_color = models.ForeignKey(ProductColor, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='products/')
     position = models.PositiveIntegerField(default=0, blank=False, null=False, db_index=True)
+    default = models.BooleanField(default=False)
 
     @property
     def image_tag(self):
@@ -138,6 +157,11 @@ class ProductImage(models.Model):
     class Meta:
         unique_together = [['product_color', 'image']]
         ordering = ['position']
+        constraints = [
+            # only one ProductImage per ProductColor has default=True
+            models.UniqueConstraint(fields=('product_color',), condition=models.Q(default=True),
+                                    name='one_default_image_for_product_color'),
+        ]
 
     def __str__(self):
         return f'{self.product_color.product}-{self.product_color.color}-{self.image}'
@@ -176,6 +200,10 @@ class ProductVariant(models.Model):
         if self.product.discount and self.product.discount.is_active():
             return self.real_price * self.real_price * self.product.discount.percentage
         return self.real_price
+
+    @property
+    def default_image(self):
+        return self.product_color.default_image
 
     class Meta:
         unique_together = [['product_color', 'size']]

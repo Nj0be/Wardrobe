@@ -67,7 +67,6 @@ class ProductAdmin(nested_admin.NestedModelAdmin):
 class CategoryAdmin(TreeAdmin):
     pass
 
-
 @admin.register(Size)
 class SizeAdmin(SortableAdminMixin, admin.ModelAdmin):
     pass

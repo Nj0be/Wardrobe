@@ -13,7 +13,7 @@
         <div>
           <div>
             <a href="{% url 'product_color_size' variant.product.id variant.color.id variant.size.id %}">
-              <img class="w-[28rem]" src="{{ variant.get_images.0.url }}" alt="{{ variant.name }}">
+              <img class="w-[28rem]" src="{{ variant.default_image }}" alt="{{ variant.name }}">
             </a>
           </div>
           <div class="grid grid-cols-2 justify-between items-center my-2">

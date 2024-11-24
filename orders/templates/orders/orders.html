@@ -13,7 +13,7 @@
             <div class="grid grid-cols-1 justify-center items-center gap-2 mt-2">
               {% for order_product in order.orderproduct_set.all %}
                 <div class="inline-flex items-center gap-4">
-                  <img src="{{ order_product.first_image }}" alt="{{ order_product.name }}"
+                  <img src="{{ order_product.default_image }}" alt="{{ order_product.name }}"
                        class="w-[15rem]">
                   <div class="grid grid-cols-1 gap-4">
                     <p>{{ order_product.name }}</p>

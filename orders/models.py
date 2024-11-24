@@ -60,13 +60,9 @@ class OrderProduct(models.Model):
         return self.price * self.quantity
 
     @property
-    def first_image(self):
-        """Returns the first image of the associated product variant."""
-        if self.variant and self.variant.product_color:
-            product_images = ProductImage.objects.filter(product_color=self.variant.product_color)
-            if product_images.exists():
-                return product_images.first().image.url  # Return the URL of the first image
-        return None  # Return None if no image is found
+    def default_image(self):
+        return self.variant.default_image
+
 
     def save(self, *args, **kwargs):
         if self._state.adding:

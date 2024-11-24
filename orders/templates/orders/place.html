@@ -60,8 +60,8 @@
         {% for product in products %}
           <div class="inline-flex items-start gap-3">
               <a href="{% url 'product_color_size' product.variant.product.id product.variant.color.id product.variant.size.id %}">
-                <img src="{{ product.variant.get_images.0.url }}"
-                     alt="{{ variant.product }}" class="w-40">
+                <img src="{{ product.variant.default_image }}"
+                     alt="{{ product.variant.product.name }}" class="w-40">
               </a>
               <div class="grid grid-cols-1 gap-1 w-1/2">
                 <p><strong>Nome: </strong>{{ product.variant.product.name }}</p>
