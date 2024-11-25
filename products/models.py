@@ -71,7 +71,7 @@ class Product(models.Model):
     @property
     def discounted_price(self):
         if self.discount and self.discount.is_active():
-            return self.price - self.price * self.discount.percentage
+            return self.price - self.price * self.discount.percentage // 100
         return self.price
 
     def has_variants(self):

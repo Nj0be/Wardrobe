@@ -183,7 +183,14 @@
             <div class="flex flex-col justify-center items-center px-2">
               <p>{{ product.name }}</p>
               <div class="flex flex-row justify-between gap-2">
-                <p>{{ product.price }} EUR</p>
+                {% if not product.discount %}
+                  <p>{{ product.price }} EUR</p>
+                {% else %}
+                  <div class="inline-flex flex-wrap justify-center items-center gap-2">
+                    <p class="text-lg font-manrope">{{ product.discounted_price }} EUR</p>
+                    <p class="text-sm font-manrope text-red-500">(-{{ product.discount.percentage }}%)</p>
+                  </div>
+                {% endif %}
                 <div class="mx-auto inline-flex items-center justify-center gap-1">
                   {% for color in product.get_first_three_colors %}
                     <div style="background-color: #{{ color.hex }};" class="w-5 h-5 border border-solid border-black rounded-md"
