@@ -19,7 +19,14 @@
           <div class="flex flex-row justify-between gap-2">
             <div class="mx-auto text-center">
               <p>{{ variant.product.name }}</p>
-              <p>{{ variant.real_price }} €</p>
+              {% if not variant.real_discount %}
+                <p>{{ variant.real_price }} EUR</p>
+              {% else %}
+                <div class="inline-flex flex-wrap justify-center items-center gap-2">
+                  <p class="font-manrope">{{ variant.discounted_price|floatformat:2 }} EUR</p>
+                  <p class="text-sm font-manrope text-red-500">(-{{ variant.real_discount.percentage }}%)</p>
+                </div>
+              {% endif %}
             </div>
             <div class="mx-auto text-center">
               <p>{{ variant.product.brand.name }}</p>

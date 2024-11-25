@@ -179,7 +179,7 @@ class Cart:
             if not attr['is_active']:
                 continue
 
-            total_price += variant.real_price * attr['quantity']
+            total_price += variant.discounted_price * attr['quantity']
 
         return total_price
 

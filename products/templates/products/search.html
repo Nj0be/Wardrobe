@@ -6,7 +6,7 @@
         <div class="flex flex-col justify-center items-center gap-10 w-full">
           <!-- Categories Filter Section -->
           <div class="flex flex-col gap-2 w-full">
-            <div class="flex flex-col justify-center items-center border border-black p-2 w-full">
+            <div class="flex flex-col justify-center items-center border border-black dark:border-stone-500 p-2 w-full">
               <h2 class="text-gray-900 dark:text-stone-200 text-2xl font-manrope text-center">
                 {% if selected_category %}
                   {{ selected_category.name|upper }}
@@ -15,7 +15,7 @@
                 {% endif %}
               </h2>
             </div>
-            <div class="border border-solid border-black px-5 py-4 w-full">
+            <div class="border border-solid border-black dark:border-stone-500 px-5 py-4 w-full">
               {% for category in categories %}
                 <div class="flex flex-col">
                   <a
@@ -44,7 +44,7 @@
 
           <!-- Filters Section -->
           <div class="flex flex-col gap-2 w-full">
-            <div class="flex flex-col justify-center items-center border border-black p-2 w-full">
+            <div class="flex flex-col justify-center items-center border border-black dark:border-stone-500 p-2 w-full">
               <h2 class="text-gray-900 dark:text-stone-200 text-2xl font-manrope text-center">FILTRI</h2>
             </div>
             <div class="grid grid-cols-1 justify-center gap-6 p-6 border border-solid border-black dark:border-stone-500"
@@ -187,7 +187,7 @@
                   <p>{{ product.price }} EUR</p>
                 {% else %}
                   <div class="inline-flex flex-wrap justify-center items-center gap-2">
-                    <p class="font-manrope">{{ product.discounted_price }} EUR</p>
+                    <p class="font-manrope">{{ product.discounted_price|floatformat:2 }} EUR</p>
                     <p class="text-sm font-manrope text-red-500">(-{{ product.discount.percentage }}%)</p>
                   </div>
                 {% endif %}

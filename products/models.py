@@ -68,10 +68,15 @@ class Product(models.Model):
     discount = models.ForeignKey(Discount, on_delete=models.SET_NULL, null=True, blank=True)
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
 
+    def is_discounted(self):
+        if self.discount:
+            return self.discount.is_active()
+        return False
+
     @property
     def discounted_price(self):
-        if self.discount and self.discount.is_active():
-            return self.price - self.price * self.discount.percentage // 100
+        if self.is_discounted():
+            return self.price - self.price * self.discount.percentage / 100
         return self.price
 
     def has_variants(self):
@@ -92,7 +97,7 @@ class Product(models.Model):
         return Color.objects.filter(productcolor__product=self)[:2]
 
     def save(self, *args, **kwargs):
-        super(Product, self).save(args, kwargs)
+        super(Product, self).save(args, **kwargs)
         if not self.is_active:
             CartItem.objects.filter(variant__product_color__product=self).delete()
 
@@ -122,8 +127,29 @@ class Size(models.Model):
 class ProductColor(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     color = models.ForeignKey(Color, on_delete=models.CASCADE)
+    price = models.DecimalField(default=0, max_digits=8, decimal_places=2)
     discount = models.ForeignKey(Discount, on_delete=models.SET_NULL, null=True, blank=True)
     default = models.BooleanField(default=False)
+
+    @property
+    def real_discount(self):
+        return self.discount or self.product.discount
+
+    def is_discounted(self):
+        if self.real_discount:
+            return self.real_discount.is_active()
+        return False
+
+    # get effective variant price
+    @property
+    def real_price(self):
+        return self.price or self.product.price
+
+    @property
+    def discounted_price(self):
+        if self.is_discounted():
+            return self.real_price - self.real_price * self.real_discount.percentage / 100
+        return self.real_price
 
     def get_images(self):
         return [prod_image.image.url for prod_image in ProductImage.objects.filter(product_color=self)]
@@ -175,6 +201,7 @@ class ProductVariant(models.Model):
     size = models.ForeignKey(Size, on_delete=models.CASCADE)
     # if price is 0 it means that it's the same as the product
     price = models.DecimalField(default=0, max_digits=8, decimal_places=2)
+    discount = models.ForeignKey(Discount, on_delete=models.SET_NULL, null=True, blank=True)
     stock = models.PositiveIntegerField()
 
     def is_active(self):
@@ -182,6 +209,15 @@ class ProductVariant(models.Model):
 
     def get_images(self):
         return self.product_color.get_images()
+
+    @property
+    def real_discount(self):
+        return self.discount or self.product_color.real_discount
+
+    def is_discounted(self):
+        if self.real_discount:
+            return self.real_discount.is_active()
+        return False
 
     @property
     def product(self):
@@ -194,14 +230,12 @@ class ProductVariant(models.Model):
     # get effective variant price
     @property
     def real_price(self):
-        return self.price or self.product.price
+        return self.price or self.product_color.real_price
 
     @property
-    def discounted_real_price(self):
-        if self.product_color.discount and self.product_color.discount.is_active():
-            return self.real_price - self.real_price * self.product_color.discount.percentage
-        if self.product.discount and self.product.discount.is_active():
-            return self.real_price * self.real_price * self.product.discount.percentage
+    def discounted_price(self):
+        if self.is_discounted():
+            return self.real_price - self.real_price * self.real_discount.percentage / 100
         return self.real_price
 
     @property

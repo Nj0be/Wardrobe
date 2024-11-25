@@ -66,7 +66,7 @@ class OrderProduct(models.Model):
 
     def save(self, *args, **kwargs):
         if self._state.adding:
-            self.price = self.variant.price or self.variant.product.price
+            self.price = self.variant.discounted_price
 
         super(OrderProduct, self).save(*args, **kwargs)
 

@@ -94,7 +94,6 @@ def product_page(request, product_id, color_id=None, size_id=None):
         return HttpResponseNotFound('<h1>Page not found</h1>')
 
     product = get_object_or_404(Product, pk=product_id, is_active=True)
-    price = product.price
     stock = 0
 
     user_has_review = False
@@ -119,7 +118,16 @@ def product_page(request, product_id, color_id=None, size_id=None):
     product_color = ProductColor.objects.get(product=product_id, color=selected_color)
     variants = ProductVariant.objects.filter(product_color__product=product,
                                              product_color__color_id=color_id)
+    price = product_color.real_price
+    discount = product_color.real_discount
+    discounted_price = product_color.discounted_price
 
+    import sys
+    print(price, discount, discounted_price, file=sys.stderr)
+
+    # se non siamo su product_color_size (product o product_color) e c'e' una sola variante per il
+    # colore attuale (selezionato o altrimenti il primo) e lo stock della variante e' maggiore di zero,
+    # allora redirectiamo a quella variante
     if not size_id and len(variants) == 1 and variants[0].stock > 0:
         return redirect('product_color_size', product_id=product_id, color_id=color_id,
                         size_id=variants[0].size.id)
@@ -131,8 +139,11 @@ def product_page(request, product_id, color_id=None, size_id=None):
         return redirect('product_color', product_id=product_id, color_id=color_id)
 
     if selected_size:
-        price = variants.filter(size=selected_size).first().real_price
-        stock = variants.get(size_id=selected_size).stock
+        variant = variants.get(size=selected_size)
+        price = variant.real_price
+        discount = variant.real_discount
+        discounted_price = variant.discounted_price
+        stock = variant.stock
 
     sizes = Size.objects.filter(productvariant__product_color__product=product_id).distinct()
 
@@ -187,6 +198,8 @@ def product_page(request, product_id, color_id=None, size_id=None):
             "images": images,
             "size_variants": size_variants,
             "price": price,
+            "discount": discount,
+            "discounted_price": discounted_price,
             "reviews": reviews,
             "error_message": error_message,
             "stock": stock,

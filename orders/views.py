@@ -58,7 +58,7 @@ def place(request):
                 product['variant'].stock -= product['quantity']
                 product['variant'].save()
                 OrderProduct.objects.create(order=order, variant=product['variant'],
-                                            quantity=product['quantity'], price=product['price'])
+                                            quantity=product['quantity'])
 
             return redirect('view_order', order_id=order.id)
     # if a GET (or any other method) we'll create a blank form
@@ -71,7 +71,7 @@ def place(request):
         for item in cart_items:
             variant = item.variant
             products.append({'variant': variant, 'quantity': item.quantity,
-                             'price': variant.real_price, 'subtotal_price': variant.real_price*item.quantity})
+                             'price': variant.discounted_price, 'subtotal_price': variant.discounted_price*item.quantity})
 
         if len(products) == 0:
             return redirect('homepage')
