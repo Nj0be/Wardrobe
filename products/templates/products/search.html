@@ -187,7 +187,7 @@
                   <p>{{ product.price }} EUR</p>
                 {% else %}
                   <div class="inline-flex flex-wrap justify-center items-center gap-2">
-                    <p class="text-lg font-manrope">{{ product.discounted_price }} EUR</p>
+                    <p class="font-manrope">{{ product.discounted_price }} EUR</p>
                     <p class="text-sm font-manrope text-red-500">(-{{ product.discount.percentage }}%)</p>
                   </div>
                 {% endif %}
