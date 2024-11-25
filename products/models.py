@@ -40,7 +40,7 @@ class Discount(models.Model):
     name = models.CharField(max_length=100)
     start_date = models.DateTimeField(default=timezone.now)
     end_date = models.DateTimeField()
-    percentage = models.DecimalField(max_digits=5, decimal_places=2, validators=[MinValueValidator(Decimal('0.01')), MaxValueValidator(Decimal(100))])
+    percentage = models.PositiveIntegerField(MaxValueValidator(100))
 
     def is_active(self):
         return self.start_date < timezone.now() < self.end_date
