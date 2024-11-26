@@ -1,8 +1,11 @@
+from django.conf.global_settings import CACHE_MIDDLEWARE_SECONDS
 from django.contrib.postgres.aggregates import ArrayAgg
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 from django.http import HttpResponseNotFound, Http404, HttpResponse
 from django.views import generic
 from django.shortcuts import render, get_object_or_404, redirect
+from django.views.decorators.cache import cache_control
+from django.views.decorators.vary import vary_on_headers
 
 from orders.models import OrderProduct
 from .forms import AddReviewForm
@@ -10,6 +13,7 @@ from .models import Product, ProductVariant, ProductColor, Category, Color, Size
     ProductImage, Brand
 
 
+@vary_on_headers("HX-Request")
 def search(request, category_id=None):  # da implementare anche la logica per i filtri
     """ Filtraggio per categoria """
     if request.method != "GET":
@@ -89,6 +93,7 @@ def search(request, category_id=None):  # da implementare anche la logica per i 
         })
 
 
+@vary_on_headers("HX-Request")
 def product_page(request, product_id, color_id=None, size_id=None):
     if request.method != "GET":
         return HttpResponseNotFound('<h1>Page not found</h1>')

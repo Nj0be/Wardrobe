@@ -14,3 +14,6 @@ django-tailwind~=3.8.0
 django-browser-reload~=1.17.0
 django-widget-tweaks~=1.5.0
 django-phonenumber-field[phonenumberslite]~=8.0.0
+redis~=5.2.0
+hiredis~=3.0.0
+

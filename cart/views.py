@@ -2,6 +2,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseNotFound, HttpResponseBadRequest, HttpResponse
 from django.shortcuts import render
 from django.conf import settings
+from django.views.decorators.vary import vary_on_headers
+
 from cart.models import CartItem
 from products.models import ProductVariant
 from django.contrib.auth.signals import user_logged_in
@@ -198,6 +200,7 @@ def login_handler(sender, user, request, **kwargs):
     Cart(request)
 
 
+@vary_on_headers("HX-Request")
 def cart_page(request):
     cart = Cart(request)
 
@@ -215,6 +218,7 @@ def cart_page(request):
     )
 
 
+@vary_on_headers("HX-Request")
 def cart_edit(request):
     if request.method != "POST" or not request.htmx:
         return HttpResponseNotFound('<h1>Page not found</h1>')
@@ -254,6 +258,7 @@ def cart_edit(request):
     )
 
 
+@vary_on_headers("HX-Request")
 def cart_delete(request):
     if request.method != "POST" or not request.htmx:
         return HttpResponseNotFound('<h1>Page not found</h1>')
@@ -279,6 +284,7 @@ def cart_delete(request):
     )
 
 
+@vary_on_headers("HX-Request")
 def cart_add(request):
     if request.method != "POST" or not request.htmx:
         return HttpResponseNotFound('<h1>Page not found</h1>')
