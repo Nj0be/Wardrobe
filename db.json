@@ -57,6 +57,14 @@
 },
 {
     "model": "sessions.session",
+    "pk": "jnz3k0t3c95xpvhci3p75t7k714re7ll",
+    "fields": {
+        "session_data": ".eJxVjEEOgyAQRe8y64ZIGaC67N4zkGEGim2jiejKePfWxI3b_977GzDNC3TbfoNA61LCWtMcBoEONFy2SPxJ4wHkTeNrUjyNyzxEdSjqpFX1k6Tv83QvB4Vq-dds0ZFzmbTJ2Ir1NrH4GE3DzumIqdGNQcdGMlrNWbcx0R299yL-gS3sPy7kOyI:1tFxV9:77nlBq1fM6UU9RKjLpGLvQ0l7bAifLO8iY507o_AevI",
+        "expire_date": "2024-12-10T15:29:19.528Z"
+    }
+},
+{
+    "model": "sessions.session",
     "pk": "l77n48toh6c3xhj4grpn9h2z4ql9c4rb",
     "fields": {
         "session_data": ".eJxVjEEOgyAQRe8y64ZIGaC67N4zkGEGim2jiejKePfWxI3b_977GzDNC3TbfoNA61LCWtMcBoEONFy2SPxJ4wHkTeNrUjyNyzxEdSjqpFX1k6Tv83QvB4Vq-dds0ZFzmbTJ2Ir1NrH4GE3DzumIqdGNQcdGMlrNWbcx0R299yL-gS3sPy7kOyI:1tEw36:BNhmXa-VFoA9mzFzAyZUG-NYB1wcXq6xqMlbUbvbKrE",
@@ -99,7 +107,7 @@
     "model": "accounts.user",
     "fields": {
         "password": "pbkdf2_sha256$870000$rwbJ46Kw1n6piuQ5enK64V$9H7No6hrZhrHqUou59q357aVYYBF7tOm5I/eGrTKZyM=",
-        "last_login": "2024-11-25T14:48:37.560Z",
+        "last_login": "2024-11-26T15:28:59.261Z",
         "is_superuser": true,
         "first_name": "Alessio",
         "last_name": "Pelusi",
@@ -791,7 +799,7 @@
     "model": "products.size",
     "pk": 8,
     "fields": {
-        "name": "6 - 7 Anni (120 cm)",
+        "name": "6-7 Anni (120 cm)",
         "position": 9
     }
 },
@@ -799,7 +807,7 @@
     "model": "products.size",
     "pk": 9,
     "fields": {
-        "name": "8 - 9 Anni (130 cm)",
+        "name": "8-9 Anni (130 cm)",
         "position": 10
     }
 },
@@ -807,7 +815,7 @@
     "model": "products.size",
     "pk": 10,
     "fields": {
-        "name": "9 - 10 Anni (140 cm)",
+        "name": "9-10 Anni (140 cm)",
         "position": 11
     }
 },
@@ -815,7 +823,7 @@
     "model": "products.size",
     "pk": 11,
     "fields": {
-        "name": "11 - 12 Anni (152 cm)",
+        "name": "11-12 Anni (152 cm)",
         "position": 12
     }
 },
@@ -823,7 +831,7 @@
     "model": "products.size",
     "pk": 12,
     "fields": {
-        "name": "13 - 14 Anni (164 cm)",
+        "name": "13-14 Anni (164 cm)",
         "position": 13
     }
 },
@@ -8762,6 +8770,96 @@
         "object_repr": "9-Felpa combinata con scritta",
         "action_flag": 2,
         "change_message": "[{\"changed\": {\"fields\": [\"Categories\"]}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 245,
+    "fields": {
+        "action_time": "2024-11-26T15:29:06.553Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "size"
+        ],
+        "object_id": "8",
+        "object_repr": "6-7 Anni (120 cm)",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"fields\": [\"Name\"]}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 246,
+    "fields": {
+        "action_time": "2024-11-26T15:29:10.020Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "size"
+        ],
+        "object_id": "9",
+        "object_repr": "8-9 Anni (130 cm)",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"fields\": [\"Name\"]}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 247,
+    "fields": {
+        "action_time": "2024-11-26T15:29:13.253Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "size"
+        ],
+        "object_id": "10",
+        "object_repr": "9-10 Anni (140 cm)",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"fields\": [\"Name\"]}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 248,
+    "fields": {
+        "action_time": "2024-11-26T15:29:16.535Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "size"
+        ],
+        "object_id": "11",
+        "object_repr": "11-12 Anni (152 cm)",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"fields\": [\"Name\"]}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 249,
+    "fields": {
+        "action_time": "2024-11-26T15:29:19.484Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "size"
+        ],
+        "object_id": "12",
+        "object_repr": "13-14 Anni (164 cm)",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"fields\": [\"Name\"]}}]"
     }
 }
 ]

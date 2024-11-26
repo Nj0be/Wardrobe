@@ -21,10 +21,9 @@
                   <a
                       hx-target="#content"
                       hx-push-url="true"
-                      hx-include="#filtersForm"
-                      preload="mouseover" preload-images="true"
                       {% if category %}
                       hx-get="{% url 'search_category' category.id %}"
+                      preload="mouseover" preload-images="true"
                       href="{% url 'search_category' category.id %}"
                         {% if selected_category.parent == category %}
                           class="text-blue2 dark:text-sky-500 dark:hover:text-sky-600"> &#8656;
@@ -48,17 +47,13 @@
               <h2 class="text-gray-900 dark:text-stone-200 text-2xl font-manrope text-center">FILTRI</h2>
             </div>
             <div class="grid grid-cols-1 justify-center gap-6 p-6 border border-solid border-black dark:border-stone-500"
-              id="filtersForm">
+              id="filtersForm" hx-include="#filtersForm" hx-target="#content" hx-push-url="true">
               <!-- Text Search Bar -->
               <input type="text" name="search_terms" id="search_terms" placeholder="Cerca il tuo prodotto"
                      autocomplete="off"
                      {% if search_terms %}value="{{ search_terms }}"{% endif %}
                      hx-get="{% if selected_category %}{% url 'search_category' selected_category.id %}{% else %}{% url 'search' %}{% endif %}"
-                     hx-target="#content"
-                     hx-push-url="true"
-                     hx-include="#filtersForm"
                      hx-trigger="keyup changed delay:0.5s"
-                     preload="mouseover" preload-images="true"
                      class="dark:bg-darkbg"
               >
 
@@ -77,12 +72,7 @@
                              value="{{ brand.id }}"
                              autocomplete="off"
                           {% if brand in selected_brands %} checked {% endif %}
-                             hx-get="
-                                 {% if selected_category %}{% url 'search_category' selected_category.id %}{% else %}{% url 'search' %}{% endif %}"
-                             hx-target="#content"
-                             hx-push-url="true"
-                             hx-include="#filtersForm"
-                             preload="mouseover" preload-images="true"
+                             hx-get="{% if selected_category %}{% url 'search_category' selected_category.id %}{% else %}{% url 'search' %}{% endif %}"
                       >
                           <label for="brand_{{ forloop.counter }}"
                                  class="text-sm items-center justify-between
@@ -113,10 +103,6 @@
                                  autocomplete="off"
                               {% if color in selected_colors %} checked {% endif %}
                                  hx-get="{% if selected_category %}{% url 'search_category' selected_category.id %}{% else %}{% url 'search' %}{% endif %}"
-                                 hx-target="#content"
-                                 hx-push-url="true"
-                                 hx-include="#filtersForm"
-                                 preload="mouseover" preload-images="true"
                           >
                           <label for="color_{{ forloop.counter }}"
                                  style="background-color:#{{ color.hex }};"
@@ -145,12 +131,7 @@
                                  value="{{ size.id }}" class="hidden peer"
                                  autocomplete="off"
                               {% if size in selected_sizes %} checked {% endif %}
-                                 hx-get="
-                                     {% if selected_category %}{% url 'search_category' selected_category.id %}{% else %}{% url 'search' %}{% endif %}"
-                                 hx-target="#content"
-                                 hx-push-url="true"
-                                 hx-include="#filtersForm"
-                                 preload="mouseover" preload-images="true"
+                                 hx-get="{% if selected_category %}{% url 'search_category' selected_category.id %}{% else %}{% url 'search' %}{% endif %}"
                           >
                           <label for="size_{{ forloop.counter }}"
                                  class="text-sm items-center justify-between
