@@ -164,7 +164,7 @@ class Cart:
             except:
                 raise ValueError(f"User {self.user.id} doesn't have variant {variant.id} in the cart")
         else:
-            self[variant]['is_active'] = is_active
+            self.cart[variant]['is_active'] = is_active
 
     def enable(self, variant: ProductVariant):
         self.set_is_active(variant, True)

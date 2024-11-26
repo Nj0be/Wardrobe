@@ -122,9 +122,6 @@ def product_page(request, product_id, color_id=None, size_id=None):
     discount = product_color.real_discount
     discounted_price = product_color.discounted_price
 
-    import sys
-    print(price, discount, discounted_price, file=sys.stderr)
-
     # se non siamo su product_color_size (product o product_color) e c'e' una sola variante per il
     # colore attuale (selezionato o altrimenti il primo) e lo stock della variante e' maggiore di zero,
     # allora redirectiamo a quella variante
