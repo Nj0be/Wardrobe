@@ -25,6 +25,14 @@
 },
 {
     "model": "sessions.session",
+    "pk": "7rpk1t9jo01t01lc2uy3jbjeeg2eb4vd",
+    "fields": {
+        "session_data": ".eJxVjEEOgyAQRe8y64ZIGaC67N4zkGEGim2jiejKePfWxI3b_977GzDNC3TbfoNA61LCWtMcBoEONFy2SPxJ4wHkTeNrUjyNyzxEdSjqpFX1k6Tv83QvB4Vq-dds0ZFzmbTJ2Ir1NrH4GE3DzumIqdGNQcdGMlrNWbcx0R299yL-gS3sPy7kOyI:1tG2My:HFkgVETLjbmHAyPAJr1Vnu_Tw4D3zUcv65qYUjtSoGQ",
+        "expire_date": "2024-12-10T20:41:12.192Z"
+    }
+},
+{
+    "model": "sessions.session",
     "pk": "9ogygtxckjsuq0dbzho22rkvh441tyn2",
     "fields": {
         "session_data": ".eJxVjEEOwiAQRe_C2pAiA0iX7j1DM8yArRpIoF01vbtt0oVu_3v_rWLAZR6HpcU6TCx6ocTldwtI75gPwC_MzyKp5LlOQR6KPGmTj8Lxcz_dv8CIbdzfZMCitQmVTuDZOBOJXQi6I2tVgNipToMlzQmMoqR8iHgF5xyzu4Hfo4R1Fv26bV8kxjsi:1tEHb2:dYnLsBRmpL1qzFGbBne4csiY2v9by8BQQWg8YV8erAc",
@@ -107,7 +115,7 @@
     "model": "accounts.user",
     "fields": {
         "password": "pbkdf2_sha256$870000$rwbJ46Kw1n6piuQ5enK64V$9H7No6hrZhrHqUou59q357aVYYBF7tOm5I/eGrTKZyM=",
-        "last_login": "2024-11-26T15:28:59.261Z",
+        "last_login": "2024-11-26T20:38:15.176Z",
         "is_superuser": true,
         "first_name": "Alessio",
         "last_name": "Pelusi",
@@ -595,7 +603,7 @@
         "price": "99.90",
         "is_active": true,
         "date_created": "2024-11-24T10:44:35.385Z",
-        "last_modification": "2024-11-24T11:44:21.620Z",
+        "last_modification": "2024-11-26T20:38:50.379Z",
         "discount": 1,
         "brand": 4,
         "categories": [
@@ -1112,7 +1120,7 @@
         "product": 12,
         "color": 20,
         "price": "0.00",
-        "discount": null,
+        "discount": 2,
         "default": false
     }
 },
@@ -1123,7 +1131,7 @@
         "product": 12,
         "color": 21,
         "price": "0.00",
-        "discount": null,
+        "discount": 2,
         "default": false
     }
 },
@@ -1872,7 +1880,7 @@
     "pk": 80,
     "fields": {
         "product_color": 20,
-        "image": "products/1_iRCNrYc.webp",
+        "image": "products/1_Yk1QhVE.webp",
         "position": 0,
         "default": false
     }
@@ -8860,6 +8868,24 @@
         "object_repr": "13-14 Anni (164 cm)",
         "action_flag": 2,
         "change_message": "[{\"changed\": {\"fields\": [\"Name\"]}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 250,
+    "fields": {
+        "action_time": "2024-11-26T20:38:50.683Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "product"
+        ],
+        "object_id": "12",
+        "object_repr": "12-Maglione girocollo in cashmere",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"name\": \"product color\", \"object\": \"12-Maglione girocollo in cashmere-Navy Blue\", \"fields\": [\"Discount\"]}}, {\"changed\": {\"name\": \"product color\", \"object\": \"12-Maglione girocollo in cashmere-Medium Gray\", \"fields\": [\"Discount\"]}}, {\"changed\": {\"name\": \"product image\", \"object\": \"12-Maglione girocollo in cashmere-Army Green-products/1_iRCNrYc.webp\", \"fields\": [\"Image\"]}}]"
     }
 }
 ]

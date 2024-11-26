@@ -183,9 +183,14 @@ def product_page(request, product_id, color_id=None, size_id=None):
 
     # if request come from htmx-boost, send full page
     if request.htmx and not request.htmx.boosted:
-        template_name = "products/product.html",
+        if selected_size:
+            template_name = "products/product_page/product_color_size.html",
+        elif selected_color:
+            template_name = "products/product_page/product_color.html",
+        else:
+            template_name = "products/product_page/product.html",
     else:
-        template_name = "products/product_full.html",
+        template_name = "products/product_page/product_full.html",
 
     return render(
         request,

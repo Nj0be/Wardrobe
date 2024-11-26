@@ -1,0 +1,7 @@
+<div id="product-images" hx-swap-oob="true"
+    class="snap-y snap-mandatory snap-center overflow-y-scroll rounded-3xl h-[80vh] min-w-fit">
+  {% for image in images %}
+    <img src="{{ image }}" alt="{{ product.name }}"
+         class="snap-center h-full"/>
+  {% endfor %}
+</div>

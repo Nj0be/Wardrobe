@@ -1,0 +1,24 @@
+<div id="product-colors"
+    class="inline-flex flex-wrap gap-2 py-2" hx-swap-oob="true">
+  {% for color in colors %}
+    <!-- div necessary (instead of putting everythin inside input) because
+         we don't hover the input but the label! -->
+    <div
+        hx-get="{% url 'product_color' product.id color.id %}"
+        hx-push-url="true"
+        hx-params="none"
+        preload="mouseover" preload-images="true"
+    >
+      <input type="radio" name="color" id="color_{{ color.id }}" class="hidden peer"
+          {% if color == selected_color %} checked {% endif %}
+          {% if forloop.first %} required {% endif %}
+      >
+      <label for="color_{{ color.id }}"
+             style="background-color:#{{ color.hex }};"
+             class="inline-flex items-center justify-between px-2.5 py-2.5
+                                  cursor-pointer border border-black dark:border-stone-500
+                                  {% if color == selected_color %}outline outline-2 outline-black dark:outline-stone-400 outline-offset-2{% endif %}">
+      </label>
+    </div>
+  {% endfor %}
+</div>

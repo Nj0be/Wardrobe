@@ -1,0 +1,87 @@
+<div class="flex flex-row justify-center">
+  <div class="inline-flex flex-wrap justify-center lg:flex-nowrap gap-5">
+    <div class="hidden xl:block w-[16rem]">
+      <div class="mx-auto">
+        <div
+            class="flex flex-col justify-center items-center px-8 py-5 gap-2 border border-black dark:border-stone-500">
+          <p>ORIGINE</p>
+          <p class="text-sm text-justify">Facciamo affidamento su requisiti di tracciabilità per
+            conoscere la catena di
+            approvvigionamento dei nostri prodotti. Chiediamo ai nostri fornitori di essere
+            informati in merito a tutti
+            gli stabilimenti coinvolti nei processi di produzione, dal filato o dalla fibra, a
+            seconda dei casi, fino al
+            capo finale di ogni ordine. Ciò include sia le fabbriche di proprietà che quelle
+            esterne, nonché gli
+            intermediari coinvolti in ogni processo.</p>
+        </div>
+      </div>
+    </div>
+    {% include "products/product_page/product_images.html" %}
+    <div class="w-2/3 lg:w-[26rem]">
+      <div class="xl:top-10 mx-auto">
+        <div class="flex flex-col justify-center border border-black dark:border-stone-500">
+          <!-- Informazioni prodotto -->
+          <div class="flex flex-col justify-center items-center px-8 py-5 gap-7">
+            <h2 class="text-gray-900 dark:text-stone-200 text-2xl font-bold font-manrope text-center">{{ product.name }}</h2>
+            {% include "products/product_page/product_info.html" %}
+            <div class="flex flex-col">
+              {% if product.description|length > 250 %}
+                <div class="peer order-last">
+                  <input type="checkbox" id="collapse" class="peer hidden">
+                  <label for="collapse"
+                         class="underline before:content-['Mostra_di_più'] peer-checked:before:content-['Mostra_meno'] cursor-pointer"></label>
+                </div>
+              {% endif %}
+              <p>DESCRIZIONE</p>
+              <p class="text-sm text-justify {% if product.description|length > 250 %}h-16{% endif %} overflow-hidden peer-has-[:checked]:h-auto peer-has-[:checked]:overflow-auto">{{ product.description }}</p>
+            </div>
+          </div>
+
+          <!-- Varianti Colori -->
+          <div class="flex flex-col border-t border-black dark:border-stone-500">
+            <div class="px-10 py-7">
+              <p>COLORI</p>
+              {% include 'products/product_page/product_colors.html' %}
+            </div>
+          </div>
+
+          <form id="cart-add-form" method="post">{% csrf_token %}
+            <!-- Varianti Taglie -->
+
+            <div class="flex flex-col justify-center border-t border-black dark:border-stone-500">
+              <div class="flex flex-col justify-center px-10 py-7">
+                <p>TAGLIE</p>
+                {% include 'products/product_page/product_sizes.html' %}
+              </div>
+            </div>
+
+            <!-- Aggiungi al carrello -->
+            {% include 'products/product_page/add_to_cart.html' %}
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="flex flex-col justify-center items-center my-16">
+  <div class="w-3/5">
+    <!-- Sezione delle recensioni -->
+    <div id="reviews" class="mt-14">
+      <hr class="mb-10">
+      <h2 class="text-gray-900 dark:text-stone-200 text-5xl font-manrope">Recensioni</h2>
+      {% if reviews %}
+        {% for review in reviews %}
+          {% include "products/review.html" %}
+        {% endfor %}
+      {% else %}
+        <p id="no-reviews" class="text-normal text-justify mt-2">Non ci sono recensioni per questo
+          prodotto.</p>
+      {% endif %}
+    </div>
+
+    <!-- Sezione aggiungi recensione -->
+    {% include "products/add_review.html" %}
+  </div>
+</div>
