@@ -17,6 +17,14 @@
 },
 {
     "model": "sessions.session",
+    "pk": "6ngn9o65pvnlh6054uo9s3fzf55xus8v",
+    "fields": {
+        "session_data": ".eJxVjEEOgyAQRe8y64ZIGaC67N4zkGEGim2jiejKePfWxI3b_977GzDNC3TbfoNA61LCWtMcBoEONFy2SPxJ4wHkTeNrUjyNyzxEdSjqpFX1k6Tv83QvB4Vq-dds0ZFzmbTJ2Ir1NrH4GE3DzumIqdGNQcdGMlrNWbcx0R299yL-gS3sPy7kOyI:1tGM6i:tROnXtbd57cKVqnAWSRQ5Ep3llNXMK_7KJOAN3m3Py8",
+        "expire_date": "2024-12-11T17:45:44.662Z"
+    }
+},
+{
+    "model": "sessions.session",
     "pk": "7mkadq6gurns1ofn4djkc59vqu57xsqp",
     "fields": {
         "session_data": ".eJxVjEEOgyAQRe8y64ZIGaC67N4zkGEGim2jiejKePfWxI3b_977GzDNC3TbfoNA61LCWtMcBoEONFy2SPxJ4wHkTeNrUjyNyzxEdSjqpFX1k6Tv83QvB4Vq-dds0ZFzmbTJ2Ir1NrH4GE3DzumIqdGNQcdGMlrNWbcx0R299yL-gS3sPy7kOyI:1t1JaC:9MtnL1W9fAXvOXD2J6qjcGnFUDgLuetWc2CeqkCH1to",
@@ -115,7 +123,7 @@
     "model": "accounts.user",
     "fields": {
         "password": "pbkdf2_sha256$870000$rwbJ46Kw1n6piuQ5enK64V$9H7No6hrZhrHqUou59q357aVYYBF7tOm5I/eGrTKZyM=",
-        "last_login": "2024-11-26T20:38:15.176Z",
+        "last_login": "2024-11-27T17:17:59.052Z",
         "is_superuser": true,
         "first_name": "Alessio",
         "last_name": "Pelusi",
@@ -197,7 +205,7 @@
     "fields": {
         "parent": null,
         "name": "Uomo",
-        "image": "categories/uomoimage_I0hxes4.jpg",
+        "image": "categories/uomoimage_ljshB9q.jpg",
         "position": 0
     }
 },
@@ -207,7 +215,7 @@
     "fields": {
         "parent": null,
         "name": "Donna",
-        "image": "categories/donnaimage_SjneaUV.jpg",
+        "image": "categories/donnaimage_HMXtWHt.jpg",
         "position": 0
     }
 },
@@ -217,7 +225,7 @@
     "fields": {
         "parent": null,
         "name": "Bambini",
-        "image": "categories/bambiniimage_LMaEy4k.jpg",
+        "image": "categories/bambiniimage_J9jMj8G.jpg",
         "position": 0
     }
 },
@@ -8886,6 +8894,294 @@
         "object_repr": "12-Maglione girocollo in cashmere",
         "action_flag": 2,
         "change_message": "[{\"changed\": {\"name\": \"product color\", \"object\": \"12-Maglione girocollo in cashmere-Navy Blue\", \"fields\": [\"Discount\"]}}, {\"changed\": {\"name\": \"product color\", \"object\": \"12-Maglione girocollo in cashmere-Medium Gray\", \"fields\": [\"Discount\"]}}, {\"changed\": {\"name\": \"product image\", \"object\": \"12-Maglione girocollo in cashmere-Army Green-products/1_iRCNrYc.webp\", \"fields\": [\"Image\"]}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 251,
+    "fields": {
+        "action_time": "2024-11-27T17:19:20.051Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "category"
+        ],
+        "object_id": "1",
+        "object_repr": "Uomo",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"fields\": [\"Image\"]}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 252,
+    "fields": {
+        "action_time": "2024-11-27T17:19:40.614Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "category"
+        ],
+        "object_id": "1",
+        "object_repr": "Uomo",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"fields\": [\"Image\"]}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 253,
+    "fields": {
+        "action_time": "2024-11-27T17:19:46.005Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "category"
+        ],
+        "object_id": "2",
+        "object_repr": "Donna",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"fields\": [\"Image\"]}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 254,
+    "fields": {
+        "action_time": "2024-11-27T17:20:01.834Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "category"
+        ],
+        "object_id": "2",
+        "object_repr": "Donna",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"fields\": [\"Image\"]}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 255,
+    "fields": {
+        "action_time": "2024-11-27T17:20:05.991Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "category"
+        ],
+        "object_id": "1",
+        "object_repr": "Uomo",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"fields\": [\"Image\"]}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 256,
+    "fields": {
+        "action_time": "2024-11-27T17:20:13.866Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "category"
+        ],
+        "object_id": "1",
+        "object_repr": "Uomo",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"fields\": [\"Image\"]}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 257,
+    "fields": {
+        "action_time": "2024-11-27T17:30:19.513Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "category"
+        ],
+        "object_id": "2",
+        "object_repr": "Donna",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"fields\": [\"Image\"]}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 258,
+    "fields": {
+        "action_time": "2024-11-27T17:30:32.665Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "category"
+        ],
+        "object_id": "2",
+        "object_repr": "Donna",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"fields\": [\"Image\"]}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 259,
+    "fields": {
+        "action_time": "2024-11-27T17:34:57.341Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "category"
+        ],
+        "object_id": "1",
+        "object_repr": "Uomo",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"fields\": [\"Image\"]}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 260,
+    "fields": {
+        "action_time": "2024-11-27T17:35:04.678Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "category"
+        ],
+        "object_id": "1",
+        "object_repr": "Uomo",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"fields\": [\"Image\"]}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 261,
+    "fields": {
+        "action_time": "2024-11-27T17:39:28.908Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "category"
+        ],
+        "object_id": "3",
+        "object_repr": "Bambini",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"fields\": [\"Image\"]}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 262,
+    "fields": {
+        "action_time": "2024-11-27T17:39:38.138Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "category"
+        ],
+        "object_id": "3",
+        "object_repr": "Bambini",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"fields\": [\"Image\"]}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 263,
+    "fields": {
+        "action_time": "2024-11-27T17:42:02.082Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "category"
+        ],
+        "object_id": "3",
+        "object_repr": "Bambini",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"fields\": [\"Image\"]}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 264,
+    "fields": {
+        "action_time": "2024-11-27T17:42:13.569Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "category"
+        ],
+        "object_id": "3",
+        "object_repr": "Bambini",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"fields\": [\"Image\"]}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 265,
+    "fields": {
+        "action_time": "2024-11-27T17:45:31.388Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "category"
+        ],
+        "object_id": "3",
+        "object_repr": "Bambini",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"fields\": [\"Image\"]}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 266,
+    "fields": {
+        "action_time": "2024-11-27T17:45:39.357Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "category"
+        ],
+        "object_id": "3",
+        "object_repr": "Bambini",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"fields\": [\"Image\"]}}]"
     }
 }
 ]
