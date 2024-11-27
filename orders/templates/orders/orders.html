@@ -6,7 +6,7 @@
         <a href="{% url 'view_order' order.id %}" class="order">
           <p class="text-xl">Ordine effettuato in data: {{ order.date_created|date:"M d, Y" }}
             alle {{ order.date_created|date:"h:i" }}</p>
-          <p>Stato: {{ order.status }}</p>
+          <!-- <p>Stato: {{ order.status }}</p> -->
           <p>Prezzo Totale: {{ order.total_price }} €</p>
           <div class="mt-4">
             <p class="text-xl">Hai acquistato i seguenti prodotti:</p>

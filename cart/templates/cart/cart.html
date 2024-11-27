@@ -1,6 +1,5 @@
 {% include "cart/empty.html" %}
-{% include "cart/place_order.html" %}
-<div class="inline-flex flex-wrap justify-center gap-10">
+<div class="inline-flex flex-wrap justify-center gap-10 p-10">
   {% for variant, attr in cart.items %}
     <div> <!--  class="border-l border-r border-solid border-black dark:border-stone-500 -mt-[1px] -ml-[1px]" -->
       <form id="form{{ variant.id }}" method="post">{% csrf_token %}
@@ -77,3 +76,4 @@
     </div>
   {% endfor %}
 </div>
+{% include "cart/place_order.html" %}
