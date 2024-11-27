@@ -36,10 +36,11 @@
       <p class="text-xl">Hai acquistato i seguenti prodotti:</p>
       <div class="grid grid-cols-1 justify-center items-center gap-2 mt-2">
         {% for order_product in order.orderproduct_set.all %}
-          <div class="inline-flex items-center gap-4">
+          <div class="inline-flex gap-4">
+          <a href="{% url "product_color_size" order_product.variant.product.id order_product.variant.color.id order_product.variant.id %}">
             <img src="{{ order_product.default_image }}" alt="{{ order_product.name }}"
-                 class="w-[15rem]">
-            <div class="grid grid-cols-1 gap-4">
+                 class="w-[15rem]"></a>
+            <div class="flex flex-col gap-1 pt-2">
               <p>{{ order_product.name }}</p>
               <p>Quantità: {{ order_product.quantity }}</p>
               <p>Prezzo: {{ order_product.total_price }} €</p>
