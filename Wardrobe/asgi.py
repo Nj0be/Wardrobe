@@ -1,5 +1,5 @@
 """
-ASGI ecommerce-rossi for backend project.
+ASGI Wardrobe for backend project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
