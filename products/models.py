@@ -93,9 +93,6 @@ class Product(models.Model):
     def get_colors(self):
         return Color.objects.filter(productcolor__product=self)
 
-    def get_first_three_colors(self):
-        return Color.objects.filter(productcolor__product=self)[:2]
-
     def save(self, *args, **kwargs):
         super(Product, self).save(args, **kwargs)
         if not self.is_active:

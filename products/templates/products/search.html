@@ -173,9 +173,11 @@
                   </div>
                 {% endif %}
                 <div class="mx-auto inline-flex items-center justify-center gap-1">
-                  {% for color in product.get_first_three_colors %}
+                  {% for color in product.get_colors %}
+                    {% if forloop.counter < 3 %}
                     <div style="background-color: #{{ color.hex }};" class="w-5 h-5 border border-solid border-black rounded-md"
                          title="{{ color.name }}"></div>
+                    {% endif %}
                   {% endfor %}
                   {% if product.get_colors|length > 3 %}
                     <p>+</p>
