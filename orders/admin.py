@@ -1,9 +1,9 @@
 from django.contrib import admin
-from orders.models import Order, OrderProduct
+from orders.models import Order, OrderItem
 
 
 class OrderProductInline(admin.TabularInline):
-    model = OrderProduct
+    model = OrderItem
     readonly_fields = ('price', )
 
 

@@ -11,14 +11,14 @@
           <div class="mt-4">
             <p class="text-xl">Hai acquistato i seguenti prodotti:</p>
             <div class="grid grid-cols-1 justify-center items-center gap-2 mt-2">
-              {% for order_product in order.orderproduct_set.all %}
+              {% for order_item in order.orderitem_set.all %}
                 <div class="inline-flex items-center gap-4">
-                  <img src="{{ order_product.default_image }}" alt="{{ order_product.name }}"
+                  <img src="{{ order_item.default_image }}" alt="{{ order_item.name }}"
                        class="w-[15rem]">
                   <div class="grid grid-cols-1 gap-4">
-                    <p>{{ order_product.name }}</p>
-                    <p>Quantità: {{ order_product.quantity }}</p>
-                    <p>Prezzo: {{ order_product.total_price }} €</p>
+                    <p>{{ order_item.name }}</p>
+                    <p>Quantità: {{ order_item.quantity }}</p>
+                    <p>Prezzo: {{ order_item.total_price }} €</p>
                   </div>
                 </div>
               {% endfor %}

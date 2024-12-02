@@ -89,6 +89,14 @@
 },
 {
     "model": "sessions.session",
+    "pk": "o9ywxzswmtxk9s4gtfcwkri1xlgla8no",
+    "fields": {
+        "session_data": ".eJxVjEEOgyAQRe8y64ZIGaC67N4zkGEGim2jiejKePfWxI3b_977GzDNC3TbfoNA61LCWtMcBoEONFy2SPxJ4wHkTeNrUjyNyzxEdSjqpFX1k6Tv83QvB4Vq-dds0ZFzmbTJ2Ir1NrH4GE3DzumIqdGNQcdGMlrNWbcx0R299yL-gS3sPy7kOyI:1tI2wK:wEy2SP5UpBjp5N9bAmnPoCyJ3H2V3-inFTzmKCrZF64",
+        "expire_date": "2024-12-16T09:42:00.713Z"
+    }
+},
+{
+    "model": "sessions.session",
     "pk": "pymmhlkfutqxnorv0u3vc7hcy15bz5k2",
     "fields": {
         "session_data": ".eJxVjEEOwiAQRe_C2pAiA0iX7j1DM8yArRpIoF01vbtt0oVu_3v_rWLAZR6HpcU6TCx6ocTldwtI75gPwC_MzyKp5LlOQR6KPGmTj8Lxcz_dv8CIbdzfZMCitQmVTuDZOBOJXQi6I2tVgNipToMlzQmMoqR8iHgF5xyzu4Hfo4R1Fv26bV8kxjsi:1tEPi2:mkiKQHDszbJTfnPciqQhQvxm5lhR7bgYkcLAbuY9wV4",
@@ -123,7 +131,7 @@
     "model": "accounts.user",
     "fields": {
         "password": "pbkdf2_sha256$870000$rwbJ46Kw1n6piuQ5enK64V$9H7No6hrZhrHqUou59q357aVYYBF7tOm5I/eGrTKZyM=",
-        "last_login": "2024-11-27T17:17:59.052Z",
+        "last_login": "2024-12-02T09:42:00.692Z",
         "is_superuser": true,
         "first_name": "Alessio",
         "last_name": "Pelusi",
@@ -489,8 +497,8 @@
         "description": "Giubbotto regular fit realizzato in velluto elasticizzato. Collo a revers e maniche lunghe. Tasche anteriori a filetto. Chiusura frontale con cerniera.",
         "price": "89.95",
         "is_active": true,
-        "date_created": "2024-11-22T09:14:44.289Z",
-        "last_modification": "2024-11-22T09:16:35.005Z",
+        "created_at": "2024-11-22T09:14:44.289Z",
+        "updated_at": "2024-11-22T09:16:35.005Z",
         "discount": null,
         "brand": 1,
         "categories": [
@@ -506,8 +514,8 @@
         "description": "Tuta tecnica antivento e impermeabile. Progettata con un tessuto in nano-membrana traspirante ad alte prestazioni, in grado di sopportare un'elevata protezione contro la penetrazione del vento e una pressione massima dell'acqua fino a 9.000 mm.",
         "price": "119.00",
         "is_active": true,
-        "date_created": "2024-11-23T18:52:18.588Z",
-        "last_modification": "2024-11-23T19:03:18.489Z",
+        "created_at": "2024-11-23T18:52:18.588Z",
+        "updated_at": "2024-11-23T19:03:18.489Z",
         "discount": null,
         "brand": 1,
         "categories": [
@@ -523,8 +531,8 @@
         "description": "Peso elevato - vestibilità regular - collo rotondo - lunghezza normale - maniche lunghe\r\nT-shirt realizzata in filato di cotone 100%. Collo rotondo e maniche lunghe. Dettaglio di stampa fotografica Claudia Schiffer (Photo by Jan Welters Licensed by Trunk Archive) sul davanti.",
         "price": "29.95",
         "is_active": true,
-        "date_created": "2024-11-23T18:57:30.234Z",
-        "last_modification": "2024-11-23T18:59:05.139Z",
+        "created_at": "2024-11-23T18:57:30.234Z",
+        "updated_at": "2024-11-23T18:59:05.139Z",
         "discount": null,
         "brand": 1,
         "categories": [
@@ -540,8 +548,8 @@
         "description": "Pantaloni goffrati a vita alta con cinque tasche. Gamba dritta. Chiusura frontale con cerniera, bottone",
         "price": "45.95",
         "is_active": true,
-        "date_created": "2024-11-23T19:02:12.957Z",
-        "last_modification": "2024-11-23T19:02:32.353Z",
+        "created_at": "2024-11-23T19:02:12.957Z",
+        "updated_at": "2024-11-23T19:02:32.353Z",
         "discount": null,
         "brand": 1,
         "categories": [
@@ -557,8 +565,8 @@
         "description": "Felpa con cappuccio e maniche lunghe. Finiture a coste. Tasca a marsupio sul davanti. Stampa con scritta sul petto. Fondo con finitura in tessuto jersey. Interno in tessuto garzato, caldo e morbido.",
         "price": "22.95",
         "is_active": true,
-        "date_created": "2024-11-23T19:15:52.755Z",
-        "last_modification": "2024-11-24T15:10:43.645Z",
+        "created_at": "2024-11-23T19:15:52.755Z",
+        "updated_at": "2024-11-24T15:10:43.645Z",
         "discount": null,
         "brand": 1,
         "categories": [
@@ -575,8 +583,8 @@
         "description": "Maglietta con collo rotondo e maniche lunghe. Stampa sulla parte anteriore. Fondo rifinito in pizzo.",
         "price": "12.95",
         "is_active": true,
-        "date_created": "2024-11-23T19:27:46.717Z",
-        "last_modification": "2024-11-24T14:13:48.402Z",
+        "created_at": "2024-11-23T19:27:46.717Z",
+        "updated_at": "2024-11-24T14:13:48.402Z",
         "discount": null,
         "brand": 1,
         "categories": [
@@ -593,8 +601,8 @@
         "description": "Jeans a campana. Cinque tasche. Effetto slavato. Orlo irregolare. Chiusura frontale con cerniera e bottone.",
         "price": "49.95",
         "is_active": true,
-        "date_created": "2024-11-23T19:35:52.424Z",
-        "last_modification": "2024-11-23T19:42:32.610Z",
+        "created_at": "2024-11-23T19:35:52.424Z",
+        "updated_at": "2024-11-23T19:42:32.610Z",
         "discount": null,
         "brand": 1,
         "categories": [
@@ -610,8 +618,8 @@
         "description": "SPECIFICHE DEL PRODOTTO:\r\nRicercato senza sforzo e in linea con lo spirito eco-conscious di North Sails. Questo classico maglione girocollo è realizzato in misto cashmere con fibre riciclate, a conferma del nostro impegno nella ricerca di soluzioni che rispettano il pianeta. Il logo ricamato sul petto è la nota iconica North Sails.\r\n\r\nCARATTERISTICHE:\r\n - Made from an eco cashmere blend\r\n - 12 gauge\r\n - Regular fit with crew neck\r\n - Ribbed trims\r\n - Embroidered logo on the chest\r\n\r\nMATERIALI E CURA:\r\n - 35% poliammide\r\n - 30% viscosa\r\n - 30% lana\r\n - 5% cashmere",
         "price": "99.90",
         "is_active": true,
-        "date_created": "2024-11-24T10:44:35.385Z",
-        "last_modification": "2024-11-26T20:38:50.379Z",
+        "created_at": "2024-11-24T10:44:35.385Z",
+        "updated_at": "2024-11-26T20:38:50.379Z",
         "discount": 1,
         "brand": 4,
         "categories": [
@@ -4507,7 +4515,7 @@
         "user": [
             "root@root.it"
         ],
-        "date_created": "2024-11-24T11:46:36.010Z",
+        "created_at": "2024-11-24T11:46:36.010Z",
         "name": "Pinco Pallino",
         "phone_number": "+390123456789",
         "address_line_one": "Via Roma 13",
@@ -4519,7 +4527,7 @@
     }
 },
 {
-    "model": "orders.orderproduct",
+    "model": "orders.orderitem",
     "pk": 15,
     "fields": {
         "order": 22,

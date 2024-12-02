@@ -27,7 +27,7 @@ def signup(request):
 
 @login_required
 def profile(request):
-    orders = Order.objects.filter(user=request.user.id).prefetch_related('orderproduct_set')
+    orders = Order.objects.filter(user=request.user.id).prefetch_related('orderitem_set')
     return render(request, 'accounts/profile.html', {'orders': orders})
 
 

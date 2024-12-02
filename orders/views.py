@@ -7,19 +7,19 @@ from django.shortcuts import render, redirect
 from cart.models import CartItem
 from products.models import ProductVariant
 from .forms import OrderForm
-from .models import Order, OrderProduct
+from .models import Order, OrderItem
 
 
 # TODO
 @login_required
 def view_orders(request):
-    orders = Order.objects.filter(user=request.user.id).prefetch_related('orderproduct_set')
+    orders = Order.objects.filter(user=request.user.id).prefetch_related('orderitem_set')
     return render(request, 'orders/orders_full.html', {'orders': orders})
 
 # TODO
 @login_required
 def view_order(request, order_id: int):
-    order = Order.objects.prefetch_related('orderproduct_set').get(pk=order_id, user=request.user.id)
+    order = Order.objects.prefetch_related('orderitem_set').get(pk=order_id, user=request.user.id)
     return render(request, 'orders/order.html', {'order': order})
 
 # Function not thread safe (if multiple users buy at the same time, bad things can happen)!!
@@ -57,8 +57,8 @@ def place(request):
                 # reduce quantity from productvariants after order
                 product['variant'].stock -= product['quantity']
                 product['variant'].save()
-                OrderProduct.objects.create(order=order, variant=product['variant'],
-                                            quantity=product['quantity'])
+                OrderItem.objects.create(order=order, variant=product['variant'],
+                                         quantity=product['quantity'])
 
             return redirect('view_order', order_id=order.id)
     # if a GET (or any other method) we'll create a blank form

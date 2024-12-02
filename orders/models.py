@@ -27,7 +27,7 @@ class PaymentMethod(models.Model):
 
 class Order(models.Model):
     user = models.ForeignKey('accounts.User', on_delete=models.CASCADE)
-    date_created = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
     name = models.CharField("Nome completo (nome e cognome)", max_length=40)
     phone_number = PhoneNumberField("Numero di telefono", region="IT")
     address_line_one = models.CharField("Riga Indirizzo 1", max_length=40)
@@ -39,13 +39,13 @@ class Order(models.Model):
 
     @property
     def total_price(self):
-        return sum(product.price * product.quantity for product in OrderProduct.objects.filter(order=self))
+        return sum(product.price * product.quantity for product in OrderItem.objects.filter(order=self))
     # remove possibility to change order after shipping
     # before shipping it's possible to add OrderProducts to the order and create new payments to pay the OrderProducts
     # the payment class should mark which OrderProducts are paid
 
 
-class OrderProduct(models.Model):
+class OrderItem(models.Model):
     order = models.ForeignKey('orders.Order', on_delete=models.CASCADE, editable=False)
     variant = models.ForeignKey('products.ProductVariant', on_delete=models.PROTECT, editable=False)
     quantity = models.PositiveIntegerField(validators=[MinValueValidator(1)])
@@ -68,7 +68,7 @@ class OrderProduct(models.Model):
         if self._state.adding:
             self.price = self.variant.discounted_price
 
-        super(OrderProduct, self).save(*args, **kwargs)
+        super(OrderItem, self).save(*args, **kwargs)
 
 
 class OrderForm(ModelForm):

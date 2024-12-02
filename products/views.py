@@ -4,7 +4,7 @@ from django.http import HttpResponseNotFound, Http404, HttpResponse
 from django.views import generic
 from django.shortcuts import render, get_object_or_404, redirect
 
-from orders.models import OrderProduct
+from orders.models import OrderItem
 from .forms import AddReviewForm
 from .models import Product, ProductVariant, ProductColor, Category, Color, Size, Review, \
     ProductImage, Brand
@@ -101,8 +101,8 @@ def product_page(request, product_id, color_id=None, size_id=None):
     if request.user.is_authenticated:
         user_has_review = Review.objects.filter(product=product,
                                                 customer=request.user).first() is not None
-        user_has_purchased = OrderProduct.objects.filter(variant__product_color__product=product,
-                                                         order__user_id=request.user).first() is not None
+        user_has_purchased = OrderItem.objects.filter(variant__product_color__product=product,
+                                                      order__user_id=request.user).first() is not None
 
     # if product doesn't have variants, it can't be displayed
     if not product.has_variants():
@@ -222,8 +222,8 @@ def add_review(request, product_id):
     if request.user.is_authenticated:
         user_has_review = Review.objects.filter(product=product,
                                                 customer=request.user).first() is not None
-        user_has_purchased = OrderProduct.objects.filter(variant__product_color__product=product,
-                                                         order__user_id=request.user).first() is not None
+        user_has_purchased = OrderItem.objects.filter(variant__product_color__product=product,
+                                                      order__user_id=request.user).first() is not None
     form = AddReviewForm(request.POST)
     review = None
 
