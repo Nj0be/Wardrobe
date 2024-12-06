@@ -79,16 +79,19 @@ class UserUpdateForm(UserChangeForm):
         required=True,
         widget=forms.TextInput()
     )
-    email = forms.EmailField(
-        label="Email",
-        error_messages={"invalid": "Perfavore inserisci una email valida"},
-        required=True,
-    )
+    # Remove email because it would need confirm
+    # email = forms.EmailField(
+    #     label="Email",
+    #     error_messages={"invalid": "Perfavore inserisci una email valida"},
+    #     required=True,
+    # )
     password = None
 
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'email')
+        # Remove email because it would need confirm
+        # fields = ('first_name', 'last_name', 'email')
+        fields = ('first_name', 'last_name')
 
 
 class UserPasswordChangeForm(PasswordChangeForm):
