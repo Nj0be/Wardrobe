@@ -1,6 +1,8 @@
 from decimal import Decimal
+from xml.etree.ElementInclude import include
 
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models.functions import Lower
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils import timezone
@@ -16,6 +18,9 @@ class Category(TreeNode):
     name = models.CharField(max_length=100)
     image = models.ImageField(upload_to='categories/', null=True, blank=True)
     position = models.PositiveIntegerField(default=0)
+
+    def has_products(self):
+        return len(self.descendants(include_self=True).filter(product__isnull=False)) > 0
 
     class Meta:
         ordering = ['position']
@@ -52,6 +57,9 @@ class Discount(models.Model):
 class Brand(models.Model):
     name = models.CharField(max_length=50)
     image = models.ImageField(upload_to='categories/', null=True, blank=True)
+
+    class Meta:
+        ordering = [Lower('name')]
 
     def __str__(self):
         return f'{self.name}'
@@ -105,6 +113,9 @@ class Product(models.Model):
 class Color(models.Model):
     name = models.CharField(max_length=30, unique=True)
     hex = models.CharField(max_length=6, unique=True, validators=[HexValidator(length=6)])
+
+    class Meta:
+        ordering = ['-hex']
 
     def __str__(self):
         return f'{self.name}'

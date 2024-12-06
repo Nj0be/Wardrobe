@@ -18,15 +18,23 @@ def search(request, category_id=None):  # da implementare anche la logica per i 
     """ Selezione prodotti """
     # selezioniamo solo i prodotto che hanno almeno una product variant
     selected_category = Category.objects.filter(id=category_id).first()
+    if selected_category and not selected_category.has_products():
+        selected_category = None
     products = Product.objects.filter(is_active=True,
                                       productcolor__productvariant__isnull=False).distinct()
     if selected_category:
-        categories = [selected_category.parent] + list(selected_category.children.all())
+        categories = list(selected_category.children.all())
+        # we show only categories that have products
+        categories = [cat for cat in categories if cat.has_products()]
+        # selected_category.parent can be null, it means that the parent category doesn't exist (no category)
+        categories = [selected_category.parent] + categories
         products = products.filter(categories__in=selected_category.descendants(include_self=True))
-    else:
+    elif not category_id:
         # get 'root' categories (first layer)
         categories = Category.objects.with_tree_fields().extra(where=["__tree.tree_depth <= %s"],
                                                                params=[0])
+    else:   # if category_id sent but no selected_category, redirect to root
+        return redirect('search')
 
     """ Filtraggio per ricerca testuale """
     search_terms = request.GET.get('search_terms', None)
@@ -47,14 +55,13 @@ def search(request, category_id=None):  # da implementare anche la logica per i 
         # rank = SearchRank(vector, query), search = vector).filter(search=search_terms).order_by('-rank')
 
     """ Filtraggio per marca """
-    brands = Brand.objects.filter(product__in=list(products)).distinct().order_by('-name')
+    brands = Brand.objects.filter(product__in=list(products)).distinct()
     selected_brands = brands.filter(pk__in=request.GET.getlist('brand', None))
     if selected_brands:
         products = products.filter(brand__in=selected_brands)
 
     """ Filtraggio per colori """
-    colors = Color.objects.filter(productcolor__product__in=list(products)).distinct().order_by(
-        '-hex')
+    colors = Color.objects.filter(productcolor__product__in=list(products)).distinct()
     selected_colors = colors.filter(pk__in=request.GET.getlist('color', None))
     if selected_colors:
         products = products.filter(productcolor__color__in=selected_colors)
