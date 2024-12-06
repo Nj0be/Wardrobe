@@ -1,0 +1,6 @@
+{% autoescape off %}
+Ciao {{ first_name }},
+Clicca sul link qui sotto per confermare il tuo account:
+
+{{ protocol }}://{{ domain }}{% url 'activate_account' emailb64=email token=token %}
+{% endautoescape %}

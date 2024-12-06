@@ -190,3 +190,6 @@ EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 
 # Allow to upload more than 1000 field (for big products)
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 2000
+
+# password reset and account confirmation timeout
+PASSWORD_RESET_TIMEOUT = 14400

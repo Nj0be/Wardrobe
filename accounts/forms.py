@@ -9,7 +9,7 @@ from .models import User
 class UserRegistrationForm(UserCreationForm):
     first_name = forms.CharField(
         label="Nome",
-        widget=forms.TextInput(),
+        widget=forms.TextInput(attrs={'autofocus': True}),
         required = True,
     )
 

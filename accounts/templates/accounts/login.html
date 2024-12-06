@@ -1,6 +1,6 @@
 {% extends "accounts/base.html" %}
 
-{% block title %}Registrazione Cliente{% endblock %}
+{% block title %}Login Cliente{% endblock %}
 {% block content %}
   {% url 'login' as form_action %}
   {% include "accounts/form.html" with form_title="Accedi al tuo account" password_reset="true" submit_text="Accedi" register_link="true" %}
