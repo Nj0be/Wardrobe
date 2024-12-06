@@ -5,7 +5,7 @@ from django.views import generic
 from django.shortcuts import render, get_object_or_404, redirect
 
 from orders.models import OrderItem
-from .forms import AddReviewForm
+from .forms import ReviewForm
 from .models import Product, ProductVariant, ProductColor, Category, Color, Size, Review, \
     ProductImage, Brand
 
@@ -185,7 +185,7 @@ def product_page(request, product_id, color_id=None, size_id=None):
     # if user has review, remove it from the list
     reviews = Review.objects.filter(product=product).exclude(user=request.user)
     review = Review.objects.filter(product=product, user=request.user).first()
-    review_form = AddReviewForm()
+    review_form = ReviewForm() if not review else None
 
     # if request come from htmx-boost, send full page
     if request.htmx and not request.htmx.boosted:
@@ -224,11 +224,11 @@ def product_page(request, product_id, color_id=None, size_id=None):
 
 
 def add_review(request, product_id):
-    if request.method != "POST":
+    if request.method != "POST" or not request.htmx:
         raise Http404()
 
     product = get_object_or_404(Product, pk=product_id, is_active=True)
-    form = AddReviewForm(request.POST)
+    form = ReviewForm(request.POST)
     # review = Review.objects.filter(product=product, user=request.user).first()
     review = None
 
@@ -243,8 +243,60 @@ def add_review(request, product_id):
         request,
         'products/user_review.html',
         {
+            'product': product,
             'review': review,
             'user': request.user,
             'has_reviewed': request.user.has_reviewed(product),
             'has_purchased': request.user.has_purchased(product),
+        })
+
+
+def edit_review(request, product_id):
+    if not request.htmx:
+        raise Http404()
+
+    product = get_object_or_404(Product, pk=product_id, is_active=True)
+    review = get_object_or_404(Review, product=product, user=request.user)
+    form = ReviewForm(request.POST, instance=review)
+
+    # check whether it's valid:
+    if request.method == 'POST':
+        form = ReviewForm(request.POST, instance=review)
+        if form.is_valid():
+            review = form.save()  # Salva i dati del modulo
+            form = None
+    else:
+        form = ReviewForm(instance=review) # Precompila il modulo con i dati della review
+
+    return render(
+        request,
+        'products/user_review.html',
+        {
+            'product': product,
+            'review': review,
+            'user': request.user,
+            'has_reviewed': request.user.has_reviewed(product),
+            'has_purchased': request.user.has_purchased(product),
+            "form": form,
+        })
+
+
+def delete_review(request, product_id):
+    if request.method != "POST" or not request.htmx:
+        raise Http404()
+
+    product = get_object_or_404(Product, pk=product_id, is_active=True)
+    review = get_object_or_404(Review, product=product, user=request.user)
+    review.delete()
+    form = ReviewForm()
+
+    return render(
+        request,
+        'products/user_review.html',
+        {
+            'product': product,
+            'user': request.user,
+            'has_reviewed': request.user.has_reviewed(product),
+            'has_purchased': request.user.has_purchased(product),
+            "form": form,
         })

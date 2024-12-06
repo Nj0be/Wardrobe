@@ -69,9 +69,3 @@ class OrderItem(models.Model):
             self.price = self.variant.discounted_price
 
         super(OrderItem, self).save(*args, **kwargs)
-
-
-class OrderForm(ModelForm):
-    class Meta:
-        model = Order
-        fields = ["user", "name", "phone_number", "address_line_one", "address_line_two", "province", "postal_code", "city", "payment_method"]

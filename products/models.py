@@ -5,6 +5,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db.models.functions import Lower
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.forms.models import ModelForm
 from django.utils import timezone
 from django.utils.safestring import mark_safe
 from tree_queries.models import TreeNode
