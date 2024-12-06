@@ -49,11 +49,11 @@ class Cart:
 
         if self.user.is_authenticated:
             try:
-                item = CartItem.objects.get(variant=variant, customer=self.user)
+                item = CartItem.objects.get(variant=variant, user=self.user)
                 item.quantity = quantity
                 item.save()
             except ObjectDoesNotExist:
-                CartItem.objects.create(variant=variant, customer=self.user, quantity=quantity)
+                CartItem.objects.create(variant=variant, user=self.user, quantity=quantity)
         else:
             if variant not in self.cart:
                 self.cart[variant] = {}
@@ -67,7 +67,7 @@ class Cart:
             raise TypeError("variant argument is not a ProductVariant")
 
         if self.user.is_authenticated:
-            item = CartItem.objects.filter(variant=variant, customer=self.user).first()
+            item = CartItem.objects.filter(variant=variant, user=self.user).first()
             if item:
                 return item.quantity
             else:
@@ -85,7 +85,7 @@ class Cart:
 
         if self.user.is_authenticated:
             try:
-                CartItem.objects.get(variant=variant, customer=self.user).delete()
+                CartItem.objects.get(variant=variant, user=self.user).delete()
             except ObjectDoesNotExist:
                 pass
         else:
@@ -95,7 +95,7 @@ class Cart:
 
     def __iter__(self):
         if self.user.is_authenticated:
-            yield from CartItem.objects.filter(customer=self.user)
+            yield from CartItem.objects.filter(user=self.user)
         else:
             yield from self.cart
 
@@ -103,7 +103,7 @@ class Cart:
         if self.user.is_authenticated:
             if self.user.is_authenticated:
                 cart = {}
-                for item in CartItem.objects.filter(customer=self.user):
+                for item in CartItem.objects.filter(user=self.user):
                     variant = item.variant
                     cart[variant] = {}
                     cart[variant]['quantity'] = item.quantity
@@ -116,7 +116,7 @@ class Cart:
         if self.user.is_authenticated:
             if self.user.is_authenticated:
                 cart = {}
-                for item in CartItem.objects.filter(customer=self.user):
+                for item in CartItem.objects.filter(user=self.user):
                     variant = item.variant
                     cart[variant] = {}
                     cart[variant]['quantity'] = item.quantity
@@ -128,7 +128,7 @@ class Cart:
     def items(self):
         if self.user.is_authenticated:
             cart = {}
-            for item in CartItem.objects.filter(customer=self.user):
+            for item in CartItem.objects.filter(user=self.user):
                 variant = item.variant
                 cart[variant] = {}
                 cart[variant]['quantity'] = item.quantity
@@ -141,7 +141,7 @@ class Cart:
         if self.user.is_authenticated:
             if self.user.is_authenticated:
                 cart = {}
-                for item in CartItem.objects.filter(customer=self.user):
+                for item in CartItem.objects.filter(user=self.user):
                     variant = item.variant
                     cart[variant] = {}
                     cart[variant]['quantity'] = item.quantity
@@ -158,7 +158,7 @@ class Cart:
 
         if self.user.is_authenticated:
             try:
-                item = CartItem.objects.filter(variant=variant, customer=self.user).first()
+                item = CartItem.objects.filter(variant=variant, user=self.user).first()
                 item.is_active = is_active
                 item.save()
             except:

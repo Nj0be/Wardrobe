@@ -26,7 +26,7 @@ class Migration(migrations.Migration):
                 ('product_variant', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='products.productvariant')),
             ],
             options={
-                'unique_together': {('product_variant', 'customer')},
+                'unique_together': {('product_variant', 'user')},
             },
         ),
     ]

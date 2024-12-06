@@ -113,6 +113,14 @@
 },
 {
     "model": "sessions.session",
+    "pk": "tpa9guhm8h5ah9pplk9d7scycbvwpkml",
+    "fields": {
+        "session_data": ".eJxVjEEOgyAQRe8y64ZIGaC67N4zkGEGim2jiejKePfWxI3b_977GzDNC3TbfoNA61LCWtMcBoEONFy2SPxJ4wHkTeNrUjyNyzxEdSjqpFX1k6Tv83QvB4Vq-dds0ZFzmbTJ2Ir1NrH4GE3DzumIqdGNQcdGMlrNWbcx0R299yL-gS3sPy7kOyI:1tJVPf:p8tDuWLY-I0cU-3gnV_vQnUShNJVv4fwl9Ptx3BmEeg",
+        "expire_date": "2024-12-20T10:18:19.101Z"
+    }
+},
+{
+    "model": "sessions.session",
     "pk": "w230e9h3htcnq0vfg76vmolh13vgr0ro",
     "fields": {
         "session_data": ".eJxVjEEOgyAQRe8y64ZIGaC67N4zkGEGim2jiejKePfWxI3b_977GzDNC3TbfoNA61LCWtMcBoEONFy2SPxJ4wHkTeNrUjyNyzxEdSjqpFX1k6Tv83QvB4Vq-dds0ZFzmbTJ2Ir1NrH4GE3DzumIqdGNQcdGMlrNWbcx0R299yL-gS3sPy7kOyI:1t2Aug:XXxUwbTeRVRPvHYWP2-w-8tSmvci2xW7Ev35d_t1u48",

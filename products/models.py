@@ -272,11 +272,11 @@ def update_cart_quantity(sender, instance, **kwargs):
 
 class Review(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    customer = models.ForeignKey('accounts.User', on_delete=models.CASCADE)
+    user = models.ForeignKey('accounts.User', on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     description = models.TextField(max_length=2000)
     vote = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
 
     class Meta:
-        unique_together = [['product', 'customer']]
+        unique_together = [['product', 'user']]
 

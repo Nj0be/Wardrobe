@@ -53,7 +53,7 @@ def place(request):
 
             for product in products:
                 # delete objects from cart after order
-                CartItem.objects.get(customer=request.user, variant=product['variant']).delete()
+                CartItem.objects.get(user=request.user, variant=product['variant']).delete()
                 # reduce quantity from productvariants after order
                 product['variant'].stock -= product['quantity']
                 product['variant'].save()
@@ -64,8 +64,8 @@ def place(request):
     # if a GET (or any other method) we'll create a blank form
     else:
         form = OrderForm()
-        #variants = ProductVariant.objects.filter(cartitem__customer=request.user, cartitem__is_active=True)
-        cart_items = CartItem.objects.filter(customer=request.user, is_active=True)
+        #variants = ProductVariant.objects.filter(cartitem__user=request.user, cartitem__is_active=True)
+        cart_items = CartItem.objects.filter(user=request.user, is_active=True)
 
         products = []
         for item in cart_items:

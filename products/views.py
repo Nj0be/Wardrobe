@@ -107,7 +107,7 @@ def product_page(request, product_id, color_id=None, size_id=None):
     user_has_purchased = False
     if request.user.is_authenticated:
         user_has_review = Review.objects.filter(product=product,
-                                                customer=request.user).first() is not None
+                                                user=request.user).first() is not None
         user_has_purchased = OrderItem.objects.filter(variant__product_color__product=product,
                                                       order__user_id=request.user).first() is not None
 
@@ -167,9 +167,9 @@ def product_page(request, product_id, color_id=None, size_id=None):
         if review_description and review_vote and review_vote.isdigit() and 1 <= int(
                 review_vote) <= 10:  # and review_title
             if request.user.is_authenticated:  # da aggiungere la verifica di acquisto del prodotto da parte dell'utente
-                if not Review.objects.filter(product=product, customer=request.user).exists():
+                if not Review.objects.filter(product=product, user=request.user).exists():
                     review = Review(
-                        customer=request.user,
+                        user=request.user,
                         product=product,
                         # title=reviewTitle,
                         description=review_description,
@@ -182,7 +182,9 @@ def product_page(request, product_id, color_id=None, size_id=None):
             else:
                 error_message = "Devi aver eseguito il login per lasciare una recensione."
 
-    reviews = Review.objects.filter(product=product_id)
+    # if user has review, remove it from the list
+    reviews = Review.objects.filter(product=product).exclude(user=request.user)
+    review = Review.objects.filter(product=product, user=request.user).first()
     review_form = AddReviewForm()
 
     # if request come from htmx-boost, send full page
@@ -210,11 +212,13 @@ def product_page(request, product_id, color_id=None, size_id=None):
             "discount": discount,
             "discounted_price": discounted_price,
             "reviews": reviews,
+            "review": review,
             "error_message": error_message,
             "stock": stock,
             "form": review_form,
-            "user_has_review": user_has_review,
-            "user_has_purchased": user_has_purchased,
+            'user': request.user,
+            'has_reviewed': request.user.has_reviewed(product),
+            'has_purchased': request.user.has_purchased(product),
         }
     )
 
@@ -224,29 +228,23 @@ def add_review(request, product_id):
         raise Http404()
 
     product = get_object_or_404(Product, pk=product_id, is_active=True)
-    user_has_review = False
-    user_has_purchased = False
-    if request.user.is_authenticated:
-        user_has_review = Review.objects.filter(product=product,
-                                                customer=request.user).first() is not None
-        user_has_purchased = OrderItem.objects.filter(variant__product_color__product=product,
-                                                      order__user_id=request.user).first() is not None
     form = AddReviewForm(request.POST)
+    # review = Review.objects.filter(product=product, user=request.user).first()
     review = None
 
     # check whether it's valid:
-    if not user_has_review and user_has_purchased and form.is_valid():
-        review = Review.objects.create(customer=request.user, product=product,
+    if not request.user.has_reviewed(product) and request.user.has_purchased(product) and form.is_valid():
+        review = Review.objects.create(user=request.user, product=product,
                                        title=form.cleaned_data['title'],
                                        description=form.cleaned_data['description'],
                                        vote=form.cleaned_data['vote'])
-        user_has_review = True
 
     return render(
         request,
-        'products/add_review.html',
+        'products/user_review.html',
         {
             'review': review,
-            'user_has_review': user_has_review,
-            'user_has_purchased': user_has_purchased
+            'user': request.user,
+            'has_reviewed': request.user.has_reviewed(product),
+            'has_purchased': request.user.has_purchased(product),
         })

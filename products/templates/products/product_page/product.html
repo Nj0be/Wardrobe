@@ -67,21 +67,23 @@
 
 <div class="flex flex-col justify-center items-center my-16">
   <div class="w-3/5">
+    <hr class="mb-10">
+    <!-- Sezione aggiungi recensione -->
+    {% include "products/user_review.html" %}
+
     <!-- Sezione delle recensioni -->
     <div id="reviews" class="mt-14">
-      <hr class="mb-10">
       <h2 class="text-gray-900 dark:text-stone-200 text-5xl font-manrope">Recensioni</h2>
       {% if reviews %}
         {% for review in reviews %}
-          {% include "products/review.html" %}
+          {% if review.user != user %}
+            {% include "products/review.html" %}
+          {% endif %}
         {% endfor %}
       {% else %}
         <p id="no-reviews" class="text-normal text-justify mt-2">Non ci sono recensioni per questo
           prodotto.</p>
       {% endif %}
     </div>
-
-    <!-- Sezione aggiungi recensione -->
-    {% include "products/add_review.html" %}
   </div>
 </div>

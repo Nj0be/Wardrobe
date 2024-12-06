@@ -1,10 +1,10 @@
-from django.contrib.auth.hashers import make_password
-from django.core.exceptions import ValidationError
-from django.db import models
-from django.contrib.auth.models import AbstractUser
-from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.base_user import BaseUserManager
-from django.core.validators import MinValueValidator
+from django.contrib.auth.hashers import make_password
+from django.contrib.auth.models import AbstractUser
+from django.db import models
+from django.utils.translation import gettext_lazy as _
+
+from products.models import Product
 
 
 class UserManager(BaseUserManager):
@@ -49,6 +49,17 @@ class User(AbstractUser):
     REQUIRED_FIELDS = []
 
     objects = UserManager()
+
+    # check if user purchased a product
+    def has_purchased(self, product: Product):
+        from orders.models import OrderItem
+        return True if OrderItem.objects.filter(variant__product_color__product=product,
+                                                order__user_id=self).first() else False
+
+    # check if reviewed a product
+    def has_reviewed(self, product: Product):
+        from products.models import Review
+        return True if Review.objects.filter(product=product, user=self).first() else False
 
     def __str__(self):
         return self.email
