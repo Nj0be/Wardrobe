@@ -98,12 +98,11 @@ class Product(models.Model):
         except ObjectDoesNotExist:
             return ProductColor.objects.filter(product=self).first().default_image
 
-
     def get_colors(self):
         return Color.objects.filter(productcolor__product=self)
 
     def save(self, *args, **kwargs):
-        super(Product, self).save(args, **kwargs)
+        super(Product, self).save(*args, **kwargs)
         if not self.is_active:
             CartItem.objects.filter(variant__product_color__product=self).delete()
 
