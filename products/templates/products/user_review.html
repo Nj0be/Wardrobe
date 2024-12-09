@@ -11,12 +11,15 @@
       {% url "edit_review" product.id as form_action %}
       {% include "products/review_form.html" with submit_text="Modifica Recensione" %}
     {% else %}
-      <button hx-get="{% url 'edit_review' product.id %}"
-         class="font-semibold text-indigo-600 dark:text-sky-500 hover:text-indigo-500 dark:hover:text-sky-600">Edit</button>
-      <form id="form{{ variant.id }}" method="post">{% csrf_token %}
-        <button hx-post="{% url 'delete_review' product.id %}"
-         class="font-semibold text-indigo-600 dark:text-sky-500 hover:text-indigo-500 dark:hover:text-sky-600">Delete</button>
-      </form>
+      <div class="inline-flex items-center gap-4">
+        <button hx-get="{% url 'edit_review' product.id %}"
+           class="text-lg font-manrope underline dark:text-white dark:hover:text-sky-600">Edit</button>
+        <p class="text-xl">|</p>
+        <form id="form{{ variant.id }}" method="post">{% csrf_token %}
+          <button hx-post="{% url 'delete_review' product.id %}"
+           class="text-lg font-manrope underline dark:text-white dark:hover:text-sky-600">Delete</button>
+        </form>
+      </div>
       {% include "products/review.html" %}
     {% endif %}
   {% elif not user.is_authenticated %}
