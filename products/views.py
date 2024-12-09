@@ -103,14 +103,6 @@ def product_page(request, product_id, color_id=None, size_id=None):
     product = get_object_or_404(Product, pk=product_id, is_active=True)
     stock = 0
 
-    user_has_review = False
-    user_has_purchased = False
-    if request.user.is_authenticated:
-        user_has_review = Review.objects.filter(product=product,
-                                                user=request.user).first() is not None
-        user_has_purchased = OrderItem.objects.filter(variant__product_color__product=product,
-                                                      order__user_id=request.user).first() is not None
-
     # if product doesn't have variants, it can't be displayed
     if not product.has_variants():
         raise Http404()
@@ -183,8 +175,15 @@ def product_page(request, product_id, color_id=None, size_id=None):
                 error_message = "Devi aver eseguito il login per lasciare una recensione."
 
     # if user has review, remove it from the list
-    reviews = Review.objects.filter(product=product).exclude(user=request.user)
-    review = Review.objects.filter(product=product, user=request.user).first()
+    reviews = Review.objects.filter(product=product)
+    review = None
+    has_reviewed = False
+    has_purchased = False
+    if request.user.is_authenticated:
+        reviews = reviews.exclude(user=request.user)
+        review = Review.objects.filter(product=product, user=request.user).first()
+        has_reviewed = request.user.has_reviewed(product)
+        has_purchased = request.user.has_purchased(product)
     review_form = ReviewForm() if not review else None
 
     # if request come from htmx-boost, send full page
@@ -217,14 +216,14 @@ def product_page(request, product_id, color_id=None, size_id=None):
             "stock": stock,
             "form": review_form,
             'user': request.user,
-            'has_reviewed': request.user.has_reviewed(product),
-            'has_purchased': request.user.has_purchased(product),
+            'has_reviewed': has_reviewed,
+            'has_purchased': has_purchased,
         }
     )
 
 
 def add_review(request, product_id):
-    if request.method != "POST" or not request.htmx:
+    if request.method != "POST" or not request.htmx or not request.user.is_authenticated:
         raise Http404()
 
     product = get_object_or_404(Product, pk=product_id, is_active=True)
@@ -252,7 +251,7 @@ def add_review(request, product_id):
 
 
 def edit_review(request, product_id):
-    if not request.htmx:
+    if not request.htmx or not request.user.is_authenticated:
         raise Http404()
 
     product = get_object_or_404(Product, pk=product_id, is_active=True)
@@ -282,7 +281,7 @@ def edit_review(request, product_id):
 
 
 def delete_review(request, product_id):
-    if request.method != "POST" or not request.htmx:
+    if request.method != "POST" or not request.htmx or not request.user.is_authenticated:
         raise Http404()
 
     product = get_object_or_404(Product, pk=product_id, is_active=True)
