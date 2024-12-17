@@ -1,0 +1,14 @@
+{% extends "orders/base.html" %}
+
+{% block title %}Reso richiesto{% endblock %}
+
+{% block content %}
+  <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+    <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+      <h2 class="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900 dark:text-stone-300">Richiesta di reso effettuata con successo.</h2>
+    </div>
+    <div class="my-10 sm:mx-auto sm:w-full sm:max-w-sm text-center">
+      <a href="{% url 'profile' %}" class="font-semibold text-indigo-600 hover:text-indigo-500">Vai al tuo account</a>
+    </div>
+  </div>
+{% endblock %}

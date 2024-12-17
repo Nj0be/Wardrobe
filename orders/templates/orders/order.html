@@ -4,12 +4,14 @@
 
 {% block content %}
   <div class="grid grid-cols-2 gap-4 my-4 p-5">
-    <div class="p-10 mb-auto border border-black dark:border-stone-500 lg:ml-96 md:ml-auto sm:ml-auto">
+    <div
+        class="p-10 mb-auto border border-black dark:border-stone-500 lg:ml-96 md:ml-auto sm:ml-auto">
       <div>
         <p class="text-xl">Ordine effettuato in data: {{ order.created_at|date:"M d, Y" }}
           alle {{ order.created_at|date:"h:i" }}</p>
         <!-- <p>Stato: {{ order.status }}</p> -->
         <p>Prezzo Totale: {{ order.total_price }} €</p>
+        <p>Stato: {{ order.get_status.label }}</p>
       </div>
       <hr class="my-4">
       <div>
@@ -37,17 +39,32 @@
       <div class="grid grid-cols-1 justify-center items-center gap-2 mt-2">
         {% for order_item in order.orderitem_set.all %}
           <div class="inline-flex gap-4">
-          <a href="{% url "product_color_size" order_item.variant.product.id order_item.variant.color.id order_item.variant.id %}">
-            <img src="{{ order_item.default_image }}" alt="{{ order_item.name }}"
-                 class="w-[15rem]"></a>
+            <a href="{% url "product_color_size" order_item.variant.product.id order_item.variant.color.id order_item.variant.id %}">
+              <img src="{{ order_item.default_image }}" alt="{{ order_item.name }}"
+                   class="w-[15rem]"></a>
             <div class="flex flex-col gap-1 pt-2">
               <p>{{ order_item.name }}</p>
               <p>Quantità: {{ order_item.quantity }}</p>
               <p>Prezzo: {{ order_item.total_price }} €</p>
+              {% if not order_item.returnitem %}
+                <div class="my-3">
+                  <a href="{% url 'return_item' order_item.id %}"
+                     class="border-2 border-black dark:border-stone-500 py-2 px-3 rounded-lg hover:bg-gray-100 dark:hover:bg-stone-900 text-center"
+                  >Richiedi reso
+                  </a>
+                </div>
+              {% else %}
+                <p>Stato Reso: {{ order_item.returnitem.get_status.label }}</p>
+                <p>Motivazione Reso: {{ order_item.returnitem.get_reason.label }}</p>
+                <p>Commenti Reso: {{ order_item.returnitem.comments }}</p>
+              {% endif %}
             </div>
           </div>
         {% endfor %}
       </div>
     </div>
+    {% if order.returnitem %}
+      ciao
+    {% endif %}
   </div>
 {% endblock %}

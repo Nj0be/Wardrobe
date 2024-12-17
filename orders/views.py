@@ -1,12 +1,11 @@
 import json
 
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseNotFound, HttpResponseNotAllowed, HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 from cart.models import CartItem
 from products.models import ProductVariant
-from .forms import OrderForm
+from .forms import OrderForm, ReturnItemForm
 from .models import Order, OrderItem
 
 
@@ -79,3 +78,21 @@ def place(request):
     total_price = sum(product['subtotal_price'] for product in products)
 
     return render(request, 'orders/place.html', {"form": form, "products": products, "total_price": total_price})
+
+@login_required
+def return_item(request, order_item_id):
+    order_item = get_object_or_404(OrderItem, pk=order_item_id, order__user=request.user)
+
+    if request.method == "POST":
+        # create a form instance and populate it with data from the request:
+        form = ReturnItemForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            form.save()
+
+            return render(request, 'orders/return_item_successful.html')
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = ReturnItemForm(initial={'order_item': order_item})
+
+    return render(request, 'orders/return_item.html', {"form": form, "order_item": order_item})

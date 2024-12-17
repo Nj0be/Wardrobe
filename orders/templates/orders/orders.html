@@ -8,17 +8,21 @@
             alle {{ order.date_created|date:"h:i" }}</p>
           <!-- <p>Stato: {{ order.status }}</p> -->
           <p>Prezzo Totale: {{ order.total_price }} €</p>
+          <p>Stato: {{ order.get_status.label }}</p>
           <div class="mt-4">
             <p class="text-xl">Hai acquistato i seguenti prodotti:</p>
             <div class="grid grid-cols-1 justify-center items-center gap-2 mt-2">
               {% for order_item in order.orderitem_set.all %}
-                <div class="inline-flex items-center gap-4">
+                <div class="inline-flex gap-4">
                   <img src="{{ order_item.default_image }}" alt="{{ order_item.name }}"
                        class="w-[15rem]">
-                  <div class="grid grid-cols-1 gap-4">
+                  <div class="flex flex-col gap-1 pt-2">
                     <p>{{ order_item.name }}</p>
                     <p>Quantità: {{ order_item.quantity }}</p>
                     <p>Prezzo: {{ order_item.total_price }} €</p>
+                    {% if order_item.returnitem %}
+                      <p>Stato Reso: {{ order_item.returnitem.get_status.label }}</p>
+                    {% endif %}
                   </div>
                 </div>
               {% endfor %}

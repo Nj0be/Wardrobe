@@ -9,6 +9,14 @@
 },
 {
     "model": "sessions.session",
+    "pk": "1ruavfdkhp48cwuik46uraqgvo1r4x5c",
+    "fields": {
+        "session_data": ".eJxVjEEOgyAQRe8y64ZIGaC67N4zkGEGim2jiejKePfWxI3b_977GzDNC3TbfoNA61LCWtMcBoEONFy2SPxJ4wHkTeNrUjyNyzxEdSjqpFX1k6Tv83QvB4Vq-dds0ZFzmbTJ2Ir1NrH4GE3DzumIqdGNQcdGMlrNWbcx0R299yL-gS3sPy7kOyI:1tNgd9:9exqrZ8Nbit3IVKDwRwK5AiH-UKHlEwYTxRxkS68tvw",
+        "expire_date": "2024-12-31T23:05:31.862Z"
+    }
+},
+{
+    "model": "sessions.session",
     "pk": "460fxxghmb778hxea3m107ynd2hanrlk",
     "fields": {
         "session_data": ".eJxVjEEOgyAQRe8y64ZIGaC67N4zkGEGim2jiejKePfWxI3b_977GzDNC3TbfoNA61LCWtMcBoEONFy2SPxJ4wHkTeNrUjyNyzxEdSjqpFX1k6Tv83QvB4Vq-dds0ZFzmbTJ2Ir1NrH4GE3DzumIqdGNQcdGMlrNWbcx0R299yL-gS3sPy7kOyI:1tD3lf:4Uab-J80cLAMdh_8E6yo-rapmrEsf17t9lUiwUW_pKY",
@@ -37,6 +45,14 @@
     "fields": {
         "session_data": ".eJxVjEEOgyAQRe8y64ZIGaC67N4zkGEGim2jiejKePfWxI3b_977GzDNC3TbfoNA61LCWtMcBoEONFy2SPxJ4wHkTeNrUjyNyzxEdSjqpFX1k6Tv83QvB4Vq-dds0ZFzmbTJ2Ir1NrH4GE3DzumIqdGNQcdGMlrNWbcx0R299yL-gS3sPy7kOyI:1tG2My:HFkgVETLjbmHAyPAJr1Vnu_Tw4D3zUcv65qYUjtSoGQ",
         "expire_date": "2024-12-10T20:41:12.192Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "8at4u70w0y21myeq9y7mmtfdpkzb78kl",
+    "fields": {
+        "session_data": "eyJjYXJ0Ijp7fX0:1tNgRA:tVYdgzJ5ev5l2K1PmIGmGVO6_IzBM51XjRmjccsvbks",
+        "expire_date": "2024-12-31T22:53:08.895Z"
     }
 },
 {
@@ -139,7 +155,7 @@
     "model": "accounts.user",
     "fields": {
         "password": "pbkdf2_sha256$870000$rwbJ46Kw1n6piuQ5enK64V$9H7No6hrZhrHqUou59q357aVYYBF7tOm5I/eGrTKZyM=",
-        "last_login": "2024-12-02T09:42:00.692Z",
+        "last_login": "2024-12-17T20:06:01.627Z",
         "is_superuser": true,
         "first_name": "Alessio",
         "last_name": "Pelusi",
@@ -2360,7 +2376,7 @@
         "size": 4,
         "price": "0.00",
         "discount": null,
-        "stock": 14
+        "stock": 11
     }
 },
 {
@@ -2393,7 +2409,7 @@
         "size": 2,
         "price": "0.00",
         "discount": null,
-        "stock": 2
+        "stock": 0
     }
 },
 {
@@ -2470,7 +2486,7 @@
         "size": 1,
         "price": "0.00",
         "discount": null,
-        "stock": 3
+        "stock": 2
     }
 },
 {
@@ -2580,7 +2596,7 @@
         "size": 8,
         "price": "0.00",
         "discount": null,
-        "stock": 3
+        "stock": 2
     }
 },
 {
@@ -4524,6 +4540,7 @@
             "root@root.it"
         ],
         "created_at": "2024-11-24T11:46:36.010Z",
+        "status": "PR",
         "name": "Pinco Pallino",
         "phone_number": "+390123456789",
         "address_line_one": "Via Roma 13",
@@ -4535,6 +4552,25 @@
     }
 },
 {
+    "model": "orders.order",
+    "pk": 23,
+    "fields": {
+        "user": [
+            "root@root.it"
+        ],
+        "created_at": "2024-12-17T23:00:58.686Z",
+        "status": "PR",
+        "name": "Pinco Pallino",
+        "phone_number": "+390123456789",
+        "address_line_one": "Via Roma 13",
+        "address_line_two": null,
+        "province": 80,
+        "postal_code": "00100",
+        "city": "Roma",
+        "payment_method": 1
+    }
+},
+{
     "model": "orders.orderitem",
     "pk": 15,
     "fields": {
@@ -4542,6 +4578,66 @@
         "variant": 123,
         "quantity": 2,
         "price": "99.90"
+    }
+},
+{
+    "model": "orders.orderitem",
+    "pk": 16,
+    "fields": {
+        "order": 23,
+        "variant": 39,
+        "quantity": 1,
+        "price": "12.95"
+    }
+},
+{
+    "model": "orders.orderitem",
+    "pk": 17,
+    "fields": {
+        "order": 23,
+        "variant": 19,
+        "quantity": 3,
+        "price": "89.95"
+    }
+},
+{
+    "model": "orders.orderitem",
+    "pk": 18,
+    "fields": {
+        "order": 23,
+        "variant": 22,
+        "quantity": 2,
+        "price": "119.00"
+    }
+},
+{
+    "model": "orders.orderitem",
+    "pk": 19,
+    "fields": {
+        "order": 23,
+        "variant": 29,
+        "quantity": 1,
+        "price": "45.95"
+    }
+},
+{
+    "model": "orders.returnitem",
+    "pk": 8,
+    "fields": {
+        "order_item": 15,
+        "status": "RQ",
+        "reason": "DF",
+        "comments": "Il prodotto ha un piccolo strappo sulla manica."
+    }
+},
+{
+    "model": "orders.returnitem",
+    "pk": 9,
+    "fields": {
+        "order_item": 19,
+        "status": "RQ",
+        "reason": "SI",
+        "comments": "Taglia troppo piccola"
     }
 },
 {
@@ -9198,6 +9294,114 @@
         "object_repr": "Bambini",
         "action_flag": 2,
         "change_message": "[{\"changed\": {\"fields\": [\"Image\"]}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 267,
+    "fields": {
+        "action_time": "2024-12-17T22:39:15.637Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "orders",
+            "orderitem"
+        ],
+        "object_id": "15",
+        "object_repr": "OrderItem object (15)",
+        "action_flag": 2,
+        "change_message": "[{\"deleted\": {\"name\": \"return item\", \"object\": \"ReturnItem object (None)\"}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 268,
+    "fields": {
+        "action_time": "2024-12-17T22:51:10.607Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "orders",
+            "orderitem"
+        ],
+        "object_id": "15",
+        "object_repr": "OrderItem object (15)",
+        "action_flag": 2,
+        "change_message": "[{\"deleted\": {\"name\": \"return item\", \"object\": \"ReturnItem object (None)\"}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 269,
+    "fields": {
+        "action_time": "2024-12-17T22:51:21.783Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "orders",
+            "orderitem"
+        ],
+        "object_id": "15",
+        "object_repr": "OrderItem object (15)",
+        "action_flag": 2,
+        "change_message": "[{\"deleted\": {\"name\": \"return item\", \"object\": \"ReturnItem object (None)\"}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 270,
+    "fields": {
+        "action_time": "2024-12-17T22:52:36.022Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "orders",
+            "orderitem"
+        ],
+        "object_id": "15",
+        "object_repr": "OrderItem object (15)",
+        "action_flag": 2,
+        "change_message": "[{\"deleted\": {\"name\": \"return item\", \"object\": \"ReturnItem object (None)\"}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 271,
+    "fields": {
+        "action_time": "2024-12-17T22:54:33.416Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "orders",
+            "orderitem"
+        ],
+        "object_id": "15",
+        "object_repr": "OrderItem object (15)",
+        "action_flag": 2,
+        "change_message": "[{\"deleted\": {\"name\": \"return item\", \"object\": \"ReturnItem object (None)\"}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 272,
+    "fields": {
+        "action_time": "2024-12-17T22:56:36.874Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "orders",
+            "orderitem"
+        ],
+        "object_id": "15",
+        "object_repr": "OrderItem object (15)",
+        "action_flag": 2,
+        "change_message": "[{\"deleted\": {\"name\": \"return item\", \"object\": \"ReturnItem object (None)\"}}]"
     }
 }
 ]

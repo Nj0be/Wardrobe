@@ -26,8 +26,18 @@ class PaymentMethod(models.Model):
 
 
 class Order(models.Model):
+    class OrderStatus(models.TextChoices):
+        PENDING_PAYMENT = "PP", _("In attesa di pagamento")
+        PROCESSING = "PR", _("In elaborazione")
+        SHIPPED = "SP", _("Spedito")
+        DELIVERED = "DL", _("Consegnato")
+        CANCELLED = "CN", _("Annullato")
+        RETURNED = "RT", _("Restituito")
+        FAILED = "FL", _("Fallito")
+
     user = models.ForeignKey('accounts.User', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=2, choices=OrderStatus, default=OrderStatus.PROCESSING)
     name = models.CharField("Nome completo (nome e cognome)", max_length=40)
     phone_number = PhoneNumberField("Numero di telefono", region="IT")
     address_line_one = models.CharField("Riga Indirizzo 1", max_length=40)
@@ -40,6 +50,11 @@ class Order(models.Model):
     @property
     def total_price(self):
         return sum(product.price * product.quantity for product in OrderItem.objects.filter(order=self))
+
+    # helper method to get the string associated with the enum value
+    def get_status(self) -> OrderStatus:
+        return self.OrderStatus(self.status)
+
     # remove possibility to change order after shipping
     # before shipping it's possible to add OrderProducts to the order and create new payments to pay the OrderProducts
     # the payment class should mark which OrderProducts are paid
@@ -69,3 +84,40 @@ class OrderItem(models.Model):
             self.price = self.variant.discounted_price
 
         super(OrderItem, self).save(*args, **kwargs)
+
+
+class ReturnItem(models.Model):
+    class ReturnStatus(models.TextChoices):
+        REQUESTED = "RQ", _("Richiesto")
+        APPROVED = "AP", _("Approvato")
+        REJECTED = "RJ", _("Rifiutato")
+        SHIPPED = "SH", _("Spedito")
+        IN_TRANSIT = "IT", _("In Transito")
+        RECEIVED = "RC", _("Ricevuto")
+        INSPECTION = "IS", _("In Fase di Ispezione")
+        ACCEPTED = "AC", _("Accettato")
+        REFUND_INITIATED = "RI", _("Rimborso Avviato")
+        REFUND_COMPLETED = "RF", _("Rimborso Completato")
+        RETURN_CLOSED = "CL", _("Reso Chiuso")
+
+    class ReturnReason(models.TextChoices):
+        DEFECTIVE = "DF", _("Fallato o Danneggiato")
+        WRONG_ITEM = "WI", _("Prodotto sbagliato")
+        NOT_NEEDED = "NN", _("Non serve più")
+        SIZE_ISSUE = "SI", _("Problemi di taglia o vestibilità")
+        NOT_AS_DESCRIBED = "ND", _("Diverso dalla descrizione")
+        BETTER_PRICE = "BP", _("Trovato ad un prezzo migliore")
+        ORDERED_BY_MISTAKE = "OM", _("Ordinato per errore")
+        OTHER = "OT", _("Altro motivo")
+
+    order_item = models.OneToOneField(OrderItem, on_delete=models.PROTECT)
+    status = models.CharField(max_length=2, choices=ReturnStatus, default=ReturnStatus.REQUESTED)
+    reason = models.CharField(max_length=2, choices=ReturnReason)
+    comments = models.CharField(max_length=200)
+
+    # helper methods to get the string associated with the enum value
+    def get_status(self) -> ReturnStatus:
+        return self.ReturnStatus(self.status)
+
+    def get_reason(self) -> ReturnReason:
+        return self.ReturnReason(self.reason)

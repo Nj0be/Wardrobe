@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Order
+from .models import Order, ReturnItem
 
 
 class ShippingMethodWidget(forms.RadioSelect):
@@ -28,4 +28,19 @@ class OrderForm(forms.ModelForm):
             'address_line_two': forms.TextInput(
                 attrs={'placeholder': 'Scala, piano, interno, azienda (facoltativo)'}),
             'payment_method': ShippingMethodWidget()
+        }
+
+
+class ReturnItemForm(forms.ModelForm):
+    class Meta:
+        model = ReturnItem
+        fields = ["reason", "comments", "order_item"]
+        labels = {
+            "reason": "Motivazione del reso *",
+            "comments": "Commenti (opzionali)",
+        }
+        widgets = {
+            'reasons': forms.TextInput(attrs={'autocomplete': False}),
+            'comments': forms.Textarea(attrs={'rows': 3, 'autocomplete': False}),
+            'order_item': forms.HiddenInput(),
         }
