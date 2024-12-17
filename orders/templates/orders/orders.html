@@ -19,7 +19,8 @@
                   <div class="flex flex-col gap-1 pt-2">
                     <p>{{ order_item.name }}</p>
                     <p>Quantità: {{ order_item.quantity }}</p>
-                    <p>Prezzo: {{ order_item.total_price }} €</p>
+                    <p>Prezzo Prodotto: {{ order_item.price }} €</p>
+                    <p>Subtotale: {{ order_item.total_price }} €</p>
                     {% if order_item.returnitem %}
                       <p>Stato Reso: {{ order_item.returnitem.get_status.label }}</p>
                     {% endif %}
