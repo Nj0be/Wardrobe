@@ -73,6 +73,10 @@ def search(request, category_id=None):  # da implementare anche la logica per i 
     if selected_sizes:
         products = products.filter(productcolor__productvariant__size__id__in=selected_sizes)
 
+    # refresh brands and colors
+    brands = Brand.objects.filter(product__in=list(products)).distinct()
+    colors = Color.objects.filter(productcolor__product__in=list(products)).distinct()
+
     if request.htmx and not request.htmx.boosted:
         template_name = "products/search.html",
     else:
