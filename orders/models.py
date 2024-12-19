@@ -18,22 +18,19 @@ class Province(models.Model):
         return f'{self.name}'
 
 
-class PaymentMethod(models.Model):
-    name = models.CharField(max_length=20, unique=True)
-
-    def __str__(self):
-        return f'{self.name}'
-
-
 class Order(models.Model):
     class OrderStatus(models.TextChoices):
         PENDING_PAYMENT = "PP", _("In attesa di pagamento")
-        PROCESSING = "PR", _("In elaborazione")
+        PROCESSING = "PR", _("In elaborazione")     # pagato
         SHIPPED = "SP", _("Spedito")
         DELIVERED = "DL", _("Consegnato")
         CANCELLED = "CN", _("Annullato")
-        RETURNED = "RT", _("Restituito")
         FAILED = "FL", _("Fallito")
+
+    class OrderPaymentMethod(models.TextChoices):
+        CONTRASSEGNO = "CS", _("Contrassegno")
+        PAYPAL = "PP", _("Paypal")
+        STRIPE = "SP", _("Stripe")
 
     user = models.ForeignKey('accounts.User', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -45,15 +42,18 @@ class Order(models.Model):
     province = models.ForeignKey(Province, on_delete=models.PROTECT)
     postal_code = models.CharField("CAP", max_length=5, validators = [RegexValidator('^[0-9]{5}$', _('CAP non valido, inserisci 5 numeri'))])
     city = models.CharField("city", max_length=40)
-    payment_method = models.ForeignKey(PaymentMethod, on_delete=models.PROTECT)
+    payment_method = models.CharField(max_length=2, choices=OrderPaymentMethod, default=None)
 
     @property
     def total_price(self):
         return sum(product.price * product.quantity for product in OrderItem.objects.filter(order=self))
 
-    # helper method to get the string associated with the enum value
+    # helper methods to get the string associated with the enum value
     def get_status(self) -> OrderStatus:
         return self.OrderStatus(self.status)
+
+    def get_payment_method(self) -> OrderPaymentMethod:
+        return self.OrderPaymentMethod(self.payment_method)
 
     # remove possibility to change order after shipping
     # before shipping it's possible to add OrderProducts to the order and create new payments to pay the OrderProducts

@@ -31,7 +31,7 @@
       <hr class="my-4">
       <div>
         <p class="text-xl">Metodo di Pagamento utilizzato</p>
-        <p>Pagamento tramite: {{ order.payment_method }}</p>
+        <p>Pagamento tramite: {{ order.get_payment_method.label }}</p>
       </div>
     </div>
     <div class="px-6">

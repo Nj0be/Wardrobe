@@ -16,9 +16,7 @@
                 {% if field.name == "payment_method" %}
                   <div class="fieldWrapper">
                     {{ form.payment_method|add_label_class:"" }}
-                    <div>
-                      {% render_field form.payment_method class="inline-flex justify-center gap-3 items-center p-2" %}
-                    </div>
+                    {% render_field form.payment_method class="inline-flex justify-center gap-3 items-center p-2" %}
                     <ol>{% for error in form.payment_method.errors %}
                       <li>{{ error|escape }}</li>
                     {% endfor %}</ol>
@@ -59,20 +57,22 @@
       <div class="pt-2 grid grid-cols-1 justify-center items-center gap-2 mt-2">
         {% for product in products %}
           <div class="inline-flex items-start gap-3">
-              <a href="{% url 'product_color_size' product.variant.product.id product.variant.color.id product.variant.size.id %}">
-                <img src="{{ product.variant.default_image }}"
-                     alt="{{ product.variant.product.name }}" class="w-40">
-              </a>
-              <div class="grid grid-cols-1 gap-1 w-1/2">
-                <p><strong>Nome: </strong>{{ product.variant.product.name }}</p>
-                <p><strong>Brand: </strong>{{ product.variant.product.brand.name }}</p>
-                <p><strong>Colore: </strong>{{ product.variant.color }}</p>
-                <p><strong>Taglia: </strong>{{ product.variant.size }}</p>
-                <p><strong>Prezzo: </strong> {{ product.price|floatformat:2 }} X {{ product.quantity }}
-                  = {{ product.subtotal_price|floatformat:2 }} €</p>
-              </div>
+            <a href="{% url 'product_color_size' product.variant.product.id product.variant.color.id product.variant.size.id %}">
+              <img src="{{ product.variant.default_image }}"
+                   alt="{{ product.variant.product.name }}" class="w-40">
+            </a>
+            <div class="grid grid-cols-1 gap-1 w-1/2">
+              <p><strong>Nome: </strong>{{ product.variant.product.name }}</p>
+              <p><strong>Brand: </strong>{{ product.variant.product.brand.name }}</p>
+              <p><strong>Colore: </strong>{{ product.variant.color }}</p>
+              <p><strong>Taglia: </strong>{{ product.variant.size }}</p>
+              <p><strong>Prezzo: </strong> {{ product.price|floatformat:2 }}
+                X {{ product.quantity }}
+                = {{ product.subtotal_price|floatformat:2 }} €</p>
+            </div>
           </div>
-          {% if not forloop.last %} <hr class="py-2 dark:border-zinc-700"> {% endif %}
+          {% if not forloop.last %}
+            <hr class="py-2 dark:border-zinc-700"> {% endif %}
         {% endfor %}
       </div>
     </div>

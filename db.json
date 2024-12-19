@@ -9,10 +9,18 @@
 },
 {
     "model": "sessions.session",
+    "pk": "1fwmsdmp5g5vt3chhgadmmv3lks4z8pt",
+    "fields": {
+        "session_data": "eyJjYXJ0Ijp7fX0:1tODpV:GOAO0I8dkAN5fECHDOiJiBuc2J6AOsEcqdhiKS7VR2Y",
+        "expire_date": "2025-01-02T10:32:29.043Z"
+    }
+},
+{
+    "model": "sessions.session",
     "pk": "1ruavfdkhp48cwuik46uraqgvo1r4x5c",
     "fields": {
-        "session_data": ".eJxVjEEOgyAQRe8y64ZIGaC67N4zkGEGim2jiejKePfWxI3b_977GzDNC3TbfoNA61LCWtMcBoEONFy2SPxJ4wHkTeNrUjyNyzxEdSjqpFX1k6Tv83QvB4Vq-dds0ZFzmbTJ2Ir1NrH4GE3DzumIqdGNQcdGMlrNWbcx0R299yL-gS3sPy7kOyI:1tNgd9:9exqrZ8Nbit3IVKDwRwK5AiH-UKHlEwYTxRxkS68tvw",
-        "expire_date": "2024-12-31T23:05:31.862Z"
+        "session_data": ".eJxVjEEOgyAQRe8y64ZIGaC67N4zkGEGim2jiejKePfWxI3b_977GzDNC3TbfoNA61LCWtMcBoEONFy2SPxJ4wHkTeNrUjyNyzxEdSjqpFX1k6Tv83QvB4Vq-dds0ZFzmbTJ2Ir1NrH4GE3DzumIqdGNQcdGMlrNWbcx0R299yL-gS3sPy7kOyI:1tOFyd:2kv5PA5rwiTRoC-l_dXqdtN9B0n4FHU8xMEEi3a3oe4",
+        "expire_date": "2025-01-02T12:50:03.865Z"
     }
 },
 {
@@ -2343,7 +2351,7 @@
         "size": 1,
         "price": "0.00",
         "discount": null,
-        "stock": 12
+        "stock": 11
     }
 },
 {
@@ -2475,7 +2483,7 @@
         "size": 6,
         "price": "0.00",
         "discount": null,
-        "stock": 10
+        "stock": 9
     }
 },
 {
@@ -4512,27 +4520,6 @@
     }
 },
 {
-    "model": "orders.paymentmethod",
-    "pk": 1,
-    "fields": {
-        "name": "Contrassegno"
-    }
-},
-{
-    "model": "orders.paymentmethod",
-    "pk": 2,
-    "fields": {
-        "name": "Paypal"
-    }
-},
-{
-    "model": "orders.paymentmethod",
-    "pk": 3,
-    "fields": {
-        "name": "Stripe"
-    }
-},
-{
     "model": "orders.order",
     "pk": 22,
     "fields": {
@@ -4548,7 +4535,7 @@
         "province": 17,
         "postal_code": "84567",
         "city": "Brescia",
-        "payment_method": 1
+        "payment_method": "CS"
     }
 },
 {
@@ -4567,7 +4554,45 @@
         "province": 80,
         "postal_code": "00100",
         "city": "Roma",
-        "payment_method": 1
+        "payment_method": "SP"
+    }
+},
+{
+    "model": "orders.order",
+    "pk": 24,
+    "fields": {
+        "user": [
+            "root@root.it"
+        ],
+        "created_at": "2024-12-19T10:48:09.872Z",
+        "status": "PR",
+        "name": "dsafdsa",
+        "phone_number": "+390123456789",
+        "address_line_one": "fdsadf",
+        "address_line_two": "fdsa",
+        "province": 16,
+        "postal_code": "21131",
+        "city": "dfsadfsa",
+        "payment_method": "PP"
+    }
+},
+{
+    "model": "orders.order",
+    "pk": 25,
+    "fields": {
+        "user": [
+            "root@root.it"
+        ],
+        "created_at": "2024-12-19T11:54:59.406Z",
+        "status": "PR",
+        "name": "fdsadfsa",
+        "phone_number": "+390123456789",
+        "address_line_one": "fds",
+        "address_line_two": "fsddfads",
+        "province": 15,
+        "postal_code": "12313",
+        "city": "sdfasdfsafds",
+        "payment_method": "CS"
     }
 },
 {
@@ -4621,6 +4646,26 @@
     }
 },
 {
+    "model": "orders.orderitem",
+    "pk": 20,
+    "fields": {
+        "order": 24,
+        "variant": 28,
+        "quantity": 1,
+        "price": "45.95"
+    }
+},
+{
+    "model": "orders.orderitem",
+    "pk": 21,
+    "fields": {
+        "order": 25,
+        "variant": 16,
+        "quantity": 1,
+        "price": "89.95"
+    }
+},
+{
     "model": "orders.returnitem",
     "pk": 8,
     "fields": {
@@ -4638,6 +4683,16 @@
         "status": "RQ",
         "reason": "SI",
         "comments": "Taglia troppo piccola"
+    }
+},
+{
+    "model": "orders.returnitem",
+    "pk": 10,
+    "fields": {
+        "order_item": 20,
+        "status": "RQ",
+        "reason": "NN",
+        "comments": "hjjgbhjb"
     }
 },
 {
