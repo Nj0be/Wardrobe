@@ -105,6 +105,14 @@
 },
 {
     "model": "sessions.session",
+    "pk": "l5naaaqhnydtk0674ifvp5xjh7ytfgc5",
+    "fields": {
+        "session_data": ".eJxVjEEOgyAQRe8y64ZIGaC67N4zkGEGim2jiejKePfWxI3b_977GzDNC3TbfoNA61LCWtMcBoEONFy2SPxJ4wHkTeNrUjyNyzxEdSjqpFX1k6Tv83QvB4Vq-dds0ZFzmbTJ2Ir1NrH4GE3DzumIqdGNQcdGMlrNWbcx0R299yL-gS3sPy7kOyI:1taiIN:U6sa3zfxLBkOctsNdLU9uQroIEO0fOVZoxauFTWq5Gg",
+        "expire_date": "2025-02-05T21:29:55.355Z"
+    }
+},
+{
+    "model": "sessions.session",
     "pk": "l77n48toh6c3xhj4grpn9h2z4ql9c4rb",
     "fields": {
         "session_data": ".eJxVjEEOgyAQRe8y64ZIGaC67N4zkGEGim2jiejKePfWxI3b_977GzDNC3TbfoNA61LCWtMcBoEONFy2SPxJ4wHkTeNrUjyNyzxEdSjqpFX1k6Tv83QvB4Vq-dds0ZFzmbTJ2Ir1NrH4GE3DzumIqdGNQcdGMlrNWbcx0R299yL-gS3sPy7kOyI:1tEw36:BNhmXa-VFoA9mzFzAyZUG-NYB1wcXq6xqMlbUbvbKrE",
@@ -163,7 +171,7 @@
     "model": "accounts.user",
     "fields": {
         "password": "pbkdf2_sha256$870000$rwbJ46Kw1n6piuQ5enK64V$9H7No6hrZhrHqUou59q357aVYYBF7tOm5I/eGrTKZyM=",
-        "last_login": "2024-12-17T20:06:01.627Z",
+        "last_login": "2025-01-22T21:28:15.881Z",
         "is_superuser": true,
         "first_name": "Alessio",
         "last_name": "Pelusi",
@@ -634,7 +642,7 @@
         "price": "49.95",
         "is_active": true,
         "created_at": "2024-11-23T19:35:52.424Z",
-        "updated_at": "2024-11-23T19:42:32.610Z",
+        "updated_at": "2025-01-22T21:29:28.392Z",
         "discount": null,
         "brand": 1,
         "categories": [
@@ -1057,17 +1065,6 @@
     "fields": {
         "product": 11,
         "color": 5,
-        "price": "0.00",
-        "discount": null,
-        "default": false
-    }
-},
-{
-    "model": "products.productcolor",
-    "pk": 17,
-    "fields": {
-        "product": 11,
-        "color": 11,
         "price": "0.00",
         "discount": null,
         "default": false
@@ -2836,61 +2833,6 @@
         "price": "0.00",
         "discount": null,
         "stock": 2
-    }
-},
-{
-    "model": "products.productvariant",
-    "pk": 61,
-    "fields": {
-        "product_color": 17,
-        "size": 14,
-        "price": "0.00",
-        "discount": null,
-        "stock": 0
-    }
-},
-{
-    "model": "products.productvariant",
-    "pk": 62,
-    "fields": {
-        "product_color": 17,
-        "size": 15,
-        "price": "0.00",
-        "discount": null,
-        "stock": 3
-    }
-},
-{
-    "model": "products.productvariant",
-    "pk": 63,
-    "fields": {
-        "product_color": 17,
-        "size": 16,
-        "price": "0.00",
-        "discount": null,
-        "stock": 2
-    }
-},
-{
-    "model": "products.productvariant",
-    "pk": 64,
-    "fields": {
-        "product_color": 17,
-        "size": 17,
-        "price": "0.00",
-        "discount": null,
-        "stock": 7
-    }
-},
-{
-    "model": "products.productvariant",
-    "pk": 65,
-    "fields": {
-        "product_color": 17,
-        "size": 18,
-        "price": "0.00",
-        "discount": null,
-        "stock": 5
     }
 },
 {
@@ -9457,6 +9399,24 @@
         "object_repr": "OrderItem object (15)",
         "action_flag": 2,
         "change_message": "[{\"deleted\": {\"name\": \"return item\", \"object\": \"ReturnItem object (None)\"}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 273,
+    "fields": {
+        "action_time": "2025-01-22T21:29:28.496Z",
+        "user": [
+            "root@root.it"
+        ],
+        "content_type": [
+            "products",
+            "product"
+        ],
+        "object_id": "11",
+        "object_repr": "11-Jean Flared Fit",
+        "action_flag": 2,
+        "change_message": "[{\"deleted\": {\"name\": \"product color\", \"object\": \"11-Jean Flared Fit-Kaiki\"}}, {\"deleted\": {\"name\": \"product variant\", \"object\": \"11-Jean Flared Fit-Kaiki-IT 42 (EUR 36)\"}}, {\"deleted\": {\"name\": \"product variant\", \"object\": \"11-Jean Flared Fit-Kaiki-IT 44 (EUR 38)\"}}, {\"deleted\": {\"name\": \"product variant\", \"object\": \"11-Jean Flared Fit-Kaiki-IT 46 (EUR 40)\"}}, {\"deleted\": {\"name\": \"product variant\", \"object\": \"11-Jean Flared Fit-Kaiki-IT 48 (EUR 42)\"}}, {\"deleted\": {\"name\": \"product variant\", \"object\": \"11-Jean Flared Fit-Kaiki-IT 50 (EUR 44)\"}}]"
     }
 }
 ]
