@@ -44,12 +44,12 @@ def search(request, category_id=None):  # da implementare anche la logica per i 
         vector = (SearchVector('name', weight='A', config='italian') +
                   SearchVector('description', weight='B', config='italian') +
                   SearchVector('brand__name', weight='B', config='italian') +
-                  SearchVector('categories_names', weight='C', config='italian') +
+                  # SearchVector('categories_names', weight='C', config='italian') +
                   SearchVector('productcolor__color_names', weight='C', config='italian'))
         query = SearchQuery(query_str, search_type="raw", config='italian')
         # query = SearchQuery(search_terms, config='italian')
         products = products.annotate(
-            categories_names=ArrayAgg('categories__name'),
+            # categories_names=ArrayAgg('categories__name'),
             productcolor__color_names=ArrayAgg("productcolor__color__name"),
             rank=SearchRank(vector, query), search=vector).filter(rank__gte=0.1).order_by('-rank')
         # rank = SearchRank(vector, query), search = vector).filter(search=search_terms).order_by('-rank')
