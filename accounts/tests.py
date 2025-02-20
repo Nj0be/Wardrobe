@@ -6,7 +6,10 @@ class UserTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         # Set up non-modified objects used by all test methods
-        User.objects.create(email='hello@world.com', first_name='hello', last_name='world')
+        User.objects.create(email='hello@world.com',
+                            first_name='hello',
+                            last_name='world'
+                            )
 
     def test_email(self):
         user = User.objects.get(id=1)

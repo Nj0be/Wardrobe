@@ -37,14 +37,21 @@ class ProductTestCase(TestCase):
 class ReviewTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
-        Review.objects.create(product=Product.objects.create(name="productName",
-                                                             price=Decimal('0.01'),
-                                                             brand=Brand.objects.create(name="BrandName")),
-                              user=User.objects.create(email='hello@world.com', first_name='hello', last_name='world'),
-                              title="reviewTitle",
-                              description="reviewDescription",
-                              vote=1,
-                              )
+        Review.objects.create(
+            product=Product.objects.create(
+                name="productName",
+                price=Decimal('0.01'),
+                brand=Brand.objects.create(name="BrandName")
+            ),
+            user=User.objects.create(
+                email='hello@world.com',
+                first_name='hello',
+                last_name='world'
+            ),
+            title="reviewTitle",
+            description="reviewDescription",
+            vote=1,
+        )
 
     def test_product(self):
         review = Review.objects.get(id=1)
