@@ -1,7 +1,7 @@
 {% load static tailwind_tags %}
 {% load django_htmx %}
 <!DOCTYPE html>
-<html lang="en" class="h-full bg-white text-black dark:bg-darkbg dark:text-stone-200" style="color-scheme: light dark;">
+<html lang="en" class="bg-white text-black dark:bg-darkbg dark:text-stone-200" style="color-scheme: light dark;">
 <head>
   <title>{% block title %}Wardrobe{% endblock %}</title>
   {% tailwind_css %}
@@ -25,12 +25,11 @@
         rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Lacquer&display=swap" rel="stylesheet">
 </head>
-<body hx-ext="preload" class="font-kani h-full">
-<div class="flex flex-col h-screen justify-between" hx-boost="true" preload="mouseover"
+<body hx-ext="preload" class="font-kani">
+<div class="flex flex-col justify-between h-screen" hx-boost="true" preload="mouseover"
      preload-images="true">
 
   {% block header %}
-    <div class="flex flex-col h-screen justify-between">
     <header class="flex flex-row justify-between px-4 pt-10">
       <div class="flex flex-col justify-center items-center gap-2 sm:mx-auto">
         <h1 class="text-5xl"><a href="{% url 'homepage' %}">WARDROBE©</a></h1>
@@ -52,7 +51,7 @@
     </header>
   {% endblock %}
 
-  <main id="content" class="mb-auto font-rhd"> <!-- border-4 border-sky-500h -->
+  <main id="content" class="flex-1 mb-auto font-rhd"> <!-- border-4 border-sky-500h -->
     {% block content %}
     {% endblock %}
   </main>

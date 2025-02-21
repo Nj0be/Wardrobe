@@ -14,7 +14,7 @@
             {% for field in form %}
               <div class="py-2">
                 {% if field.name == "payment_method" %}
-                  <div class="fieldWrapper">
+                  <div class="fieldWrapper flex flex-col">
                     {{ form.payment_method|add_label_class:"" }}
                     {% render_field form.payment_method class="inline-flex justify-center gap-3 items-center p-2" %}
                     <ol>{% for error in form.payment_method.errors %}
