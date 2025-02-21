@@ -37,6 +37,7 @@ class ProductTestCase(TestCase):
 class ReviewTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
+        # Set up non-modified objects used by all test methods
         Review.objects.create(
             product=Product.objects.create(
                 name="productName",
