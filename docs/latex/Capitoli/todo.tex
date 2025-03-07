@@ -1,0 +1,68 @@
+chiedere a corradini il dubbio riguardo le postcondizioni
+chiedere a corradini il dubbio con extends dei diagrammi dei casi d'uso.
+enterprise:
+
+dipendentemente dagli attributi che le classi di analisi hanno, aggiungere le associazioni con le classi
+
+avere classi come attributi significa associazioni invece le classi che creano qualche istanza significa avere dipendenza, ad esempio i controller hanno dipendenze, ad esempio controllerOrder ha una dipendenza "use" con order, quindi:
+
+. aggiungere le dipendenze use ai controllers
+. aggiungere le associazioni con le classi i cui attributi presentano classi
+. modificare gli stati dei diagrammi delle macchine a stati, aggiungendo stati per ogni attributo che cambia basandosi sul fatto che: "uno stato si riferisce all'insieme dei valori assunti dall'entità", quindi ad esempio ci dovrebbe essere uno stato per ogni attributo che viene modificato, es. siccome vi è un attributo "quantità" per un prodotto nel carrello, nel caso venisse modificata la quantità di un prodotto nel carrello, allora ci dovrà essere uno stato "Quantity modified".
+
+. switchare ordersController con productsDiagram 
+
+
+correggere da payed a paid.
+
+"A usage is a dependency relationship in which one element (client) requires another element (or set of elements) (supplier) for its full implementation or operation."
+correzioni da effettuare:
+- ordersController ha una dipendenza "use" con order, orderItem, returnItem, province, User
+- accountsController ha una dipendenza "use" con User, order
+- cartController ha una associazione con cart, una dipendenza con cartItem, ProductVariant, User
+- productsController ha una dipendenza "use" con Product, productVariant, size, color, ProductColor, brand, review, category
+
+
+MACCHINE A STATI:
+Cart Item: attributi: quantity, isActive
+rimuovere lo stato "added to cart"
+aggiungere check quantità:
+ - initial
+ - "attivo" 
+    - se seleziono inattivo -> "inattivo"
+        - se seleziono attivo -> "attivo"
+    - stanghetta di riunione con il prossimo punto
+ - se seleziono rimuovi prodotto -> X eliminazione
+ - se la quantità è modificata -> "quantity modified" e si ricollega a sopra l if di attivo e inattivo
+
+Customer Account: 
+modificare che se l'utente non è modificato allora la linea si deve collegare a noT verified
+
+Order:
+Cambiare nome da "NotPayed" a "NotPaid"
+
+ProductVariant:
+-initial
+-"active"
+- se stock > 0 -> "Available"
+- else -> "NonDisponibile"
+- if quantità modificata -> "quantityModified" che si ricollega a active
+
+
+
+
+
+togli dalla frase "Il sistema aggiunge il colore al sito" "il sito"
+
+
+THE END
+siamo arrivati a pagina 46 
+
+DONE - correggere il diagramma dei componenti
+DONE - correggere diagramma di deployment ponendo ai container <<container>> invece di execEnv, rimuovere repo +link, collegare i container con frecce "use".
+DONE - porre i test case sottoforma di codice e non screenshots.
+DONE - Refreshare il diagramma di deployment
+
+
+THE END
+siamo arrivati a pagina 56 

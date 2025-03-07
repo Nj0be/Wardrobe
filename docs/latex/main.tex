@@ -1,0 +1,101 @@
+% Template thesis MSc International Economics - University of Milano-Bicocca. created by C. Angelini and A. Colombo 
+
+
+% Document formatted as indicated by the University
+\documentclass[12pt, oneside]{report}
+\usepackage[top=2.5cm, bottom=2.5cm, inner=2cm, outer=2cm, centering]{geometry}
+\usepackage[T1]{fontenc} % prevent greater than and less than symbols to not appear (or reversed question mark to appear instead)
+% \usepackage{mathptmx} % font Times New Roman
+\linespread{1} % dimensione newline
+\usepackage{graphicx} % inserimento di immagini
+\usepackage{float} % per il posizionamento delle immagini
+\usepackage{subfigure}
+
+\usepackage{titlesec}
+\usepackage{longtable}  % table that span multiple page
+\usepackage{enumitem}   % additional option for enumerate (remove indent, ecc)
+
+\usepackage{minted}   % code syntax highlighting
+\usepackage{xcolor} % to access the named colour LightGray
+\definecolor{LightGray}{gray}{0.95}
+
+% enumeration with nested arabic numbers
+\renewcommand{\labelenumii}{\arabic{enumi}.\arabic{enumii}}
+\renewcommand{\labelenumiii}{\arabic{enumi}.\arabic{enumii}.\arabic{enumiii}}
+\renewcommand{\labelenumiv}{\arabic{enumi}.\arabic{enumii}.\arabic{enumiii}.\arabic{enumiv}}
+
+\titleformat{\chapter}{\fontsize{16pt}{18pt}\bfseries}{\thechapter}{1em}{}
+\titleformat{\chapter}[block]
+  {\normalfont\LARGE\bfseries}{\thechapter.}{0.5em}{\LARGE}
+\titlespacing*{\chapter}{0pt}{-20pt}{25pt}
+\titleformat{\section}{\fontsize{16pt}{18pt}\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\fontsize{14pt}{16pt}\bfseries}{\thesubsection}{1em}{}
+
+
+
+\begin{document}
+
+% Frontespizio
+\begin{titlepage}
+\begin{center}
+    {\LARGE\bf{Università Politecnica delle Marche\\}}
+    \vspace{0.5cm}
+    {\LARGE{Ingegneria del Software}}\\
+    {\LARGE{Corso di Laurea Triennale in Ingegneria Informatica e dell'Automazione}}
+\end{center}
+    
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{logo.png}
+\end{figure}
+
+\begin{center}
+    {\LARGE{\bf Titolo tesi}}
+\end{center}
+
+\vspace{2cm}
+
+\begin{minipage}[t]{0.49\textwidth}
+    {\Large{ Relatori:\\\\ Prof. Ursino Domenico}}
+    {\Large{ \\ Prof. Corradini Enrico}}
+\end{minipage}\hfill\begin{minipage}[t]{0.49\textwidth}\raggedleft
+    {\Large{ Tesina di:\\ Pelusi Alessio }}
+    {\Large{ \\ Vagnarelli Beniamino }}
+\end{minipage}
+
+\vspace{25mm}
+
+\centering{\Large{ ANNO ACCADEMICO 2024/2025 }}
+\end{titlepage}
+% Fine frontespizio
+
+% \newpage
+% \thispagestyle{empty} %per rimuovere numero di pagina
+% \mbox{}
+
+%\input{Acknowledgments}
+%\thispagestyle{empty}
+
+%\newpage
+%\thispagestyle{empty}
+%\mbox{}
+
+\tableofcontents
+%\thispagestyle{empty}
+
+
+\thispagestyle{empty}
+\clearpage
+\setcounter{page}{1}
+%\addtocontents{toc}{\protect\thispagestyle{empty}}
+
+
+\input{Capitoli/DescrizioneProgetto}
+\input{Capitoli/GlossarioDeiTermini}
+\input{Capitoli/GestioneDeiRequisiti}
+\input{Capitoli/Analisi}
+\input{Capitoli/Progettazione}
+\input{Capitoli/Implementazione}
+
+
+\end{document}
